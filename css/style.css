@@ -326,3 +326,27 @@ footer small {
 
     transform: translateY(-2px);
 }
+.verificado {
+    display: inline-block;
+
+    margin: 0 auto 18px;
+    padding: 8px 14px;
+
+    background: #eaf8ee;
+    border: 1px solid #b9e3c5;
+    border-radius: 20px;
+
+    color: #278347;
+
+    font-size: 12px;
+    font-weight: bold;
+
+    text-align: center;
+}
+.ficha-representante {
+    text-align: center;
+}
+
+.ficha-representante .dato {
+    text-align: left;
+}
