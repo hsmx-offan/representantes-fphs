@@ -652,6 +652,34 @@ body.representante-page {
    ========================= */
 
 @media (max-width: 700px) {
+    .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 35px;
+}
+
+.logo-principal {
+    width: 190px;
+    margin: 0 auto;
+}
+
+.hero-contenido {
+    text-align: center;
+}
+
+.hero-contenido h1,
+.hero-contenido .bienvenida,
+.hero-contenido .buscador {
+    text-align: center;
+}
+
+.hero-contenido .buscador {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-contenido .buscador input {
+    text-align: center;
+}
 .navbar {
     height: 62px;
     padding: 0 22px;
@@ -807,4 +835,75 @@ body.representante-page {
 #equipo,
 #recuerdos {
     scroll-margin-top: 72px;
+}
+/* =========================
+   PORTADA EDITORIAL
+   ========================= */
+
+.hero-grid {
+    width: 100%;
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+
+    gap: 70px;
+
+    align-items: center;
+}
+
+.hero-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-principal {
+    width: 100%;
+    max-width: 430px;
+
+    margin: 0;
+
+    filter: drop-shadow(
+        0 18px 45px rgba(237, 30, 98, 0.16)
+    );
+}
+
+.hero-contenido {
+    text-align: left;
+}
+
+.hero-contenido .etiqueta {
+    margin-bottom: 20px;
+}
+
+.hero-contenido h1 {
+    margin-left: 0;
+    margin-right: 0;
+
+    font-size: clamp(48px, 5vw, 74px);
+
+    text-align: left;
+}
+
+.hero-contenido .bienvenida {
+    margin-left: 0;
+    margin-right: 0;
+
+    text-align: left;
+}
+
+.hero-contenido .buscador {
+    margin-left: 0;
+    margin-right: 0;
+
+    max-width: 600px;
+
+    text-align: left;
+}
+
+.hero-contenido .buscador input {
+    text-align: left;
 }
