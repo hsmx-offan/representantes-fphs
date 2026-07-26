@@ -1200,36 +1200,126 @@ body.guia-page {
         grid-template-columns: 1fr;
     }
 
-   /* VIDEO EN CELULAR */
+   /* =========================================
+   VIDEO RESPONSIVE
+   ========================================= */
 
-.video-drive {
-    width: 100%;
-    max-width: 520px;
-
-    margin: 28px auto 0;
-
-    border-radius: 16px;
-    overflow: hidden;
-
-    background: #000;
+.abrir-video-movil {
+    display: none;
 }
 
-.video-drive iframe {
-    display: block;
 
-    width: 100% !important;
+/* MODAL */
 
-    /* Más altura para que Drive muestre sus controles */
-    height: 360px !important;
-
-    aspect-ratio: auto !important;
-
-    border: 0 !important;
+.video-modal {
+    display: none;
 }
-@media screen and (max-width: 480px) {
 
-    .video-drive iframe {
-        height: 315px !important;
+
+@media screen and (max-width: 768px) {
+
+    /* Ocultamos el reproductor de Drive normal */
+    .video-escritorio {
+        display: none;
+    }
+
+    /* Botón limpio */
+    .abrir-video-movil {
+        width: auto;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 10px;
+
+        margin: 28px auto 0;
+        padding: 15px 24px;
+
+        border-radius: 30px;
+
+        background: var(--pink);
+
+        color: var(--white);
+
+        box-shadow:
+            0 12px 30px rgba(237, 30, 98, 0.22);
+    }
+
+
+    /* Fondo pantalla completa */
+    .video-modal {
+        position: fixed;
+
+        inset: 0;
+
+        z-index: 9999;
+
+        width: 100%;
+        height: 100%;
+
+        padding: 75px 14px 20px;
+
+        background: rgba(16, 11, 29, 0.98);
+
+        align-items: center;
+        justify-content: center;
+    }
+
+    .video-modal.activo {
+        display: flex;
+    }
+
+
+    /* Reproductor */
+    .video-modal-contenido {
+        width: 100%;
+        max-width: 700px;
+
+        overflow: hidden;
+
+        border-radius: 16px;
+
+        background: #000;
+    }
+
+    .video-modal-contenido iframe {
+        display: block;
+
+        width: 100%;
+        height: 70vh;
+
+        border: 0;
+    }
+
+
+    /* X para cerrar */
+    .cerrar-video {
+        position: absolute;
+
+        top: 18px;
+        right: 18px;
+
+        width: 44px;
+        height: 44px;
+
+        margin: 0;
+        padding: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border: 1px solid rgba(255,255,255,0.25);
+        border-radius: 50%;
+
+        background: transparent;
+
+        color: var(--white);
+
+        font-size: 20px;
+
+        box-shadow: none;
     }
 
 }
