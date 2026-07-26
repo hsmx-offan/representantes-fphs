@@ -116,9 +116,13 @@ async function cargarRepresentante() {
         const instagram = representante[4] || "—";
 
         resultado.innerHTML = `
-            <div class="ficha-representante">
+    <div class="ficha-representante">
 
-                <h2>${nombre}</h2>
+        <div class="verificado">
+            ✓ Representante oficial verificado
+        </div>
+
+        <h2>${nombre}</h2>
 
                 <div class="dato">
                     <span>ID</span>
