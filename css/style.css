@@ -634,6 +634,19 @@ body.representante-page {
     border-radius: 30px;
 }
 
+/* Logo exclusivo de la ficha de representante */
+
+.logo-representante {
+    width: 260px;
+    max-width: 80%;
+    height: auto;
+
+    margin: 0 auto 35px;
+
+    filter: drop-shadow(
+        0 12px 30px rgba(237, 30, 98, 0.18)
+    );
+}
 /* =========================
    CELULAR
    ========================= */
