@@ -229,3 +229,53 @@ function actualizarCountdown() {
 actualizarCountdown();
 
 setInterval(actualizarCountdown, 1000);
+/* =========================================================
+   ESTADO DE LAS FECHAS DEL TOUR
+   ========================================================= */
+
+function actualizarEstadosFechas() {
+    const tarjetas = document.querySelectorAll(".fecha[data-fecha]");
+
+    if (!tarjetas.length) return;
+
+    const ahora = new Date();
+
+    let proximaEncontrada = false;
+
+    tarjetas.forEach((tarjeta) => {
+        const inicio = new Date(tarjeta.dataset.fecha);
+        const fin = new Date(tarjeta.dataset.fin);
+
+        const estado = tarjeta.querySelector(".estado-fecha");
+
+        tarjeta.classList.remove(
+            "fecha-completada",
+            "fecha-en-curso",
+            "fecha-proxima"
+        );
+
+        estado.textContent = "";
+
+        if (ahora >= inicio && ahora < fin) {
+            tarjeta.classList.add("fecha-en-curso");
+            estado.textContent = "EN CURSO ♡";
+            return;
+        }
+
+        if (ahora >= fin) {
+            tarjeta.classList.add("fecha-completada");
+            estado.textContent = "COMPLETADA ✓";
+            return;
+        }
+
+        if (!proximaEncontrada && ahora < inicio) {
+            tarjeta.classList.add("fecha-proxima");
+            estado.textContent = "PRÓXIMA";
+            proximaEncontrada = true;
+        }
+    });
+}
+
+actualizarEstadosFechas();
+
+setInterval(actualizarEstadosFechas, 1000);
