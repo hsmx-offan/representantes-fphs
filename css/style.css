@@ -1200,38 +1200,39 @@ body.guia-page {
         grid-template-columns: 1fr;
     }
 
- /* =========================
-   VIDEO LOCAL
+/* =========================
+   VIDEO YOUTUBE
    ========================= */
 
-.video-local {
+.video-youtube {
     width: 100%;
     max-width: 1100px;
-
     margin: 40px auto 0;
+
+    aspect-ratio: 16 / 9;
 
     overflow: hidden;
 
     background: #000;
 
-    border: 1px solid rgba(84, 21, 47, 0.20);
     border-radius: 20px;
 
     box-shadow: 0 20px 50px rgba(16, 11, 29, 0.18);
 }
 
-.video-local video {
+.video-youtube iframe {
     display: block;
 
     width: 100%;
-    height: auto;
+    height: 100%;
 
-    background: #000;
+    border: 0;
 }
 
 @media screen and (max-width: 768px) {
 
-    .video-local {
+    .video-youtube {
+        width: 100%;
         margin-top: 28px;
         border-radius: 14px;
     }
