@@ -22,7 +22,7 @@ body {
 
 .contenedor {
     width: 100%;
-    max-width: 480px;
+    max-width: 700px;
 
     background: rgba(255, 255, 255, 0.82);
     backdrop-filter: blur(15px);
@@ -276,4 +276,9 @@ footer p {
 
 footer small {
     color: #999;
+}
+@media (max-width: 768px) {
+    .contenedor {
+        max-width: 480px;
+    }
 }
