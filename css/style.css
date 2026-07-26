@@ -1200,16 +1200,24 @@ body.guia-page {
         grid-template-columns: 1fr;
     }
 
-    /* VIDEO */
-    .video-drive {
-        width: 100%;
-        max-width: 100%;
-        margin-top: 28px;
-        border-radius: 14px;
-    }
+   /* VIDEO EN CELULAR */
 
-    .video-drive iframe {
-        width: 100% !important;
-        aspect-ratio: 16 / 9 !important;
-    }
+.video-drive {
+    width: calc(100vw - 44px);
+    max-width: 500px;
+
+    margin: 28px auto 0;
+
+    border-radius: 14px;
+}
+
+.video-drive iframe {
+    display: block;
+
+    width: 100% !important;
+    height: auto !important;
+
+    aspect-ratio: 16 / 9 !important;
+
+    border: 0 !important;
 }
