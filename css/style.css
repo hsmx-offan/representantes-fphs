@@ -5,17 +5,23 @@
 }
 
 :root {
-    --bg: #0D1117;
-    --bg-soft: #17131B;
+    /* IDENTIDAD HSMX 2026 */
 
-    --pink: #E72B91;
-    --pink-bright: #FF5BB5;
-    --pink-soft: #FFD8EB;
+    --bg: #100B1D;
+    --bg-soft: #171219;
 
-    --white: #FFF9FC;
-    --text-soft: #D6CBD2;
+    --pink: #ED1E62;
+    --pink-bright: #ED1E62;
+    --pink-soft: #FFF3F5;
 
-    --line: rgba(255, 255, 255, 0.14);
+    --wine: #54152F;
+    --rose-soft: #F6A8C0;
+
+    --white: #FFF9FA;
+    --text-soft: #F6A8C0;
+    --text-dark: #171219;
+
+    --line: rgba(246, 168, 192, 0.22);
 }
 
 html {
