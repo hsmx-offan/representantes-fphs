@@ -1396,3 +1396,206 @@ body.guia-page {
 .fecha-completada .estado-fecha {
     color: var(--wine);
 }
+/* =========================================================
+   ASIGNACIONES DE REPRESENTANTE
+   ========================================================= */
+
+.datos-principales {
+    width: 100%;
+    max-width: 760px;
+
+    margin: 0 auto 50px;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 14px;
+}
+
+.dato-principal {
+    padding: 20px;
+
+    border: 1px solid var(--line);
+    border-radius: 18px;
+
+    background: rgba(255, 249, 250, 0.03);
+
+    text-align: left;
+}
+
+.dato-principal span {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--pink);
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 1.7px;
+}
+
+.dato-principal strong,
+.dato-principal a {
+    color: var(--white);
+
+    font-size: 17px;
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+
+/* =========================
+   ASIGNACIONES
+   ========================= */
+
+.asignaciones {
+    width: 100%;
+    max-width: 900px;
+
+    margin: 0 auto;
+}
+
+.titulo-asignaciones {
+    margin-bottom: 22px;
+
+    color: var(--rose-soft);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+
+/* =========================
+   GRID
+   ========================= */
+
+.asignaciones-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 16px;
+}
+
+
+/* =========================
+   TARJETA
+   ========================= */
+
+.asignacion-card {
+    min-height: 150px;
+
+    padding: 25px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    border: 1px solid var(--line);
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 249, 250, 0.04),
+            rgba(237, 30, 98, 0.06)
+        );
+
+    text-align: left;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.asignacion-card:hover {
+    transform: translateY(-3px);
+
+    border-color:
+        rgba(237, 30, 98, 0.55);
+}
+
+
+/* FECHA */
+
+.asignacion-fecha {
+    margin-bottom: 18px;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    color: var(--white);
+
+    font-size: 30px;
+
+    line-height: 1;
+}
+
+
+/* ZONA */
+
+.asignacion-zona-label {
+    margin-bottom: 5px;
+
+    color: var(--pink);
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+}
+
+.asignacion-zona {
+    color: var(--rose-soft);
+
+    font-size: 17px;
+}
+
+
+/* =========================
+   UNA SOLA ASIGNACIÓN
+   ========================= */
+
+.asignaciones-grid:has(
+    .asignacion-card:only-child
+) {
+    grid-template-columns:
+        minmax(0, 500px);
+
+    justify-content: center;
+}
+
+
+/* =========================
+   CELULAR
+   ========================= */
+
+@media screen and (max-width: 768px) {
+
+    .datos-principales {
+        grid-template-columns: 1fr;
+
+        margin-bottom: 40px;
+    }
+
+    .asignaciones-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .asignacion-card {
+        min-height: 135px;
+    }
+
+    .asignacion-fecha {
+        font-size: 27px;
+    }
+
+}
