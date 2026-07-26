@@ -532,3 +532,255 @@ footer small {
         font-size: 25px;
     }
 }
+/* =========================================
+   NUEVO TEMA — TOGETHER TOGETHER 2026
+   ========================================= */
+
+body {
+    background: #101820;
+    color: #f7f1e8;
+}
+
+/* Contenedor principal */
+.contenedor {
+    background: #101820;
+    box-shadow: none;
+}
+
+/* PORTADA */
+.hero {
+    background: #f8f2e8;
+    color: #282828;
+
+    padding: 45px 40px;
+    border-radius: 30px;
+}
+
+.hero h1 {
+    color: #171717;
+}
+
+.hero .bienvenida {
+    color: #626262;
+}
+
+.hero .bienvenida strong {
+    color: #d62b83;
+}
+
+.etiqueta {
+    background: #f8d6e6;
+    color: #c52275;
+}
+
+/* BUSCADOR */
+.buscador h2 {
+    color: #171717;
+}
+
+.buscador p {
+    color: #666;
+}
+
+.buscador input,
+#buscar {
+    background: #ffffff;
+    color: #222;
+
+    border: 1px solid #e6b6cc;
+}
+
+.buscador button {
+    background: #d62b83;
+    color: white;
+
+    border: none;
+}
+
+.buscador button:hover {
+    background: #b91f6c;
+}
+
+/* SECCIONES GENERALES */
+.seccion {
+    margin-top: 0;
+
+    padding: 70px 40px;
+
+    border-top: none;
+}
+
+/* TÍTULOS */
+.titulo-seccion {
+    color: inherit;
+
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 44px;
+    font-weight: 400;
+
+    line-height: 1.05;
+}
+
+.subtitulo-seccion {
+    color: inherit;
+    opacity: 0.75;
+}
+
+/* =========================================
+   TOUR — OSCURO
+   ========================================= */
+
+.seccion:nth-of-type(2) {
+    background: #101820;
+    color: #f8f2e8;
+}
+
+.fechas-tour {
+    border-color: rgba(255, 255, 255, 0.18);
+}
+
+.fecha {
+    border-color: rgba(255, 255, 255, 0.18);
+}
+
+.fecha span {
+    color: #e65a9c;
+}
+
+.fecha strong {
+    color: #f8f2e8;
+}
+
+.fecha small {
+    color: #c9c9c9;
+}
+
+/* =========================================
+   FAN PROJECTS — CREMA
+   ========================================= */
+
+.seccion:nth-of-type(3) {
+    background: #f8f2e8;
+    color: #252525;
+}
+
+.proyecto-card {
+    background: transparent;
+
+    border: 1px solid #d9cfc4;
+    border-radius: 0;
+}
+
+.proyecto-card span {
+    color: #d62b83;
+}
+
+.proyecto-card h3 {
+    color: #181818;
+
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 30px;
+    font-weight: 400;
+}
+
+/* =========================================
+   AGRADECIMIENTO — ROSA OSCURO
+   ========================================= */
+
+.agradecimiento-seccion {
+    background: #3a1527;
+    color: #fff7f2;
+
+    border-radius: 0;
+
+    padding: 75px 45px;
+}
+
+.agradecimiento-seccion .titulo-seccion {
+    color: #fff7f2;
+}
+
+/* =========================================
+   NUESTRO RECUERDO — CREMA
+   ========================================= */
+
+.recuerdo-seccion {
+    background: #f8f2e8;
+    color: #252525;
+
+    padding-bottom: 70px;
+}
+
+.proximamente {
+    background: transparent;
+
+    border: 1px solid #d62b83;
+
+    color: #d62b83;
+}
+
+/* =========================================
+   FOOTER
+   ========================================= */
+
+footer {
+    margin-top: 0;
+
+    padding: 55px 30px;
+
+    background: #101820;
+
+    border-top: none;
+
+    color: #f8f2e8;
+}
+
+footer p,
+.footer-titulo {
+    color: #f8f2e8;
+}
+
+footer small,
+.siguenos {
+    color: #aaa;
+}
+
+/* Redes */
+.redes a {
+    background: transparent;
+
+    border: 1px solid rgba(255, 255, 255, 0.35);
+
+    color: #f4a4ca;
+}
+
+.redes a:hover {
+    background: #d62b83;
+    border-color: #d62b83;
+
+    color: white;
+}
+
+/* =========================================
+   CELULAR
+   ========================================= */
+
+@media (max-width: 600px) {
+
+    .hero {
+        padding: 35px 20px;
+        border-radius: 22px;
+    }
+
+    .seccion {
+        padding: 55px 22px;
+    }
+
+    .titulo-seccion {
+        font-size: 36px;
+    }
+
+    .agradecimiento-seccion {
+        padding: 55px 25px;
+    }
+}
