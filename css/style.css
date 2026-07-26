@@ -62,8 +62,7 @@ body {
 
     border-radius: 50%;
 
-    filter:
-        drop-shadow(0 10px 25px rgba(231, 43, 145, 0.25));
+    filter: drop-shadow(0 12px 28px rgba(237, 30, 98, 0.18));
 }
 
 /* =========================
@@ -82,13 +81,13 @@ body {
 
     padding: 80px 8vw;
 
-    background:
-        radial-gradient(
-            circle at top,
-            rgba(231, 43, 145, 0.13),
-            transparent 35%
-        ),
-        var(--bg);
+   background:
+    radial-gradient(
+        circle at top,
+        rgba(237, 30, 98, 0.10),
+        transparent 36%
+    ),
+    var(--bg);
 }
 
 .etiqueta {
@@ -267,41 +266,43 @@ button:active {
    ========================= */
 
 .seccion:nth-of-type(2) {
-    background: var(--pink-soft);
-    color: #20151C;
+    background: var(--white);
+    color: var(--text-dark);
+}
+
+.seccion:nth-of-type(2) .titulo-seccion {
+    color: var(--text-dark);
 }
 
 .seccion:nth-of-type(2) .subtitulo-seccion {
-    color: #705D68;
+    color: #6F5A65;
 }
 
 .fechas-tour {
     max-width: 900px;
-
     margin: 40px auto 0;
 
     display: grid;
     grid-template-columns: repeat(3, 1fr);
 
-    border-top: 1px solid rgba(36, 20, 29, 0.25);
-    border-left: 1px solid rgba(36, 20, 29, 0.25);
+    border-top: 1px solid rgba(84, 21, 47, 0.22);
+    border-left: 1px solid rgba(84, 21, 47, 0.22);
 }
 
 .fecha {
     padding: 30px 15px;
 
-    border-right: 1px solid rgba(36, 20, 29, 0.25);
-    border-bottom: 1px solid rgba(36, 20, 29, 0.25);
+    border-right: 1px solid rgba(84, 21, 47, 0.22);
+    border-bottom: 1px solid rgba(84, 21, 47, 0.22);
 }
 
 .fecha span {
     display: block;
 
-    color: #C12376;
+    color: var(--pink);
 
     font-size: 10px;
     font-weight: 700;
-
     letter-spacing: 1.5px;
 }
 
@@ -315,12 +316,11 @@ button:active {
     font-size: 38px;
     font-weight: 400;
 
-    color: #20151C;
+    color: var(--text-dark);
 }
 
 .fecha small {
-    color: #6C5964;
-
+    color: var(--wine);
     font-weight: 700;
 }
 
@@ -329,12 +329,20 @@ button:active {
    ========================= */
 
 .seccion:nth-of-type(3) {
-    background: var(--bg-soft);
+    background: var(--bg);
+    color: var(--white);
+}
+
+.seccion:nth-of-type(3) .titulo-seccion {
+    color: var(--white);
+}
+
+.seccion:nth-of-type(3) .subtitulo-seccion {
+    color: var(--rose-soft);
 }
 
 .proyectos {
     max-width: 950px;
-
     margin: 40px auto 0;
 
     display: grid;
@@ -349,18 +357,13 @@ button:active {
     border: 1px solid var(--line);
     border-radius: 24px;
 
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255, 255, 255, 0.03),
-            rgba(231, 43, 145, 0.05)
-        );
+    background: rgba(255, 249, 250, 0.03);
 
     text-align: left;
 }
 
 .proyecto-card span {
-    color: var(--pink-bright);
+    color: var(--pink);
 
     font-size: 11px;
     font-weight: 700;
@@ -373,11 +376,12 @@ button:active {
 
     font-size: 34px;
     font-weight: 400;
+
+    color: var(--white);
 }
 
 .proyecto-card p {
-    color: var(--text-soft);
-
+    color: var(--rose-soft);
     line-height: 1.7;
 }
 
@@ -386,18 +390,12 @@ button:active {
    ========================= */
 
 .agradecimiento-seccion {
-    background:
-        linear-gradient(
-            135deg,
-            #D62583,
-            #8C184E
-        );
-
-    color: white;
+    background: var(--wine);
+    color: var(--white);
 }
 
 .agradecimiento-seccion .titulo-seccion {
-    color: white;
+    color: var(--white);
 }
 
 .texto-carta {
@@ -408,7 +406,7 @@ button:active {
     font-size: 18px;
     line-height: 1.8;
 
-    color: rgba(255, 255, 255, 0.90);
+    color: var(--pink-soft);
 }
 
 /* =========================
@@ -416,27 +414,33 @@ button:active {
    ========================= */
 
 .recuerdo-seccion {
-    background: var(--bg);
+    background: var(--bg-soft);
+    color: var(--white);
+}
+
+.recuerdo-seccion .titulo-seccion {
+    color: var(--white);
+}
+
+.recuerdo-seccion .subtitulo-seccion {
+    color: var(--rose-soft);
 }
 
 .proximamente {
     display: inline-block;
 
     margin-top: 10px;
-
     padding: 10px 18px;
 
-    border: 1px solid rgba(255, 91, 181, 0.5);
+    border: 1px solid var(--pink);
     border-radius: 30px;
 
-    color: var(--pink-bright);
+    color: var(--pink);
 
     font-size: 12px;
     font-weight: 700;
-
     letter-spacing: 1px;
 }
-
 /* =========================
    FOOTER
    ========================= */
