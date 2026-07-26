@@ -132,3 +132,41 @@ button:active {
         font-size: 23px;
     }
 }
+.ficha-representante {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.ficha-representante h2 {
+    color: #26378b;
+    font-size: 26px;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.dato {
+    background: rgba(255, 255, 255, 0.8);
+
+    border: 1px solid #f3d3e5;
+    border-radius: 16px;
+
+    padding: 14px 16px;
+    margin-bottom: 12px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.dato span {
+    color: #ca2783;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.dato strong {
+    color: #333;
+    font-size: 16px;
+}
