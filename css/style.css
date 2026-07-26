@@ -1216,3 +1216,18 @@ body.guia-page {
     }
 
 }
+.boton-secundario {
+    background: transparent;
+    border: 1px solid var(--pink);
+    color: var(--pink);
+}
+
+.boton-secundario:hover {
+    background: rgba(237, 30, 98, 0.08);
+    color: var(--pink);
+}
+
+.boton-guia-principal {
+    background: var(--pink);
+    color: var(--white);
+}
