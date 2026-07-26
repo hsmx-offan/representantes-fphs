@@ -1329,3 +1329,17 @@ body.guia-page {
     }
 
 }
+.countdown.en-curso {
+    border-color: var(--pink);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(237, 30, 98, 0.18),
+            rgba(84, 21, 47, 0.25)
+        );
+}
+
+.countdown.en-curso h3 {
+    color: var(--pink);
+}
