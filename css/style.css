@@ -282,3 +282,44 @@ footer small {
         max-width: 480px;
     }
 }
+.siguenos {
+    margin-top: 18px;
+    margin-bottom: 12px;
+
+    font-size: 13px;
+    color: #777;
+}
+
+.redes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex-wrap: wrap;
+    gap: 10px;
+
+    margin-top: 12px;
+}
+
+.redes a {
+    padding: 9px 14px;
+
+    background: #fff0f7;
+    border: 1px solid #f3c7df;
+    border-radius: 20px;
+
+    color: #ca2783;
+
+    font-size: 13px;
+    font-weight: bold;
+    text-decoration: none;
+
+    transition: 0.2s;
+}
+
+.redes a:hover {
+    background: #ca2783;
+    color: white;
+
+    transform: translateY(-2px);
+}
