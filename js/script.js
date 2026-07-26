@@ -45,3 +45,100 @@ if (menuToggle && navLinks) {
     });
 
 }
+/* =========================================================
+   CUENTA REGRESIVA — TOGETHER, TOGETHER TOUR MÉXICO 2026
+   ========================================================= */
+
+const conciertos = [
+    {
+        nombre: "31 JUL · CIUDAD DE MÉXICO",
+        fecha: "2026-07-31T21:00:00-06:00"
+    },
+    {
+        nombre: "01 AGO · CIUDAD DE MÉXICO",
+        fecha: "2026-08-01T21:00:00-06:00"
+    },
+    {
+        nombre: "04 AGO · CIUDAD DE MÉXICO",
+        fecha: "2026-08-04T21:00:00-06:00"
+    },
+    {
+        nombre: "07 AGO · CIUDAD DE MÉXICO",
+        fecha: "2026-08-07T21:00:00-06:00"
+    },
+    {
+        nombre: "08 AGO · CIUDAD DE MÉXICO",
+        fecha: "2026-08-08T21:00:00-06:00"
+    },
+    {
+        nombre: "10 AGO · CIUDAD DE MÉXICO",
+        fecha: "2026-08-10T21:00:00-06:00"
+    }
+];
+
+function actualizarCountdown() {
+
+    const countdown = document.querySelector(".countdown");
+
+    if (!countdown) return;
+
+    const ahora = new Date();
+
+    const proximo = conciertos.find(
+        concierto => new Date(concierto.fecha) > ahora
+    );
+
+    const titulo = document.getElementById("countdownFecha");
+    const dias = document.getElementById("dias");
+    const horas = document.getElementById("horas");
+    const minutos = document.getElementById("minutos");
+    const segundos = document.getElementById("segundos");
+
+    if (!proximo) {
+
+        countdown.classList.add("completado");
+
+        document.querySelector(".countdown-etiqueta").textContent =
+            "TOGETHER, TOGETHER TOUR · MÉXICO 2026";
+
+        titulo.textContent = "TOUR COMPLETADO ♡";
+
+        dias.textContent = "♡";
+        horas.textContent = "♡";
+        minutos.textContent = "♡";
+        segundos.textContent = "♡";
+
+        return;
+    }
+
+    const fechaConcierto = new Date(proximo.fecha);
+
+    const diferencia = fechaConcierto - ahora;
+
+    const d = Math.floor(
+        diferencia / (1000 * 60 * 60 * 24)
+    );
+
+    const h = Math.floor(
+        (diferencia / (1000 * 60 * 60)) % 24
+    );
+
+    const m = Math.floor(
+        (diferencia / (1000 * 60)) % 60
+    );
+
+    const s = Math.floor(
+        (diferencia / 1000) % 60
+    );
+
+    titulo.textContent = proximo.nombre;
+
+    dias.textContent = String(d).padStart(2, "0");
+    horas.textContent = String(h).padStart(2, "0");
+    minutos.textContent = String(m).padStart(2, "0");
+    segundos.textContent = String(s).padStart(2, "0");
+}
+
+actualizarCountdown();
+
+setInterval(actualizarCountdown, 1000);
