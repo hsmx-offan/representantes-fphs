@@ -1600,3 +1600,306 @@ body.guia-page {
     }
 
 }
+/* =========================================================
+   COMING UP ROSES — SECCIÓN DE ROSAS
+   ========================================================= */
+
+.rosas-seccion {
+    background: var(--bg);
+}
+
+
+/* INTRO / RECOMENDACIONES */
+
+.recomendacion-rosas {
+    width: 100%;
+    max-width: 900px;
+
+    margin: 45px auto 70px;
+    padding: 32px;
+
+    border: 1px solid var(--line);
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 249, 250, 0.035),
+            rgba(237, 30, 98, 0.07)
+        );
+
+    text-align: left;
+}
+
+.recomendacion-rosas > .mini-titulo {
+    text-align: center;
+}
+
+.recomendacion-rosas > p:not(.mini-titulo) {
+    max-width: 760px;
+
+    margin: 0 auto 18px;
+
+    color: var(--pink-soft);
+
+    font-size: 16px;
+    line-height: 1.75;
+}
+
+
+/* AVISO IMPORTANTE */
+
+.aviso-rosas {
+    max-width: 760px;
+
+    margin: 28px auto 0;
+    padding: 20px;
+
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+
+    border-left: 3px solid var(--pink);
+
+    background: rgba(237, 30, 98, 0.08);
+
+    border-radius: 0 16px 16px 0;
+}
+
+.aviso-rosas i {
+    margin-top: 3px;
+
+    color: var(--pink);
+
+    font-size: 18px;
+}
+
+.aviso-rosas p {
+    margin: 0;
+
+    color: var(--pink-soft);
+
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+.aviso-rosas strong {
+    color: var(--white);
+}
+
+
+/* =========================================================
+   OPCIONES DE ROSAS
+   ========================================================= */
+
+.rosas-opciones {
+    width: 100%;
+    max-width: 1050px;
+
+    margin: 0 auto;
+}
+
+.titulo-rosas {
+    margin: 0 auto 12px;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    color: var(--white);
+
+    font-size: clamp(34px, 4vw, 52px);
+    font-weight: 400;
+
+    line-height: 1.1;
+}
+
+.texto-rosas {
+    max-width: 650px;
+
+    margin: 0 auto 40px;
+
+    color: var(--rose-soft);
+
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+
+/* GRID */
+
+.rosas-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 18px;
+}
+
+
+/* TARJETA */
+
+.rosa-card {
+    overflow: hidden;
+
+    border: 1px solid var(--line);
+    border-radius: 24px;
+
+    background: rgba(255, 249, 250, 0.035);
+
+    text-align: left;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.rosa-card:hover {
+    transform: translateY(-4px);
+
+    border-color: rgba(237, 30, 98, 0.55);
+}
+
+
+/* ÁREA DE FOTO */
+
+.rosa-imagen {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(237, 30, 98, 0.16),
+            rgba(84, 21, 47, 0.24)
+        );
+}
+
+.rosa-imagen img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+/* PLACEHOLDER TEMPORAL */
+
+.rosa-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 56px;
+}
+
+
+/* TEXTO DE TARJETA */
+
+.rosa-card-contenido {
+    padding: 26px;
+}
+
+.rosa-card-contenido > span {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--pink);
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 1.6px;
+}
+
+.rosa-card-contenido h4 {
+    margin-bottom: 10px;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    color: var(--white);
+
+    font-size: 29px;
+    font-weight: 400;
+}
+
+.rosa-card-contenido p {
+    color: var(--rose-soft);
+
+    font-size: 15px;
+    line-height: 1.65;
+}
+
+
+/* LINK TUTORIAL */
+
+.rosa-tutorial-link {
+    display: inline-flex;
+
+    margin-top: 18px;
+
+    color: var(--pink);
+
+    font-size: 12px;
+    font-weight: 800;
+
+    letter-spacing: 0.7px;
+
+    text-decoration: none;
+}
+
+.rosa-tutorial-link:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   CELULAR
+   ========================================================= */
+
+@media screen and (max-width: 768px) {
+
+    .recomendacion-rosas {
+        margin: 35px auto 55px;
+        padding: 24px 20px;
+
+        border-radius: 20px;
+    }
+
+    .recomendacion-rosas > p:not(.mini-titulo) {
+        font-size: 15px;
+    }
+
+    .aviso-rosas {
+        padding: 17px;
+    }
+
+    .rosas-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .titulo-rosas {
+        font-size: 36px;
+    }
+
+    .texto-rosas {
+        margin-bottom: 30px;
+
+        font-size: 15px;
+    }
+
+    .rosa-card {
+        border-radius: 20px;
+    }
+
+    .rosa-card-contenido {
+        padding: 22px;
+    }
+
+    .rosa-card-contenido h4 {
+        font-size: 27px;
+    }
+
+}
