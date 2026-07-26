@@ -181,3 +181,99 @@ button:active {
     color: #ca2783;
     text-decoration: underline;
 }
+.etiqueta {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    background: #ffe1f0;
+    color: #ca2783;
+
+    font-size: 11px;
+    font-weight: bold;
+
+    letter-spacing: 2px;
+}
+
+.bienvenida {
+    line-height: 1.7;
+    margin-bottom: 22px;
+}
+
+.bienvenida strong {
+    color: #26378b;
+}
+
+.agradecimiento {
+    margin: 20px 0 28px;
+
+    padding: 20px;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 225, 240, 0.75),
+            rgba(232, 227, 255, 0.75)
+        );
+
+    border: 1px solid rgba(214, 43, 138, 0.12);
+}
+
+.agradecimiento p {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.agradecimiento p:last-child {
+    margin-bottom: 0;
+}
+
+.corazon {
+    display: block;
+
+    color: #d62b8a;
+
+    font-size: 30px;
+
+    margin-bottom: 8px;
+}
+
+.buscador {
+    margin-top: 10px;
+}
+
+.buscador h2 {
+    color: #26378b;
+
+    font-size: 21px;
+
+    margin-bottom: 8px;
+}
+
+.buscador p {
+    margin-bottom: 18px;
+}
+
+footer {
+    margin-top: 35px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #f0d7e6;
+}
+
+footer p {
+    color: #26378b;
+
+    font-weight: bold;
+
+    margin-bottom: 4px;
+}
+
+footer small {
+    color: #999;
+}
