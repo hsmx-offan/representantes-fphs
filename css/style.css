@@ -844,3 +844,152 @@ body.inicio {
 
     padding: 60px 8vw;
 }
+/* =========================================
+   FICHA DE REPRESENTANTE
+   ========================================= */
+
+body.representante-page {
+    display: block;
+
+    min-height: 100vh;
+    padding: 0;
+
+    background: #101820;
+}
+
+.representante-page .contenedor {
+    width: 100%;
+    max-width: none;
+
+    min-height: 100vh;
+
+    margin: 0;
+    padding: 70px 8vw;
+
+    background: #101820;
+
+    border: none;
+    border-radius: 0;
+
+    box-shadow: none;
+
+    color: #f8f2e8;
+}
+
+.representante-page .logo {
+    width: 210px;
+
+    margin: 0 auto 35px;
+}
+
+.representante-page h1 {
+    color: #f8f2e8;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: 48px;
+    font-weight: 400;
+}
+
+.representante-page .verificado {
+    margin: 15px auto 30px;
+
+    padding: 9px 18px;
+
+    background: #f8d6e6;
+
+    border: none;
+    border-radius: 30px;
+
+    color: #c52275;
+
+    font-size: 11px;
+    letter-spacing: 1.5px;
+}
+
+.representante-page .ficha-representante {
+    width: 100%;
+    max-width: 800px;
+
+    margin: 0 auto;
+}
+
+.representante-page .ficha-representante h2 {
+    margin-bottom: 35px;
+
+    color: #f8f2e8;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: 46px;
+    font-weight: 400;
+}
+
+/* DATOS */
+.representante-page .dato {
+    padding: 22px 0;
+
+    margin: 0;
+
+    background: transparent;
+
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,0.20);
+
+    border-radius: 0;
+}
+
+.representante-page .dato span {
+    color: #e85a9d;
+
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+.representante-page .dato strong,
+.representante-page .dato a {
+    color: #f8f2e8;
+
+    font-size: 19px;
+}
+
+/* BOTÓN */
+.representante-page button {
+    max-width: 800px;
+
+    margin: 45px auto 0;
+
+    display: block;
+
+    background: #d62b83;
+
+    border-radius: 40px;
+}
+
+.representante-page button:hover {
+    background: #b91f6c;
+}
+@media (max-width: 600px) {
+
+    .inicio .hero {
+        min-height: auto;
+
+        padding: 55px 22px;
+    }
+
+    .inicio .seccion {
+        padding: 65px 22px;
+    }
+
+    .representante-page .contenedor {
+        padding: 45px 22px;
+    }
+
+    .representante-page h1 {
+        font-size: 37px;
+    }
+
+    .representante-page .ficha-representante h2 {
+        font-size: 36px;
+    }
+}
