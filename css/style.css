@@ -653,6 +653,10 @@ body.representante-page {
 
 @media (max-width: 700px) {
 
+    .logo-representante {
+    width: 210px;
+}
+
     .hero {
         min-height: auto;
 
