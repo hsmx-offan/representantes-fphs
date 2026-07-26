@@ -907,3 +907,140 @@ body.representante-page {
 .hero-contenido .buscador input {
     text-align: left;
 }
+/* =========================================
+   CORRECCIÓN DEFINITIVA — CELULAR
+   ========================================= */
+
+@media screen and (max-width: 768px) {
+
+    /* MENÚ */
+    .navbar {
+        width: 100%;
+        height: 64px;
+
+        padding: 0 20px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: rgba(16, 11, 29, 0.96);
+
+        border-bottom: 1px solid rgba(246, 168, 192, 0.18);
+    }
+
+    /* Por ahora ocultamos las opciones grandes */
+    .nav-links {
+        display: none !important;
+    }
+
+    /* Marca centrada */
+    .marca {
+        font-size: 17px;
+        letter-spacing: 3px;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .marca::after {
+        margin-left: 8px;
+    }
+
+
+    /* PORTADA */
+    .hero {
+        min-height: auto;
+
+        padding:
+            105px
+            22px
+            60px;
+    }
+
+    .hero-grid {
+        width: 100%;
+
+        display: grid;
+        grid-template-columns: 1fr;
+
+        gap: 28px;
+    }
+
+    .hero-visual {
+        width: 100%;
+    }
+
+    .logo-principal {
+        display: block;
+
+        width: 190px;
+        max-width: 75%;
+
+        margin: 0 auto;
+    }
+
+    .hero-contenido {
+        width: 100%;
+
+        text-align: center;
+    }
+
+    .hero-contenido .etiqueta {
+        margin-bottom: 18px;
+    }
+
+    .hero-contenido h1 {
+        width: 100%;
+
+        margin: 0 auto 20px;
+
+        font-size: 38px;
+        line-height: 1.08;
+
+        text-align: center;
+    }
+
+    .hero-contenido .bienvenida {
+        width: 100%;
+
+        margin: 0 auto 32px;
+
+        font-size: 16px;
+        line-height: 1.6;
+
+        text-align: center;
+    }
+
+
+    /* BUSCADOR */
+    .hero-contenido .buscador {
+        width: 100%;
+        max-width: 100%;
+
+        margin: 0 auto;
+
+        text-align: center;
+    }
+
+    .buscador h2 {
+        font-size: 26px;
+        line-height: 1.15;
+    }
+
+    .buscador p {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    .hero-contenido .buscador input {
+        width: 100%;
+
+        padding: 17px 18px;
+
+        text-align: center;
+    }
+
+    .buscador button {
+        width: 100%;
+    }
+}
