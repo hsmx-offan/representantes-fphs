@@ -334,18 +334,18 @@ footer small {
     display: inline-block;
 
     margin: 0 auto 18px;
-    padding: 8px 14px;
+    padding: 8px 16px;
 
-    background: #eaf8ee;
-    border: 1px solid #b9e3c5;
+    background: #ffe1f0;
+    border: 1px solid #f5bfdc;
     border-radius: 20px;
 
-    color: #278347;
+    color: #ca2783;
 
-    font-size: 12px;
+    font-size: 11px;
     font-weight: bold;
 
-    text-align: center;
+    letter-spacing: 1px;
 }
 .ficha-representante {
     text-align: center;
