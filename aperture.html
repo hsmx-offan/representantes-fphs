@@ -147,50 +147,11 @@
         el Fan Project y estar preparado para participar.
     </p>
 
-    <!-- VIDEO EN LAPTOP -->
-<div class="video-drive video-escritorio">
-    <iframe
-        src="https://drive.google.com/file/d/1_BtNr4yA-OzS0md3jmnQriZ4u5UfpQZN/preview"
-        title="Video de ejemplo Aperture"
-        allow="autoplay; fullscreen"
-        allowfullscreen>
-    </iframe>
-</div>
-
-
-<!-- BOTÓN PARA CELULAR -->
-<button
-    class="abrir-video-movil"
-    onclick="abrirVideo()">
-
-    <i class="fa-solid fa-play"></i>
-    Ver video de ejemplo
-
-</button>
-
-
-<!-- VIDEO PANTALLA COMPLETA -->
-<div class="video-modal" id="videoModal">
-
-    <button
-        class="cerrar-video"
-        onclick="cerrarVideo()"
-        aria-label="Cerrar video">
-        ✕
-    </button>
-
-    <div class="video-modal-contenido">
-
-        <iframe
-            id="videoAperture"
-            data-src="https://drive.google.com/file/d/1_BtNr4yA-OzS0md3jmnQriZ4u5UfpQZN/preview"
-            title="Video de ejemplo Aperture"
-            allow="autoplay; fullscreen"
-            allowfullscreen>
-        </iframe>
-
-    </div>
-
+<div class="video-local">
+    <video controls playsinline preload="metadata">
+        <source src="videos/aperture.mp4" type="video/mp4">
+        Tu navegador no puede reproducir este video.
+    </video>
 </div>
 
 </section>
@@ -228,26 +189,6 @@
     </small>
 
 </footer>
-<script>
-function abrirVideo() {
-    const modal = document.getElementById("videoModal");
-    const video = document.getElementById("videoAperture");
 
-    video.src = video.dataset.src;
-    modal.classList.add("activo");
-
-    document.body.style.overflow = "hidden";
-}
-
-function cerrarVideo() {
-    const modal = document.getElementById("videoModal");
-    const video = document.getElementById("videoAperture");
-
-    modal.classList.remove("activo");
-
-    video.src = "";
-    document.body.style.overflow = "";
-}
-</script>
 </body>
 </html>
