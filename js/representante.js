@@ -118,9 +118,9 @@ async function cargarRepresentante() {
         resultado.innerHTML = `
     <div class="ficha-representante">
 
-        <div class="verificado">
-            ✓ Representante oficial verificado
-        </div>
+       <div class="verificado">
+    ♡ REPRESENTANTE OFICIAL · FAN PROJECT 2026
+</div>
 
         <h2>${nombre}</h2>
 
