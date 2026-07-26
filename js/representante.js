@@ -135,10 +135,17 @@ async function cargarRepresentante() {
                     <strong>${fecha}</strong>
                 </div>
 
-                <div class="dato">
-                    <span>Instagram</span>
-                    <strong>${instagram}</strong>
-                </div>
+               <div class="dato">
+    <span>Instagram</span>
+    <a
+        class="instagram"
+        href="https://www.instagram.com/${instagram.replace("@", "").trim()}/"
+        target="_blank"
+        rel="noopener noreferrer"
+    >
+        ${instagram}
+    </a>
+</div>
 
             </div>
         `;
