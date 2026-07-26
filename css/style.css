@@ -1191,3 +1191,285 @@ body.representante-page {
 
     transform: translateY(-2px);
 }
+/* =========================
+   PÁGINAS DE GUÍAS
+   ========================= */
+
+body.guia-page {
+    background: var(--bg);
+    color: var(--white);
+}
+
+.guia-nav {
+    width: 100%;
+    height: 70px;
+
+    padding: 0 6vw;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    z-index: 1000;
+
+    background: rgba(16, 11, 29, 0.94);
+
+    border-bottom:
+        1px solid rgba(246, 168, 192, 0.15);
+}
+
+.volver-guia {
+    color: var(--rose-soft);
+
+    font-size: 13px;
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+.volver-guia:hover {
+    color: var(--pink);
+}
+
+
+/* PORTADA */
+
+.guia-hero {
+    min-height: 100vh;
+
+    padding: 130px 8vw 80px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    background:
+        radial-gradient(
+            circle at top,
+            rgba(237, 30, 98, 0.15),
+            transparent 40%
+        ),
+        var(--bg);
+}
+
+.guia-hero h1 {
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: clamp(70px, 10vw, 140px);
+    font-weight: 400;
+
+    color: var(--white);
+
+    line-height: 0.95;
+}
+
+.guia-hero > p:not(.etiqueta) {
+    max-width: 650px;
+
+    margin: 25px auto;
+
+    color: var(--rose-soft);
+
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+
+/* SECCIONES */
+
+.guia-seccion {
+    width: 100%;
+
+    padding: 95px 8vw;
+
+    text-align: center;
+
+    background: var(--bg);
+}
+
+.guia-clara {
+    background: var(--pink-soft);
+
+    color: var(--text-dark);
+}
+
+.mini-titulo {
+    margin-bottom: 16px;
+
+    color: var(--pink);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+.guia-seccion h2 {
+    max-width: 800px;
+
+    margin: 0 auto 20px;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: clamp(36px, 5vw, 58px);
+    font-weight: 400;
+
+    line-height: 1.08;
+}
+
+.guia-texto {
+    max-width: 680px;
+
+    margin: 0 auto 30px;
+
+    color: var(--rose-soft);
+
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+.guia-clara .guia-texto {
+    color: #6b505a;
+}
+
+
+/* ZONAS */
+
+.zonas-grid {
+    width: 100%;
+    max-width: 900px;
+
+    margin: 45px auto 25px;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 14px;
+}
+
+.zona-card {
+    padding: 25px;
+
+    text-align: left;
+
+    background: var(--white);
+
+    border:
+        1px solid rgba(84, 21, 47, 0.15);
+
+    border-radius: 18px;
+}
+
+.zona-card span {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: var(--pink);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+.zona-card strong {
+    color: var(--text-dark);
+
+    font-size: 18px;
+}
+
+.nota-guia {
+    color: #765a65;
+
+    font-size: 13px;
+}
+
+
+/* BOTONES */
+
+.boton-guia-principal,
+.boton-secundario {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    margin-top: 15px;
+
+    padding: 14px 24px;
+
+    border-radius: 30px;
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    transition: 0.2s;
+}
+
+.boton-guia-principal {
+    background: var(--pink);
+
+    color: var(--white);
+}
+
+.boton-guia-principal:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(237, 30, 98, 0.25);
+}
+
+.boton-secundario {
+    border: 1px solid var(--pink);
+
+    color: var(--pink);
+}
+
+.recordatorio {
+    background: var(--wine);
+}
+
+.recordatorio .guia-texto {
+    color: var(--pink-soft);
+}
+
+
+/* CELULAR */
+
+@media screen and (max-width: 768px) {
+
+    .guia-nav {
+        height: 62px;
+
+        padding: 0 20px;
+    }
+
+    .guia-hero {
+        min-height: 85vh;
+
+        padding: 110px 22px 65px;
+    }
+
+    .guia-hero h1 {
+        font-size: 67px;
+    }
+
+    .guia-seccion {
+        padding: 65px 22px;
+    }
+
+    .zonas-grid {
+        grid-template-columns: 1fr;
+    }
+}
