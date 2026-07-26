@@ -1409,16 +1409,17 @@ body.guia-page {
     display: flex;
     flex-direction: column;
 
-    gap: 14px;
+    gap: 0;
 }
 
 .dato-principal {
-    padding: 20px;
+    padding: 26px 8px;
 
-    border: 1px solid var(--line);
-    border-radius: 18px;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
 
-    background: rgba(255, 249, 250, 0.03);
+    background: transparent;
 
     text-align: left;
 }
