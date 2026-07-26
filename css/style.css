@@ -1473,38 +1473,51 @@ body.guia-page {
         grid-template-columns: 1fr;
     }
 }
-/* VIDEO INTEGRADO */
+/* =========================
+   VIDEO INTEGRADO
+   ========================= */
 
 .video-drive {
-    width: 100%;
-    max-width: 850px;
+    width: min(100%, 620px);
 
-    margin: 38px auto 0;
-
-    overflow: hidden;
+    margin: 40px auto 0;
 
     background: #000;
 
     border: 1px solid rgba(246, 168, 192, 0.20);
-    border-radius: 24px;
+    border-radius: 20px;
 
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+
+    box-shadow:
+        0 20px 50px rgba(16, 11, 29, 0.18);
 }
 
 .video-drive iframe {
     display: block;
 
     width: 100%;
-    aspect-ratio: 16 / 9;
+    height: 620px;
 
     border: 0;
 }
 
+
+/* CELULAR */
+
 @media screen and (max-width: 768px) {
 
     .video-drive {
+        width: 100%;
+        max-width: 430px;
+
         margin-top: 28px;
+
         border-radius: 16px;
+    }
+
+    .video-drive iframe {
+        height: 520px;
     }
 
 }
