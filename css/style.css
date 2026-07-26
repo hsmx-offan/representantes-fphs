@@ -170,3 +170,14 @@ button:active {
     color: #333;
     font-size: 16px;
 }
+.instagram {
+    color: #26378b;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.instagram:hover {
+    color: #ca2783;
+    text-decoration: underline;
+}
