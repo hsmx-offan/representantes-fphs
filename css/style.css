@@ -1861,20 +1861,59 @@ body.guia-page {
 
 @media screen and (max-width: 768px) {
 
-    .recomendacion-rosas {
-        margin: 35px auto 55px;
-        padding: 24px 20px;
+    /* ROSAS — AJUSTE MÓVIL */
 
-        border-radius: 20px;
-    }
+.recomendacion-rosas {
+    margin: 32px auto 50px;
+    padding: 0;
 
-    .recomendacion-rosas > p:not(.mini-titulo) {
-        font-size: 15px;
-    }
+    border: none;
+    border-radius: 0;
 
-    .aviso-rosas {
-        padding: 17px;
-    }
+    background: transparent;
+}
+
+.recomendacion-rosas > .mini-titulo {
+    margin-bottom: 22px;
+}
+
+.recomendacion-rosas > p:not(.mini-titulo) {
+    margin-bottom: 20px;
+
+    color: var(--pink-soft);
+
+    font-size: 15px;
+    line-height: 1.7;
+
+    text-align: left;
+}
+
+.aviso-rosas {
+    margin-top: 28px;
+    padding: 20px 18px;
+
+    gap: 12px;
+
+    border: 1px solid rgba(237, 30, 98, 0.28);
+    border-left: 3px solid var(--pink);
+
+    border-radius: 16px;
+
+    background: rgba(237, 30, 98, 0.07);
+}
+
+.aviso-rosas i {
+    flex-shrink: 0;
+
+    margin-top: 3px;
+
+    font-size: 16px;
+}
+
+.aviso-rosas p {
+    font-size: 14px;
+    line-height: 1.6;
+}
 
     .rosas-grid {
         grid-template-columns: 1fr;
