@@ -15,99 +15,235 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 <div class="contenedor">
 
-    <img src="logo.png" class="logo" alt="Harry Styles México OFFAN">
+    <!-- PORTADA -->
+    <section class="hero">
 
-    <p class="etiqueta">FAN PROJECT</p>
+        <img src="logo.png" class="logo" alt="Harry Styles México OFFAN">
 
-    <h1>Representantes oficiales de zona</h1>
+        <p class="etiqueta">FAN PROJECT 2026</p>
 
-    <p class="bienvenida">
-        Conoce y verifica a los representantes de zona del Fan Project de
-        <strong>Harry Styles México OFFAN</strong>.
-    </p>
+        <h1>Representantes oficiales de zona</h1>
 
-    <div class="agradecimiento">
-        <span class="corazon">♡</span>
+        <p class="bienvenida">
+            Consulta y verifica la información oficial de tu representante
+            del Fan Project de <strong>Harry Styles México OFFAN</strong>.
+        </p>
 
-        <p>
+        <div class="buscador">
+
+            <h2>Busca a tu representante</h2>
+
+            <p>
+                Ingresa el ID oficial que te fue proporcionado.
+            </p>
+
+            <input
+                type="text"
+                id="buscar"
+                placeholder="Ej. FPHS-MX-001"
+                autocomplete="off"
+            >
+
+            <button onclick="buscarRepresentante()">
+                Buscar representante
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- FECHAS -->
+    <section class="seccion">
+
+        <p class="numero-seccion">01 / EL TOUR</p>
+
+        <h2 class="titulo-seccion">
+            Together, Together Tour
+        </h2>
+
+        <p class="subtitulo-seccion">
+            Ciudad de México · 2026
+        </p>
+
+        <div class="fechas-tour">
+
+            <div class="fecha">
+                <span>NOCHE 1</span>
+                <strong>31</strong>
+                <small>JUL</small>
+            </div>
+
+            <div class="fecha">
+                <span>NOCHE 2</span>
+                <strong>01</strong>
+                <small>AGO</small>
+            </div>
+
+            <div class="fecha">
+                <span>NOCHE 3</span>
+                <strong>04</strong>
+                <small>AGO</small>
+            </div>
+
+            <div class="fecha">
+                <span>NOCHE 4</span>
+                <strong>07</strong>
+                <small>AGO</small>
+            </div>
+
+            <div class="fecha">
+                <span>NOCHE 5</span>
+                <strong>08</strong>
+                <small>AGO</small>
+            </div>
+
+            <div class="fecha">
+                <span>NOCHE 6</span>
+                <strong>10</strong>
+                <small>AGO</small>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FAN PROJECTS -->
+    <section class="seccion">
+
+        <p class="numero-seccion">02 / FAN PROJECTS</p>
+
+        <h2 class="titulo-seccion">
+            Dos momentos para recordar
+        </h2>
+
+        <p class="subtitulo-seccion">
+            Cada proyecto está pensado para crear un momento especial durante el concierto.
+        </p>
+
+        <div class="proyectos">
+
+            <div class="proyecto-card">
+                <span>01</span>
+                <h3>Aperture</h3>
+                <p>
+                    Un momento visual creado entre fans para llenar el estadio de color.
+                </p>
+            </div>
+
+            <div class="proyecto-card">
+                <span>02</span>
+                <h3>Coming Up Roses</h3>
+                <p>
+                    Una experiencia colectiva pensada para convertir una canción en un recuerdo inolvidable.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- AGRADECIMIENTO -->
+    <section class="seccion agradecimiento-seccion">
+
+        <p class="numero-seccion">03 / NUESTRO EQUIPO</p>
+
+        <h2 class="titulo-seccion">
+            Gracias por formar parte
+        </h2>
+
+        <p class="texto-carta">
             Este proyecto no sería posible sin el apoyo, tiempo y dedicación
-            de cada uno de nuestros representantes.
+            de quienes forman parte de nuestro equipo de representantes.
         </p>
 
-        <p>
+        <p class="texto-carta">
             Gracias por ayudarnos a llevar este fan project a cada zona
-            y hacerlo realidad. ✨
-        </p>
-    </div>
-
-    <div class="buscador">
-        <h2>Verifica a tu representante</h2>
-
-        <p>
-            Ingresa su ID oficial para consultar su información.
+            y hacerlo realidad. ♡
         </p>
 
-        <input
-            type="text"
-            id="buscar"
-            placeholder="Ej. FPHS-MX-001"
-            autocomplete="off"
-        >
+    </section>
 
-        <button onclick="buscarRepresentante()">
-            Buscar representante
-        </button>
-    </div>
 
+    <!-- RECUERDOS -->
+    <section class="seccion recuerdo-seccion">
+
+        <p class="numero-seccion">04 / NUESTRO RECUERDO</p>
+
+        <h2 class="titulo-seccion">
+            Esta historia todavía se está escribiendo.
+        </h2>
+
+        <p class="subtitulo-seccion">
+            Después de los conciertos, este espacio reunirá recuerdos,
+            fotografías y momentos del fan project.
+        </p>
+
+        <div class="proximamente">
+            ✦ Próximamente ✦
+        </div>
+
+    </section>
+
+
+    <!-- REDES -->
     <footer>
-    <p class="footer-titulo">Harry Styles México OFFAN</p>
-    <small>Fan Project México ♡</small>
 
-    <p class="siguenos">Síguenos en nuestras redes oficiales</p>
+        <p class="footer-titulo">Harry Styles México OFFAN</p>
 
-   <div class="redes">
+        <small>Fan Project México ♡</small>
 
-    <a href="https://www.instagram.com/harrystylesmexico_offan/"
-       target="_blank"
-       rel="noopener noreferrer"
-       aria-label="Instagram"
-       title="Instagram">
-        <i class="fa-brands fa-instagram"></i>
-    </a>
+        <p class="siguenos">
+            Síguenos en nuestras redes oficiales
+        </p>
 
-    <a href="https://www.tiktok.com/@eve.hstyles"
-       target="_blank"
-       rel="noopener noreferrer"
-       aria-label="TikTok"
-       title="TikTok">
-        <i class="fa-brands fa-tiktok"></i>
-    </a>
+        <div class="redes">
 
-    <a href="https://whatsapp.com/channel/0029VbDNoFIDzgT7q247Na3Z"
-       target="_blank"
-       rel="noopener noreferrer"
-       aria-label="WhatsApp"
-       title="WhatsApp">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
+            <a href="https://www.instagram.com/harrystylesmexico_offan/"
+               target="_blank"
+               rel="noopener noreferrer"
+               aria-label="Instagram"
+               title="Instagram">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
 
-    <a href="https://www.facebook.com/share/19BrX3GU7q/"
-       target="_blank"
-       rel="noopener noreferrer"
-       aria-label="Facebook"
-       title="Facebook">
-        <i class="fa-brands fa-facebook-f"></i>
-    </a>
+            <a href="https://www.tiktok.com/@eve.hstyles"
+               target="_blank"
+               rel="noopener noreferrer"
+               aria-label="TikTok"
+               title="TikTok">
+                <i class="fa-brands fa-tiktok"></i>
+            </a>
 
-    <a href="https://x.com/harryshousemx"
-       target="_blank"
-       rel="noopener noreferrer"
-       aria-label="X">
-        <i class="fa-brands fa-x-twitter"></i>
-    </a>
+            <a href="https://whatsapp.com/channel/0029VbDNoFIDzgT7q247Na3Z"
+               target="_blank"
+               rel="noopener noreferrer"
+               aria-label="WhatsApp"
+               title="WhatsApp">
+                <i class="fa-brands fa-whatsapp"></i>
+            </a>
 
-</div>
-</footer>
+            <a href="https://www.facebook.com/share/19BrX3GU7q/"
+               target="_blank"
+               rel="noopener noreferrer"
+               aria-label="Facebook"
+               title="Facebook">
+                <i class="fa-brands fa-facebook-f"></i>
+            </a>
+
+            <a href="https://x.com/harryshousemx"
+               target="_blank"
+               rel="noopener noreferrer"
+               aria-label="X"
+               title="X">
+                <i class="fa-brands fa-x-twitter"></i>
+            </a>
+
+        </div>
+
+    </footer>
 
 </div>
 
