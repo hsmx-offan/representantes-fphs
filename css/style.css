@@ -1203,21 +1203,33 @@ body.guia-page {
    /* VIDEO EN CELULAR */
 
 .video-drive {
-    width: calc(100vw - 44px);
-    max-width: 500px;
+    width: 100%;
+    max-width: 520px;
 
     margin: 28px auto 0;
 
-    border-radius: 14px;
+    border-radius: 16px;
+    overflow: hidden;
+
+    background: #000;
 }
 
 .video-drive iframe {
     display: block;
 
     width: 100% !important;
-    height: auto !important;
 
-    aspect-ratio: 16 / 9 !important;
+    /* Más altura para que Drive muestre sus controles */
+    height: 360px !important;
+
+    aspect-ratio: auto !important;
 
     border: 0 !important;
+}
+@media screen and (max-width: 480px) {
+
+    .video-drive iframe {
+        height: 315px !important;
+    }
+
 }
