@@ -1343,3 +1343,56 @@ body.guia-page {
 .countdown.en-curso h3 {
     color: var(--pink);
 }
+/* =========================================================
+   ESTADO DE FECHAS DEL TOUR
+   ========================================================= */
+
+.estado-fecha {
+    display: block;
+
+    min-height: 16px;
+    margin-top: 12px;
+
+    font-style: normal;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+}
+
+/* Próxima fecha */
+.fecha-proxima {
+    background: rgba(237, 30, 98, 0.08);
+
+    box-shadow:
+        inset 0 0 0 2px rgba(237, 30, 98, 0.45);
+}
+
+.fecha-proxima .estado-fecha {
+    color: var(--pink);
+}
+
+/* Noche en curso */
+.fecha-en-curso {
+    background: var(--bg);
+}
+
+.fecha-en-curso span,
+.fecha-en-curso strong,
+.fecha-en-curso small {
+    color: var(--white);
+}
+
+.fecha-en-curso .estado-fecha {
+    color: var(--pink);
+}
+
+/* Fecha completada */
+.fecha-completada {
+    background: rgba(84, 21, 47, 0.05);
+
+    opacity: 0.58;
+}
+
+.fecha-completada .estado-fecha {
+    color: var(--wine);
+}
