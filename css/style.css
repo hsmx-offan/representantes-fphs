@@ -1406,8 +1406,8 @@ body.guia-page {
 
     margin: 0 auto 50px;
 
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-direction: column;
 
     gap: 14px;
 }
