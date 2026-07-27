@@ -20,6 +20,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+
+// ========================================
+// ELEMENTOS
+// ========================================
+
 const cargando =
   document.getElementById("cargando");
 
@@ -44,17 +49,11 @@ const datosEncontrados =
 const datoNombre =
   document.getElementById("datoNombre");
 
-const datoZona =
-  document.getElementById("datoZona");
-
 const datoId =
   document.getElementById("datoId");
 
 const textoNombre =
   document.getElementById("textoNombre");
-
-const textoZona =
-  document.getElementById("textoZona");
 
 const textoId =
   document.getElementById("textoId");
@@ -62,10 +61,19 @@ const textoId =
 const qrContainer =
   document.getElementById("qrContainer");
 
+const descargarButton =
+  document.getElementById("descargarGafete");
+
+const gafeteBase =
+  document.getElementById("gafeteBase");
+
+
+// ========================================
+// URLS
+// ========================================
 
 const SHEET_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRsmA9mpebsNjPcTYMsklHNKShcPVEdU_xTkn-oHVjqil9SP1KrjPO8V1lEqxqnY-dna2IJY0BOUvg-/pub?gid=77234656&single=true&output=csv";
-
 
 const REPRESENTANTE_URL =
   "https://hsmx-offan.github.io/representantes-fphs/representante.html?id=";
@@ -217,21 +225,20 @@ function generarQR(idRepresentante) {
 
   qrContainer.innerHTML = "";
 
-new QRCode(qrContainer, {
+  new QRCode(qrContainer, {
 
-  text: urlRepresentante,
+    text: urlRepresentante,
 
-  width: 260,
+    width: 260,
+    height: 260,
 
-  height: 260,
+    colorDark: "#ffffff",
+    colorLight: "#000000",
 
-  colorDark: "#ffffff",
-  colorLight: "#000000",
+    correctLevel:
+      QRCode.CorrectLevel.H
 
-  correctLevel:
-    QRCode.CorrectLevel.H
-
-});
+  });
 
 }
 
@@ -256,7 +263,6 @@ async function buscarRepresentante() {
       "none";
 
     textoNombre.textContent = "";
-    textoZona.textContent = "";
     textoId.textContent = "";
 
     qrContainer.innerHTML = "";
@@ -282,7 +288,6 @@ async function buscarRepresentante() {
         Date.now()
       );
 
-
     if (!respuesta.ok) {
 
       throw new Error(
@@ -298,7 +303,6 @@ async function buscarRepresentante() {
     const filas =
       parsearCSV(csv);
 
-
     let representante = null;
 
 
@@ -309,17 +313,12 @@ async function buscarRepresentante() {
           .trim()
           .toUpperCase();
 
-
       if (id === idBuscado) {
 
         representante = {
 
           id:
             (fila[0] || "")
-              .trim(),
-
-          zona:
-            (fila[2] || "")
               .trim(),
 
           nombre:
@@ -341,7 +340,6 @@ async function buscarRepresentante() {
         "No encontré ese ID.";
 
       textoNombre.textContent = "";
-      textoZona.textContent = "";
       textoId.textContent = "";
 
       qrContainer.innerHTML = "";
@@ -354,16 +352,15 @@ async function buscarRepresentante() {
     }
 
 
+    // ========================================
     // DATOS ENCONTRADOS
+    // ========================================
 
     estado.textContent =
       "Representante encontrado.";
 
     datoNombre.textContent =
       representante.nombre;
-
-    datoZona.textContent =
-      representante.zona;
 
     datoId.textContent =
       representante.id;
@@ -372,19 +369,20 @@ async function buscarRepresentante() {
       "block";
 
 
+    // ========================================
     // DATOS EN EL GAFETE
+    // ========================================
 
     textoNombre.textContent =
       representante.nombre;
-
-    textoZona.textContent =
-      representante.zona;
 
     textoId.textContent =
       representante.id;
 
 
+    // ========================================
     // QR AUTOMÁTICO
+    // ========================================
 
     generarQR(
       representante.id
@@ -432,16 +430,11 @@ idInput.addEventListener(
 
   }
 );
+
+
 // ========================================
 // DESCARGAR GAFETE EN PNG
 // ========================================
-
-const descargarButton =
-  document.getElementById("descargarGafete");
-
-const gafeteBase =
-  document.getElementById("gafeteBase");
-
 
 descargarButton.addEventListener(
   "click",
@@ -449,9 +442,6 @@ descargarButton.addEventListener(
 
     const nombre =
       datoNombre.textContent.trim();
-
-    const zona =
-      datoZona.textContent.trim();
 
     const id =
       datoId.textContent.trim();
@@ -502,31 +492,27 @@ descargarButton.addEventListener(
     ctx.fillStyle = "#ffffff";
 
     ctx.font =
-  `600 ${canvas.width * 0.041}px Arial`;
+      `600 ${canvas.width * 0.041}px Arial`;
 
     ctx.textBaseline = "top";
 
 
-// Nombre
-ctx.fillText(
-  nombre,
-  canvas.width * 0.35,
-  canvas.height * 0.529
-);
+    // Nombre
 
-// Zona
-ctx.fillText(
-  zona,
-  canvas.width * 0.35,
-  canvas.height * 0.577
-);
+    ctx.fillText(
+      nombre,
+      canvas.width * 0.35,
+      canvas.height * 0.529
+    );
 
-// ID
-ctx.fillText(
-  id,
-  canvas.width * 0.35,
-  canvas.height * 0.627
-);
+
+    // ID
+
+    ctx.fillText(
+      id,
+      canvas.width * 0.35,
+      canvas.height * 0.627
+    );
 
 
     // ========================================
@@ -543,7 +529,7 @@ ctx.fillText(
       canvas.width * 0.39;
 
     const qrY =
-  canvas.height * 0.68;
+      canvas.height * 0.68;
 
     const qrSize =
       canvas.width * 0.22;
@@ -576,7 +562,6 @@ ctx.fillText(
         }
 
       });
-
 
       ctx.drawImage(
         qrImagen,
