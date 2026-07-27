@@ -78,6 +78,53 @@ button {
   color: white;
 }
 
+
+/* =========================================
+   ESTADO DE ENVÍO DEL GAFETE
+   ========================================= */
+
+.estado-gafete {
+  margin-top: 18px;
+  padding: 18px;
+  background: #f8f4f1;
+  border-radius: 12px;
+}
+
+.estado-gafete h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.texto-estado-gafete {
+  margin: 0;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.detalle-estado-gafete {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.cambiar-estado-gafete {
+  width: 100%;
+  margin-top: 15px;
+  background: #222;
+  color: white;
+}
+
+.cambiar-estado-gafete:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* =========================================
+   VISTA PREVIA DEL GAFETE
+   ========================================= */
+
 .preview {
   text-align: center;
 }
@@ -108,21 +155,27 @@ button {
   white-space: nowrap;
 }
 
+
 /* Nombre */
+
 .nombre {
   left: 35%;
   top: 52.4%;
   font-size: 4.6cqw;
 }
 
+
 /* ID */
+
 .id {
   left: 35%;
   top: 61%;
   font-size: 4.6cqw;
 }
 
+
 /* QR */
+
 .qr-container {
   position: absolute;
   width: 22%;
@@ -206,4 +259,9 @@ button {
     margin-top: 20px;
     font-size: 16px;
   }
+
+  .estado-gafete {
+    width: 100%;
+  }
+
 }
