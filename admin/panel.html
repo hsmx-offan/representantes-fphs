@@ -10,7 +10,8 @@
   >
 
   <title>Panel Admin | HSMX OFFAN</title>
- <link rel="stylesheet" href="panel.css">
+
+  <link rel="stylesheet" href="panel.css">
 
 </head>
 
@@ -22,93 +23,116 @@
       Verificando acceso...
     </div>
 
-   <div id="contenido">
+    <div id="contenido">
 
-  <div class="topbar">
-    <div>
-      <h1>Panel administrativo</h1>
-      <p>Generador de gafetes de representantes</p>
-    </div>
+      <div class="topbar">
 
-    <button class="logout" id="logoutButton">
-      Cerrar sesión
-    </button>
-  </div>
+        <div>
+          <h1>Panel administrativo</h1>
+          <p>Generador de gafetes de representantes</p>
+        </div>
 
-  <hr>
-
-  <div class="generador">
-
-   <div class="formulario">
-
-  <h2>Buscar representante</h2>
-
-  <label for="idRepresentante">
-    ID del representante
-  </label>
-
-  <input
-    type="text"
-    id="idRepresentante"
-    placeholder="Ej. FPHS-MX-002"
-  >
-
-  <button id="buscarRepresentante">
-    Buscar y generar
-  </button>
-
-  <div id="estado" class="estado"></div>
-
-  <div id="datosEncontrados" class="datos-encontrados">
-
-    <p>
-      <strong>Nombre:</strong>
-      <span id="datoNombre"></span>
-    </p>
-
-    <p>
-      <strong>Zona:</strong>
-      <span id="datoZona"></span>
-    </p>
-
-    <p>
-      <strong>ID:</strong>
-      <span id="datoId"></span>
-    </p>
-
-  </div>
-
-</div>
-
-    <div class="preview">
-
-      <h2>Vista previa</h2>
-
-      <div class="gafete-wrapper">
-
-        <img
-          src="gafete-base.png"
-          id="gafeteBase"
-          alt="Gafete base"
+        <button
+          class="logout"
+          id="logoutButton"
         >
-
-        <div id="textoNombre" class="dato nombre"></div>
-        <div id="textoZona" class="dato zona"></div>
-        <div id="textoId" class="dato id"></div>
-        <div id="qrContainer" class="qr-container"></div>
+          Cerrar sesión
+        </button>
 
       </div>
-<button id="descargarGafete" class="descargar-gafete">
-  Descargar gafete PNG
-</button>
+
+      <hr>
+
+      <div class="generador">
+
+        <div class="formulario">
+
+          <h2>Buscar representante</h2>
+
+          <label for="idRepresentante">
+            ID del representante
+          </label>
+
+          <input
+            type="text"
+            id="idRepresentante"
+            placeholder="Ej. FPHS-MX-002"
+          >
+
+          <button id="buscarRepresentante">
+            Buscar y generar
+          </button>
+
+          <div
+            id="estado"
+            class="estado"
+          ></div>
+
+          <div
+            id="datosEncontrados"
+            class="datos-encontrados"
+          >
+
+            <p>
+              <strong>Nombre:</strong>
+              <span id="datoNombre"></span>
+            </p>
+
+            <p>
+              <strong>ID:</strong>
+              <span id="datoId"></span>
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="preview">
+
+          <h2>Vista previa</h2>
+
+          <div class="gafete-wrapper">
+
+            <img
+              src="gafete-base.png"
+              id="gafeteBase"
+              alt="Gafete base"
+            >
+
+            <div
+              id="textoNombre"
+              class="dato nombre"
+            ></div>
+
+            <div
+              id="textoId"
+              class="dato id"
+            ></div>
+
+            <div
+              id="qrContainer"
+              class="qr-container"
+            ></div>
+
+          </div>
+
+          <button
+            id="descargarGafete"
+            class="descargar-gafete"
+          >
+            Descargar gafete PNG
+          </button>
+
+        </div>
+
+      </div>
+
     </div>
 
   </div>
 
-</div>
-  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script type="module" src="panel.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script type="module" src="panel.js"></script>
 </body>
 </html>
