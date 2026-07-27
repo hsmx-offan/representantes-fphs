@@ -37,7 +37,7 @@ loginForm.addEventListener("submit", async (event) => {
       passwordInput.value
     );
 
-    window.location.href = "panel.html";
+    window.location.href = "dashboard.html";
 
   } catch (error) {
 
