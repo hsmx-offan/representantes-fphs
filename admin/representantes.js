@@ -1749,3 +1749,32 @@ limpiarFiltros.addEventListener(
 
   }
 );
+// ========================================
+// BÚSQUEDA RECIBIDA DESDE OTRA PÁGINA
+// ========================================
+
+function aplicarBusquedaDesdeURL() {
+
+  const parametros =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const buscar =
+    parametros.get("buscar");
+
+  if (!buscar) {
+    return;
+  }
+
+  busqueda.value =
+    buscar;
+
+  aplicarFiltros();
+
+}
+
+window.addEventListener(
+  "load",
+  aplicarBusquedaDesdeURL
+);
