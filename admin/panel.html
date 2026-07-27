@@ -39,24 +39,46 @@
 
   <div class="generador">
 
-    <div class="formulario">
+   <div class="formulario">
 
-      <h2>Generar gafete</h2>
+  <h2>Buscar representante</h2>
 
-      <label for="nombre">Nombre</label>
-      <input type="text" id="nombre" placeholder="Ej. Evelyn Castillo">
+  <label for="idRepresentante">
+    ID del representante
+  </label>
 
-      <label for="zona">Zona</label>
-      <input type="text" id="zona" placeholder="Ej. General A">
+  <input
+    type="text"
+    id="idRepresentante"
+    placeholder="Ej. FPHS-MX-002"
+  >
 
-      <label for="idRepresentante">ID</label>
-      <input type="text" id="idRepresentante" placeholder="Ej. FPHS-MX-001">
+  <button id="buscarRepresentante">
+    Buscar y generar
+  </button>
 
-      <button id="generarGafete">
-        Generar vista previa
-      </button>
+  <div id="estado" class="estado"></div>
 
-    </div>
+  <div id="datosEncontrados" class="datos-encontrados">
+
+    <p>
+      <strong>Nombre:</strong>
+      <span id="datoNombre"></span>
+    </p>
+
+    <p>
+      <strong>Zona:</strong>
+      <span id="datoZona"></span>
+    </p>
+
+    <p>
+      <strong>ID:</strong>
+      <span id="datoId"></span>
+    </p>
+
+  </div>
+
+</div>
 
     <div class="preview">
 
