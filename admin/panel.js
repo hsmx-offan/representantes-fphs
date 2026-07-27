@@ -104,6 +104,7 @@ const cambiarEstadoGafete =
 // ========================================
 
 let usuarioActual = null;
+let nombreAdminActual = "Admin";
 
 let idRepresentanteActual = "";
 
@@ -120,29 +121,90 @@ const SHEET_URL =
 const REPRESENTANTE_URL =
   "https://hsmx-offan.github.io/representantes-fphs/representante.html?id=";
 
+// ========================================
+// CARGAR PERFIL DEL ADMIN
+// ========================================
 
+async function cargarPerfilAdmin(user) {
+
+  try {
+
+    const referencia =
+      doc(
+        db,
+        "admins",
+        user.uid
+      );
+
+    const documento =
+      await getDoc(referencia);
+
+    if (documento.exists()) {
+
+      const datos =
+        documento.data();
+
+      nombreAdminActual =
+        datos.usuario || "Admin";
+
+    } else {
+
+      nombreAdminActual =
+        "Admin";
+
+    }
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "Error cargando perfil del admin:",
+      error
+    );
+
+    nombreAdminActual =
+      "Admin";
+
+  }
+
+}
 // ========================================
 // VERIFICAR SESIÓN ADMIN
 // ========================================
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(
+  auth,
+  async (user) => {
 
-  if (user) {
+    if (user) {
 
-    usuarioActual = user;
+      usuarioActual = user;
 
-    cargando.style.display = "none";
-    contenido.style.display = "block";
+      await cargarPerfilAdmin(user);
 
-  } else {
+      cargando.style.display =
+        "none";
 
-    usuarioActual = null;
+      contenido.style.display =
+        "block";
 
-    window.location.href = "./";
+    }
+
+    else {
+
+      usuarioActual = null;
+
+      nombreAdminActual =
+        "Admin";
+
+      window.location.href =
+        "./";
+
+    }
 
   }
-
-});
+);
 
 
 // ========================================
@@ -510,8 +572,8 @@ cambiarEstadoGafete.addEventListener(
             fechaEnvio:
               serverTimestamp(),
 
-            admin:
-              usuarioActual?.email || "Admin"
+           admin:
+  nombreAdminActual
 
           },
           {
