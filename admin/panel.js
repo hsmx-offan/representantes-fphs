@@ -474,7 +474,9 @@ descargarButton.addEventListener(
       canvas.getContext("2d");
 
 
-    // Dibujar imagen base
+    // ========================================
+    // DIBUJAR IMAGEN BASE
+    // ========================================
 
     ctx.drawImage(
       gafeteBase,
@@ -492,26 +494,30 @@ descargarButton.addEventListener(
     ctx.fillStyle = "#ffffff";
 
     ctx.font =
-      `600 ${canvas.width * 0.041}px Arial`;
+      `600 ${canvas.width * 0.067}px Arial`;
 
     ctx.textBaseline = "top";
 
 
-    // Nombre
+    // ========================================
+    // NOMBRE
+    // ========================================
 
     ctx.fillText(
       nombre,
       canvas.width * 0.35,
-      canvas.height * 0.529
+      canvas.height * 0.528
     );
 
 
+    // ========================================
     // ID
+    // ========================================
 
     ctx.fillText(
       id,
       canvas.width * 0.35,
-      canvas.height * 0.627
+      canvas.height * 0.617
     );
 
 
@@ -529,7 +535,7 @@ descargarButton.addEventListener(
       canvas.width * 0.39;
 
     const qrY =
-      canvas.height * 0.68;
+      canvas.height * 0.665;
 
     const qrSize =
       canvas.width * 0.22;
@@ -562,6 +568,7 @@ descargarButton.addEventListener(
         }
 
       });
+
 
       ctx.drawImage(
         qrImagen,
