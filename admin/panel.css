@@ -87,10 +87,15 @@ button {
   width: 100%;
   max-width: 520px;
   margin: auto;
+
+  /* Hace que los textos escalen según
+     el tamaño real del gafete */
+  container-type: inline-size;
 }
 
 #gafeteBase {
   width: 100%;
+  height: auto;
   display: block;
 }
 
@@ -100,22 +105,24 @@ button {
   font-weight: 600;
   text-align: left;
   pointer-events: none;
+  white-space: nowrap;
 }
 
-/* Posición del nombre */
+/* Nombre */
 .nombre {
   left: 35%;
   top: 52.4%;
-  font-size: 24px;
+  font-size: 4.6cqw;
 }
 
-/* Posición del ID */
+/* ID */
 .id {
   left: 35%;
   top: 61%;
-  font-size: 24px;
+  font-size: 4.6cqw;
 }
 
+/* QR */
 .qr-container {
   position: absolute;
   width: 22%;
@@ -133,8 +140,70 @@ button {
   display: block;
 }
 
+
+/* =========================================
+   CELULAR / TABLET
+   ========================================= */
+
 @media (max-width: 800px) {
+
+  body {
+    padding: 12px;
+  }
+
+  .panel {
+    width: 100%;
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .logout {
+    width: 100%;
+  }
+
   .generador {
     grid-template-columns: 1fr;
+    gap: 30px;
+    margin-top: 20px;
+  }
+
+  .formulario {
+    width: 100%;
+  }
+
+  .formulario input {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  .formulario button {
+    width: 100%;
+  }
+
+  .preview {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .gafete-wrapper {
+    width: 100%;
+    max-width: 520px;
+  }
+
+  .qr-container {
+    padding: 2px;
+  }
+
+  .descargar-gafete {
+    width: 100%;
+    margin-top: 20px;
+    font-size: 16px;
   }
 }
