@@ -1,0 +1,478 @@
+:root {
+  --negro-azulado: #0D1117;
+  --negro-morado: #17131B;
+  --rosa-principal: #E72B91;
+  --rosa-brillante: #FF5BB5;
+  --rosa-claro: #FFD8EB;
+  --blanco-rosado: #FFF9FC;
+  --gris-lila: #D6CBD2;
+}
+
+:root[data-theme="light"] {
+  --fondo: #FFF9FC;
+  --superficie: #FFFFFF;
+  --superficie-secundaria: #FFD8EB;
+  --texto: #17131B;
+  --texto-secundario: #6f6570;
+  --borde: #D6CBD2;
+  --acento: #E72B91;
+  --acento-hover: #FF5BB5;
+  --sombra: 0 8px 25px rgba(23, 19, 27, 0.08);
+}
+
+:root[data-theme="dark"] {
+  --fondo: #0D1117;
+  --superficie: #17131B;
+  --superficie-secundaria: #211b25;
+  --texto: #FFF9FC;
+  --texto-secundario: #D6CBD2;
+  --borde: #322a35;
+  --acento: #E72B91;
+  --acento-hover: #FF5BB5;
+  --sombra: 0 10px 30px rgba(0, 0, 0, 0.28);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background: var(--fondo);
+  color: var(--texto);
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+#cargando {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--texto-secundario);
+}
+
+.app {
+  width: min(1200px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 35px 0 60px;
+}
+
+
+/* =========================================
+   ENCABEZADO
+   ========================================= */
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+  margin-bottom: 25px;
+}
+
+.eyebrow,
+.etiqueta-seccion {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: var(--rosa-principal);
+}
+
+.topbar h1,
+.titulo-bloque h2,
+.resumen-problemas h2 {
+  margin: 0;
+}
+
+.subtitulo {
+  margin: 8px 0 0;
+  color: var(--texto-secundario);
+}
+
+.acciones-topbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.theme-toggle,
+.logout,
+.boton-secundario {
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.theme-toggle {
+  width: 46px;
+  height: 46px;
+  background: var(--superficie);
+  color: var(--texto);
+  border: 1px solid var(--borde);
+  box-shadow: var(--sombra);
+}
+
+.logout {
+  padding: 13px 18px;
+  background: var(--rosa-principal);
+  color: var(--blanco-rosado);
+}
+
+.logout:hover {
+  background: var(--rosa-brillante);
+}
+
+
+/* =========================================
+   MENÚ
+   ========================================= */
+
+.menu {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  margin-bottom: 35px;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  box-shadow: var(--sombra);
+  overflow-x: auto;
+}
+
+.menu-item {
+  flex-shrink: 0;
+  padding: 11px 15px;
+  border-radius: 9px;
+  color: var(--texto-secundario);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.menu-item:hover {
+  background: var(--superficie-secundaria);
+  color: var(--texto);
+}
+
+.menu-item.activo {
+  background: var(--rosa-principal);
+  color: var(--blanco-rosado);
+}
+
+.menu-item.deshabilitado {
+  opacity: 0.38;
+  pointer-events: none;
+}
+
+
+/* =========================================
+   BLOQUES
+   ========================================= */
+
+.bloque {
+  margin-top: 25px;
+  padding: 25px;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 18px;
+  box-shadow: var(--sombra);
+}
+
+.titulo-bloque p,
+.resumen-problemas p {
+  margin: 6px 0 0;
+  color: var(--texto-secundario);
+}
+
+
+/* =========================================
+   RESUMEN
+   ========================================= */
+
+.resumen-problemas {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+  border-top: 4px solid var(--rosa-principal);
+}
+
+.contador-principal {
+  min-width: 170px;
+  padding: 20px;
+  background: var(--fondo);
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  text-align: center;
+}
+
+.contador-principal span {
+  display: block;
+  font-size: 38px;
+  font-weight: 800;
+  color: var(--rosa-principal);
+}
+
+.contador-principal small {
+  color: var(--texto-secundario);
+}
+
+
+/* =========================================
+   FILTROS
+   ========================================= */
+
+.filtros {
+  display: grid;
+  grid-template-columns: 1fr 2fr auto;
+  gap: 14px;
+  align-items: end;
+  margin-top: 20px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.campo label {
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--texto-secundario);
+}
+
+.campo input,
+.campo select {
+  width: 100%;
+  min-height: 46px;
+  padding: 11px 12px;
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  background: var(--fondo);
+  color: var(--texto);
+  outline: none;
+}
+
+.campo input:focus,
+.campo select:focus {
+  border-color: var(--rosa-principal);
+}
+
+.boton-secundario {
+  min-height: 46px;
+  padding: 11px 16px;
+  background: var(--fondo);
+  color: var(--texto);
+  border: 1px solid var(--borde);
+}
+
+
+/* =========================================
+   RESULTADOS
+   ========================================= */
+
+.estado-vacio {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--texto-secundario);
+}
+
+.estado-vacio strong {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--texto);
+}
+
+.estado-vacio p {
+  margin: 0;
+}
+
+.estado-icono {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 30px;
+}
+
+.lista-problemas {
+  display: grid;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+
+/* =========================================
+   TARJETAS DE PROBLEMAS
+   ========================================= */
+
+.problema {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: start;
+  padding: 18px;
+  background: var(--fondo);
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+}
+
+.problema-icono {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.problema-contenido h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+
+.problema-contenido p {
+  margin: 0;
+  color: var(--texto-secundario);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.problema-meta {
+  margin-top: 9px !important;
+  font-size: 12px !important;
+}
+
+.problema-id-duplicado {
+  border-left: 4px solid #ff5b6e;
+}
+
+.problema-instagram-duplicado {
+  border-left: 4px solid #ff9a3d;
+}
+
+.problema-sin-zona,
+.problema-sin-fecha {
+  border-left: 4px solid #f4c542;
+}
+
+.problema-sin-instagram,
+.problema-sin-nombre {
+  border-left: 4px solid var(--rosa-principal);
+}
+
+.ver-representante {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 40px;
+  padding: 9px 13px;
+  border: 1px solid var(--borde);
+  border-radius: 9px;
+  background: var(--superficie);
+  color: var(--texto);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.ver-representante:hover {
+  border-color: var(--rosa-principal);
+  color: var(--rosa-brillante);
+}
+
+
+/* =========================================
+   TOAST
+   ========================================= */
+
+.toast {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  max-width: 320px;
+  padding: 13px 16px;
+  border-radius: 10px;
+  background: var(--rosa-principal);
+  color: var(--blanco-rosado);
+  font-weight: bold;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: 0.2s ease;
+}
+
+.toast.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 800px) {
+
+  .resumen-problemas {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .contador-principal {
+    width: 100%;
+  }
+
+  .filtros {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .campo-busqueda {
+    grid-column: 1 / -1;
+  }
+
+  .problema {
+    grid-template-columns: auto 1fr;
+  }
+
+  .ver-representante {
+    grid-column: 1 / -1;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .app {
+    width: calc(100% - 24px);
+    padding-top: 20px;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .acciones-topbar {
+    width: 100%;
+  }
+
+  .logout {
+    flex: 1;
+  }
+
+  .filtros {
+    grid-template-columns: 1fr;
+  }
+
+  .campo-busqueda {
+    grid-column: auto;
+  }
+
+  .boton-secundario {
+    width: 100%;
+  }
+
+}
