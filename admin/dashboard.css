@@ -1,1 +1,330 @@
+* {
+  box-sizing: border-box;
+}
 
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background: #f8f4f1;
+  color: #222;
+}
+
+#cargando {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.dashboard {
+  width: min(1200px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 35px 0 60px;
+}
+
+
+/* =========================================
+   ENCABEZADO
+   ========================================= */
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+  margin-bottom: 25px;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  color: #9b7b83;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+.bienvenida {
+  margin: 8px 0 0;
+  color: #666;
+}
+
+.logout {
+  border: none;
+  border-radius: 10px;
+  padding: 12px 18px;
+  background: #222;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
+/* =========================================
+   MENÚ
+   ========================================= */
+
+.menu {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  margin-bottom: 35px;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+  overflow-x: auto;
+}
+
+.menu-item {
+  flex-shrink: 0;
+  padding: 11px 15px;
+  border-radius: 9px;
+  color: #444;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.menu-item:hover {
+  background: #f8f4f1;
+}
+
+.menu-item.activo {
+  background: #222;
+  color: white;
+}
+
+.menu-item.deshabilitado {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none;
+}
+
+
+/* =========================================
+   RESUMEN
+   ========================================= */
+
+.encabezado-seccion {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 18px;
+}
+
+.encabezado-seccion h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.encabezado-seccion p {
+  margin: 6px 0 0;
+  color: #777;
+}
+
+
+/* =========================================
+   TARJETAS
+   ========================================= */
+
+.tarjetas {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 35px;
+}
+
+.tarjeta {
+  background: white;
+  padding: 22px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+}
+
+.tarjeta-icono {
+  display: block;
+  margin-bottom: 18px;
+  font-size: 25px;
+}
+
+.tarjeta-titulo {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.tarjeta-numero {
+  margin: 7px 0 3px;
+  font-size: 34px;
+  font-weight: bold;
+}
+
+.tarjeta-detalle {
+  margin: 0;
+  color: #888;
+  font-size: 13px;
+}
+
+
+/* =========================================
+   BLOQUES
+   ========================================= */
+
+.bloque {
+  margin-top: 25px;
+  padding: 25px;
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+}
+
+.titulo-bloque {
+  margin-bottom: 18px;
+}
+
+.titulo-bloque h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.titulo-bloque p {
+  margin: 6px 0 0;
+  color: #777;
+  font-size: 14px;
+}
+
+
+/* =========================================
+   ACCESOS RÁPIDOS
+   ========================================= */
+
+.accesos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.acceso {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  min-height: 100px;
+  padding: 18px;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  color: #222;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+a.acceso:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.acceso > span {
+  font-size: 25px;
+}
+
+.acceso strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.acceso p {
+  margin: 0;
+  color: #777;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.proximamente {
+  opacity: 0.5;
+}
+
+
+/* =========================================
+   COMUNICADOS
+   ========================================= */
+
+.comunicado-vacio {
+  padding: 25px;
+  border: 1px dashed #ccc;
+  border-radius: 12px;
+  color: #888;
+  text-align: center;
+}
+
+
+/* =========================================
+   CELULAR / TABLET
+   ========================================= */
+
+@media (max-width: 900px) {
+
+  .tarjetas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .accesos {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .dashboard {
+    width: calc(100% - 24px);
+    padding-top: 20px;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .topbar h1 {
+    font-size: 27px;
+  }
+
+  .logout {
+    width: 100%;
+  }
+
+  .menu {
+    margin-bottom: 25px;
+  }
+
+  .tarjetas {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .tarjeta {
+    padding: 17px;
+  }
+
+  .tarjeta-numero {
+    font-size: 28px;
+  }
+
+  .bloque {
+    padding: 18px;
+  }
+
+}
+
+
+@media (max-width: 400px) {
+
+  .tarjetas {
+    grid-template-columns: 1fr;
+  }
+
+}
