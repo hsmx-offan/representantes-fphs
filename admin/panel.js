@@ -20,13 +20,23 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-const cargando = document.getElementById("cargando");
-const contenido = document.getElementById("contenido");
-const logoutButton = document.getElementById("logoutButton");
+const cargando =
+  document.getElementById("cargando");
 
-const idInput = document.getElementById("idRepresentante");
-const buscarButton = document.getElementById("buscarRepresentante");
-const estado = document.getElementById("estado");
+const contenido =
+  document.getElementById("contenido");
+
+const logoutButton =
+  document.getElementById("logoutButton");
+
+const idInput =
+  document.getElementById("idRepresentante");
+
+const buscarButton =
+  document.getElementById("buscarRepresentante");
+
+const estado =
+  document.getElementById("estado");
 
 const datosEncontrados =
   document.getElementById("datosEncontrados");
@@ -49,9 +59,21 @@ const textoZona =
 const textoId =
   document.getElementById("textoId");
 
+const qrContainer =
+  document.getElementById("qrContainer");
+
+
 const SHEET_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRsmA9mpebsNjPcTYMsklHNKShcPVEdU_xTkn-oHVjqil9SP1KrjPO8V1lEqxqnY-dna2IJY0BOUvg-/pub?gid=77234656&single=true&output=csv";
 
+
+const REPRESENTANTE_URL =
+  "https://hsmx-offan.github.io/representantes-fphs/representante.html?id=";
+
+
+// ========================================
+// VERIFICAR SESIÓN ADMIN
+// ========================================
 
 onAuthStateChanged(auth, (user) => {
 
@@ -69,6 +91,10 @@ onAuthStateChanged(auth, (user) => {
 });
 
 
+// ========================================
+// CERRAR SESIÓN
+// ========================================
+
 logoutButton.addEventListener(
   "click",
   async () => {
@@ -80,6 +106,10 @@ logoutButton.addEventListener(
   }
 );
 
+
+// ========================================
+// LEER CSV
+// ========================================
 
 function parsearCSV(texto) {
 
@@ -130,7 +160,9 @@ function parsearCSV(texto) {
         caracter === "\r" &&
         siguiente === "\n"
       ) {
+
         i++;
+
       }
 
       fila.push(campo);
@@ -140,7 +172,9 @@ function parsearCSV(texto) {
           valor => valor.trim() !== ""
         )
       ) {
+
         filas.push(fila);
+
       }
 
       fila = [];
@@ -171,6 +205,38 @@ function parsearCSV(texto) {
 }
 
 
+// ========================================
+// GENERAR QR
+// ========================================
+
+function generarQR(idRepresentante) {
+
+  const urlRepresentante =
+    REPRESENTANTE_URL +
+    encodeURIComponent(idRepresentante);
+
+  qrContainer.innerHTML = "";
+
+  new QRCode(qrContainer, {
+
+    text: urlRepresentante,
+
+    width: 220,
+
+    height: 220,
+
+    correctLevel:
+      QRCode.CorrectLevel.H
+
+  });
+
+}
+
+
+// ========================================
+// BUSCAR REPRESENTANTE
+// ========================================
+
 async function buscarRepresentante() {
 
   const idBuscado =
@@ -186,15 +252,23 @@ async function buscarRepresentante() {
     datosEncontrados.style.display =
       "none";
 
+    textoNombre.textContent = "";
+    textoZona.textContent = "";
+    textoId.textContent = "";
+
+    qrContainer.innerHTML = "";
+
     return;
 
   }
+
 
   estado.textContent =
     "Buscando representante...";
 
   datosEncontrados.style.display =
     "none";
+
 
   try {
 
@@ -205,6 +279,7 @@ async function buscarRepresentante() {
         Date.now()
       );
 
+
     if (!respuesta.ok) {
 
       throw new Error(
@@ -213,13 +288,16 @@ async function buscarRepresentante() {
 
     }
 
+
     const csv =
       await respuesta.text();
 
     const filas =
       parsearCSV(csv);
 
+
     let representante = null;
+
 
     for (const fila of filas) {
 
@@ -228,18 +306,22 @@ async function buscarRepresentante() {
           .trim()
           .toUpperCase();
 
+
       if (id === idBuscado) {
 
         representante = {
 
           id:
-            (fila[0] || "").trim(),
+            (fila[0] || "")
+              .trim(),
 
           zona:
-            (fila[2] || "").trim(),
+            (fila[2] || "")
+              .trim(),
 
           nombre:
-            (fila[3] || "").trim()
+            (fila[3] || "")
+              .trim()
 
         };
 
@@ -248,6 +330,7 @@ async function buscarRepresentante() {
       }
 
     }
+
 
     if (!representante) {
 
@@ -258,12 +341,17 @@ async function buscarRepresentante() {
       textoZona.textContent = "";
       textoId.textContent = "";
 
+      qrContainer.innerHTML = "";
+
       datosEncontrados.style.display =
         "none";
 
       return;
 
     }
+
+
+    // DATOS ENCONTRADOS
 
     estado.textContent =
       "Representante encontrado.";
@@ -280,6 +368,9 @@ async function buscarRepresentante() {
     datosEncontrados.style.display =
       "block";
 
+
+    // DATOS EN EL GAFETE
+
     textoNombre.textContent =
       representante.nombre;
 
@@ -288,6 +379,13 @@ async function buscarRepresentante() {
 
     textoId.textContent =
       representante.id;
+
+
+    // QR AUTOMÁTICO
+
+    generarQR(
+      representante.id
+    );
 
   }
 
@@ -298,16 +396,26 @@ async function buscarRepresentante() {
     estado.textContent =
       "Hubo un error al leer la lista de representantes.";
 
+    qrContainer.innerHTML = "";
+
   }
 
 }
 
+
+// ========================================
+// BOTÓN BUSCAR
+// ========================================
 
 buscarButton.addEventListener(
   "click",
   buscarRepresentante
 );
 
+
+// ========================================
+// BUSCAR AL PRESIONAR ENTER
+// ========================================
 
 idInput.addEventListener(
   "keydown",
