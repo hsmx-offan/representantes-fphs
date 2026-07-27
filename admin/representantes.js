@@ -598,25 +598,29 @@ async function cargarRepresentantes() {
 
       representantes.push({
 
-        id,
+  id,
 
-        instagram:
-          (fila[1] || "")
-            .trim(),
+  fecha:
+    (fila[1] || "")
+      .trim(),
 
-        fecha:
-          (fila[2] || "")
-            .trim(),
+  zona:
+    (fila[2] || "")
+      .trim(),
 
-        nombre:
-          (fila[3] || "")
-            .trim(),
+  nombre:
+    (fila[3] || "")
+      .trim(),
 
-        zona:
-          (fila[4] || "")
-            .trim()
+  instagram:
+    (fila[4] || "")
+      .trim(),
 
-      });
+  estado:
+    (fila[9] || "")
+      .trim()
+
+});
 
     }
 
