@@ -217,18 +217,21 @@ function generarQR(idRepresentante) {
 
   qrContainer.innerHTML = "";
 
-  new QRCode(qrContainer, {
+new QRCode(qrContainer, {
 
-    text: urlRepresentante,
+  text: urlRepresentante,
 
-    width: 220,
+  width: 260,
 
-    height: 220,
+  height: 260,
 
-    correctLevel:
-      QRCode.CorrectLevel.H
+  colorDark: "#ffffff",
+  colorLight: "#000000",
 
-  });
+  correctLevel:
+    QRCode.CorrectLevel.H
+
+});
 
 }
 
