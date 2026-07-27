@@ -39,7 +39,8 @@ const db = getFirestore(app);
 
 const SHEET_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRsmA9mpebsNjPcTYMsklHNKShcPVEdU_xTkn-oHVjqil9SP1KrjPO8V1lEqxqnY-dna2IJY0BOUvg-/pub?gid=77234656&single=true&output=csv";
-
+const PAPELITOS_API_URL =
+  "https://script.google.com/macros/s/AKfycbz1nbly2DHBiw5NiVW0s0MiQYX-s2hUQEbpcR_mGCHcL2JIwV1I53nZCwjvCrO8SzNC7g/exec";
 
 // ========================================
 // ELEMENTOS
