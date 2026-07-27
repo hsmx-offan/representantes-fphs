@@ -94,3 +94,167 @@ generarGafete.addEventListener("click", () => {
   textoId.textContent = idInput.value;
 
 });
+const idInput = document.getElementById("idRepresentante");
+const buscarButton = document.getElementById("buscarRepresentante");
+const estado = document.getElementById("estado");
+
+const datosEncontrados = document.getElementById("datosEncontrados");
+
+const datoNombre = document.getElementById("datoNombre");
+const datoZona = document.getElementById("datoZona");
+const datoId = document.getElementById("datoId");
+
+const textoNombre = document.getElementById("textoNombre");
+const textoZona = document.getElementById("textoZona");
+const textoId = document.getElementById("textoId");
+
+const SHEET_URL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRsmA9mpebsNjPcTYMsklHNKShcPVEdU_xTkn-oHVjqil9SP1KrjPO8V1lEqxqnY-dna2IJY0BOUvg-/pub?gid=77234656&single=true&output=csv";
+
+
+function parsearCSV(texto) {
+  const filas = [];
+
+  let fila = [];
+  let campo = "";
+  let dentroComillas = false;
+
+  for (let i = 0; i < texto.length; i++) {
+    const caracter = texto[i];
+    const siguiente = texto[i + 1];
+
+    if (caracter === '"' && dentroComillas && siguiente === '"') {
+      campo += '"';
+      i++;
+    }
+
+    else if (caracter === '"') {
+      dentroComillas = !dentroComillas;
+    }
+
+    else if (caracter === "," && !dentroComillas) {
+      fila.push(campo);
+      campo = "";
+    }
+
+    else if (
+      (caracter === "\n" || caracter === "\r") &&
+      !dentroComillas
+    ) {
+      if (caracter === "\r" && siguiente === "\n") {
+        i++;
+      }
+
+      fila.push(campo);
+
+      if (fila.some(valor => valor.trim() !== "")) {
+        filas.push(fila);
+      }
+
+      fila = [];
+      campo = "";
+    }
+
+    else {
+      campo += caracter;
+    }
+  }
+
+  if (campo.length > 0 || fila.length > 0) {
+    fila.push(campo);
+    filas.push(fila);
+  }
+
+  return filas;
+}
+
+
+async function buscarRepresentante() {
+  const idBuscado = idInput.value
+    .trim()
+    .toUpperCase();
+
+  if (!idBuscado) {
+    estado.textContent = "Escribe un ID.";
+    datosEncontrados.style.display = "none";
+    return;
+  }
+
+  estado.textContent = "Buscando representante...";
+  datosEncontrados.style.display = "none";
+
+  try {
+    const respuesta = await fetch(
+      SHEET_URL + "&t=" + Date.now()
+    );
+
+    if (!respuesta.ok) {
+      throw new Error("No se pudo leer Google Sheets.");
+    }
+
+    const csv = await respuesta.text();
+    const filas = parsearCSV(csv);
+
+    let representante = null;
+
+    for (const fila of filas) {
+      const id = (fila[0] || "")
+        .trim()
+        .toUpperCase();
+
+      if (id === idBuscado) {
+        representante = {
+          id: (fila[0] || "").trim(),
+          zona: (fila[2] || "").trim(),
+          nombre: (fila[3] || "").trim()
+        };
+
+        break;
+      }
+    }
+
+    if (!representante) {
+      estado.textContent = "No encontré ese ID.";
+
+      textoNombre.textContent = "";
+      textoZona.textContent = "";
+      textoId.textContent = "";
+
+      return;
+    }
+
+    estado.textContent = "Representante encontrado.";
+
+    datoNombre.textContent = representante.nombre;
+    datoZona.textContent = representante.zona;
+    datoId.textContent = representante.id;
+
+    datosEncontrados.style.display = "block";
+
+    textoNombre.textContent = representante.nombre;
+    textoZona.textContent = representante.zona;
+    textoId.textContent = representante.id;
+
+  } catch (error) {
+    console.error(error);
+
+    estado.textContent =
+      "Hubo un error al leer la lista de representantes.";
+  }
+}
+
+
+buscarButton.addEventListener(
+  "click",
+  buscarRepresentante
+);
+
+
+idInput.addEventListener(
+  "keydown",
+  (event) => {
+    if (event.key === "Enter") {
+      buscarRepresentante();
+    }
+  }
+);
