@@ -66,7 +66,80 @@
       text-align: center;
       padding: 50px 0;
     }
+.generador {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 30px;
+  margin-top: 30px;
+}
 
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.formulario input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.formulario button {
+  margin-top: 10px;
+  background: #222;
+  color: white;
+}
+
+.preview {
+  text-align: center;
+}
+
+.gafete-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  margin: auto;
+}
+
+#gafeteBase {
+  width: 100%;
+  display: block;
+}
+
+.dato {
+  position: absolute;
+  color: white;
+  font-weight: 600;
+  text-align: left;
+  pointer-events: none;
+}
+
+/* Posiciones aproximadas */
+.nombre {
+  left: 35%;
+  top: 53%;
+  font-size: 24px;
+}
+
+.zona {
+  left: 35%;
+  top: 58.3%;
+  font-size: 24px;
+}
+
+.id {
+  left: 35%;
+  top: 63.3%;
+  font-size: 24px;
+}
+
+@media (max-width: 800px) {
+  .generador {
+    grid-template-columns: 1fr;
+  }
+}
   </style>
 
 </head>
@@ -79,40 +152,65 @@
       Verificando acceso...
     </div>
 
-    <div id="contenido">
+   <div id="contenido">
 
-      <div class="topbar">
+  <div class="topbar">
+    <div>
+      <h1>Panel administrativo</h1>
+      <p>Generador de gafetes de representantes</p>
+    </div>
 
-        <div>
+    <button class="logout" id="logoutButton">
+      Cerrar sesión
+    </button>
+  </div>
 
-          <h1>
-            Panel administrativo
-          </h1>
+  <hr>
 
-          <p>
-            Generador de gafetes de representantes
-          </p>
+  <div class="generador">
 
-        </div>
+    <div class="formulario">
 
-        <button
-          class="logout"
-          id="logoutButton"
-        >
-          Cerrar sesión
-        </button>
+      <h2>Generar gafete</h2>
 
-      </div>
+      <label for="nombre">Nombre</label>
+      <input type="text" id="nombre" placeholder="Ej. Evelyn Castillo">
 
-      <hr>
+      <label for="zona">Zona</label>
+      <input type="text" id="zona" placeholder="Ej. General A">
 
-      <p>
-        Aquí vamos a colocar el buscador por ID
-        y el generador de gafetes.
-      </p>
+      <label for="idRepresentante">ID</label>
+      <input type="text" id="idRepresentante" placeholder="Ej. FPHS-MX-001">
+
+      <button id="generarGafete">
+        Generar vista previa
+      </button>
 
     </div>
 
+    <div class="preview">
+
+      <h2>Vista previa</h2>
+
+      <div class="gafete-wrapper">
+
+        <img
+          src="gafete-base.png"
+          id="gafeteBase"
+          alt="Gafete base"
+        >
+
+        <div id="textoNombre" class="dato nombre"></div>
+        <div id="textoZona" class="dato zona"></div>
+        <div id="textoId" class="dato id"></div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
   </div>
 
   <script type="module">
@@ -195,7 +293,23 @@
 
       }
     );
+const nombreInput = document.getElementById("nombre");
+const zonaInput = document.getElementById("zona");
+const idInput = document.getElementById("idRepresentante");
 
+const textoNombre = document.getElementById("textoNombre");
+const textoZona = document.getElementById("textoZona");
+const textoId = document.getElementById("textoId");
+
+const generarGafete = document.getElementById("generarGafete");
+
+generarGafete.addEventListener("click", () => {
+
+  textoNombre.textContent = nombreInput.value;
+  textoZona.textContent = zonaInput.value;
+  textoId.textContent = idInput.value;
+
+});
   </script>
 
 </body>
