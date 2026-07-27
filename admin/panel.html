@@ -1,12 +1,22 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Panel Admin | HSMX OFFAN</title>
 
   <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: Arial, sans-serif;
       background: #f8f4f1;
@@ -56,7 +66,9 @@
       text-align: center;
       padding: 50px 0;
     }
+
   </style>
+
 </head>
 
 <body>
@@ -70,20 +82,33 @@
     <div id="contenido">
 
       <div class="topbar">
+
         <div>
-          <h1>Panel administrativo</h1>
-          <p>Generador de gafetes de representantes</p>
+
+          <h1>
+            Panel administrativo
+          </h1>
+
+          <p>
+            Generador de gafetes de representantes
+          </p>
+
         </div>
 
-        <button class="logout" onclick="logoutAdmin()">
+        <button
+          class="logout"
+          id="logoutButton"
+        >
           Cerrar sesión
         </button>
+
       </div>
 
       <hr>
 
       <p>
-        Aquí vamos a colocar el buscador por ID y el generador de gafetes.
+        Aquí vamos a colocar el buscador por ID
+        y el generador de gafetes.
       </p>
 
     </div>
@@ -92,57 +117,84 @@
 
   <script type="module">
 
-    import { initializeApp } from
-    "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import {
+      initializeApp
+    } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
 
     import {
       getAuth,
       onAuthStateChanged,
       signOut
-    } from
-    "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+    } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
-    <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
 
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyAesU9F4Oc7Lr8TPOFUk-Oi-lT086XjRKw",
-    authDomain: "hsmx-representantes.firebaseapp.com",
-    projectId: "hsmx-representantes",
-    storageBucket: "hsmx-representantes.firebasestorage.app",
-    messagingSenderId: "821385801252",
-    appId: "1:821385801252:web:c95ba9ffdeb90fe03732b1"
-  };
+    const firebaseConfig = {
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-</script>
+      apiKey:
+        "AIzaSyAesU9F4Oc7Lr8TPOFUk-Oi-lT086XjRKw",
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+      authDomain:
+        "hsmx-representantes.firebaseapp.com",
 
-    const cargando = document.getElementById("cargando");
-    const contenido = document.getElementById("contenido");
+      projectId:
+        "hsmx-representantes",
+
+      storageBucket:
+        "hsmx-representantes.firebasestorage.app",
+
+      messagingSenderId:
+        "821385801252",
+
+      appId:
+        "1:821385801252:web:c95ba9ffdeb90fe03732b1"
+
+    };
+
+
+    const app =
+      initializeApp(firebaseConfig);
+
+    const auth =
+      getAuth(app);
+
+
+    const cargando =
+      document.getElementById("cargando");
+
+    const contenido =
+      document.getElementById("contenido");
+
+    const logoutButton =
+      document.getElementById("logoutButton");
+
 
     onAuthStateChanged(auth, (user) => {
 
       if (user) {
+
         cargando.style.display = "none";
+
         contenido.style.display = "block";
+
       } else {
+
         window.location.href = "./";
+
       }
 
     });
 
-    window.logoutAdmin = async function () {
-      await signOut(auth);
-      window.location.href = "./";
-    };
+
+    logoutButton.addEventListener(
+      "click",
+      async () => {
+
+        await signOut(auth);
+
+        window.location.href = "./";
+
+      }
+    );
 
   </script>
 
