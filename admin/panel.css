@@ -127,11 +127,11 @@
 }
 .qr-container {
   position: absolute;
-  width: 18%;
+  width: 22%;
   aspect-ratio: 1;
-  left: 41%;
-  top: 71%;
-  background: white;
+  left: 39%;
+  top: 68%;
+  background: black;
   padding: 4px;
 }
 
