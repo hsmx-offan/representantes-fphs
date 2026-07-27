@@ -1,1 +1,536 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
 
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Representantes | HSMX OFFAN</title>
+
+  <link
+    rel="stylesheet"
+    href="representantes.css"
+  >
+
+</head>
+
+<body>
+
+  <!-- =====================================
+       CARGANDO
+       ===================================== -->
+
+  <div id="cargando">
+    Verificando acceso...
+  </div>
+
+
+  <!-- =====================================
+       CONTENIDO
+       ===================================== -->
+
+  <div
+    id="contenido"
+    style="display: none;"
+  >
+
+    <div class="app">
+
+      <!-- =====================================
+           ENCABEZADO
+           ===================================== -->
+
+      <header class="topbar">
+
+        <div>
+
+          <p class="eyebrow">
+            HARRY STYLES MÉXICO OFFAN
+          </p>
+
+          <h1>Representantes</h1>
+
+          <p class="subtitulo">
+            Consulta y control de representantes del Fan Project 2026
+          </p>
+
+        </div>
+
+
+        <div class="acciones-topbar">
+
+          <button
+            type="button"
+            id="themeToggle"
+            class="theme-toggle"
+            aria-label="Cambiar tema"
+            title="Cambiar tema"
+          >
+            ☀️
+          </button>
+
+          <button
+            type="button"
+            id="logoutButton"
+            class="logout"
+          >
+            Cerrar sesión
+          </button>
+
+        </div>
+
+      </header>
+
+
+      <!-- =====================================
+           MENÚ
+           ===================================== -->
+
+      <nav class="menu">
+
+        <a
+          href="dashboard.html"
+          class="menu-item"
+        >
+          Inicio
+        </a>
+
+        <a
+          href="representantes.html"
+          class="menu-item activo"
+        >
+          Representantes
+        </a>
+
+        <a
+          href="panel.html"
+          class="menu-item"
+        >
+          Gafetes
+        </a>
+
+        <a
+          href="#"
+          class="menu-item deshabilitado"
+        >
+          Problemas
+        </a>
+
+        <a
+          href="#"
+          class="menu-item deshabilitado"
+        >
+          Publicaciones
+        </a>
+
+        <a
+          href="#"
+          class="menu-item deshabilitado"
+        >
+          Material
+        </a>
+
+        <a
+          href="#"
+          class="menu-item deshabilitado"
+        >
+          Comunicados
+        </a>
+
+      </nav>
+
+
+      <main>
+
+        <!-- =====================================
+             BUSCADOR
+             ===================================== -->
+
+        <section class="bloque">
+
+          <div class="titulo-bloque">
+
+            <div>
+
+              <p class="etiqueta-seccion">
+                CONSULTA
+              </p>
+
+              <h2>Buscar representante</h2>
+
+              <p>
+                Busca por ID, nombre o usuario de Instagram.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="buscador">
+
+            <div class="campo campo-busqueda">
+
+              <label for="busqueda">
+                Buscar
+              </label>
+
+              <input
+                type="search"
+                id="busqueda"
+                placeholder="Ej. FPHS-MX-002, Valery o valery_glvn9"
+                autocomplete="off"
+              >
+
+            </div>
+
+
+            <div class="campo">
+
+              <label for="filtroFecha">
+                Fecha
+              </label>
+
+              <select id="filtroFecha">
+
+                <option value="">
+                  Todas
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="campo">
+
+              <label for="filtroZona">
+                Zona
+              </label>
+
+              <select id="filtroZona">
+
+                <option value="">
+                  Todas
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <button
+              type="button"
+              id="buscarButton"
+              class="boton-principal"
+            >
+              Buscar
+            </button>
+
+          </div>
+
+
+          <div class="acciones-filtros">
+
+            <button
+              type="button"
+              id="limpiarFiltros"
+              class="boton-secundario"
+            >
+              Limpiar filtros
+            </button>
+
+            <p id="contadorResultados">
+              —
+            </p>
+
+          </div>
+
+        </section>
+
+
+        <!-- =====================================
+             RESULTADOS
+             ===================================== -->
+
+        <section class="bloque">
+
+          <div class="titulo-resultados">
+
+            <div>
+
+              <p class="etiqueta-seccion">
+                RESULTADOS
+              </p>
+
+              <h2>Lista de representantes</h2>
+
+            </div>
+
+          </div>
+
+
+          <!-- ESTADO INICIAL -->
+
+          <div
+            id="estadoInicial"
+            class="estado-vacio"
+          >
+
+            <span class="estado-icono">
+              👥
+            </span>
+
+            <strong>
+              Busca un representante
+            </strong>
+
+            <p>
+              Puedes utilizar su ID, nombre, Instagram o los filtros.
+            </p>
+
+          </div>
+
+
+          <!-- CARGANDO RESULTADOS -->
+
+          <div
+            id="cargandoResultados"
+            class="estado-vacio"
+            style="display: none;"
+          >
+
+            <strong>
+              Cargando representantes...
+            </strong>
+
+          </div>
+
+
+          <!-- SIN RESULTADOS -->
+
+          <div
+            id="sinResultados"
+            class="estado-vacio"
+            style="display: none;"
+          >
+
+            <span class="estado-icono">
+              🔎
+            </span>
+
+            <strong>
+              No encontramos resultados
+            </strong>
+
+            <p>
+              Revisa la búsqueda o cambia los filtros.
+            </p>
+
+          </div>
+
+
+          <!-- TABLA -->
+
+          <div
+            id="contenedorTabla"
+            class="tabla-wrapper"
+            style="display: none;"
+          >
+
+            <table>
+
+              <thead>
+
+                <tr>
+                  <th>ID</th>
+                  <th>Representante</th>
+                  <th>Instagram</th>
+                  <th>Fecha</th>
+                  <th>Zona</th>
+                  <th>Gafete</th>
+                  <th></th>
+                </tr>
+
+              </thead>
+
+              <tbody id="tablaRepresentantes">
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </section>
+
+
+        <!-- =====================================
+             FICHA DEL REPRESENTANTE
+             ===================================== -->
+
+        <section
+          id="fichaRepresentante"
+          class="bloque ficha"
+          style="display: none;"
+        >
+
+          <div class="ficha-encabezado">
+
+            <div>
+
+              <p class="etiqueta-seccion">
+                REPRESENTANTE
+              </p>
+
+              <h2 id="fichaNombre">
+                —
+              </h2>
+
+              <p
+                id="fichaInstagram"
+                class="ficha-instagram"
+              >
+                —
+              </p>
+
+            </div>
+
+
+            <button
+              type="button"
+              id="cerrarFicha"
+              class="cerrar-ficha"
+              aria-label="Cerrar ficha"
+            >
+              ×
+            </button>
+
+          </div>
+
+
+          <div class="ficha-grid">
+
+            <div class="dato-ficha">
+
+              <span>
+                ID
+              </span>
+
+              <strong id="fichaId">
+                —
+              </strong>
+
+            </div>
+
+
+            <div class="dato-ficha">
+
+              <span>
+                Fecha
+              </span>
+
+              <strong id="fichaFecha">
+                —
+              </strong>
+
+            </div>
+
+
+            <div class="dato-ficha">
+
+              <span>
+                Zona
+              </span>
+
+              <strong id="fichaZona">
+                —
+              </strong>
+
+            </div>
+
+
+            <div class="dato-ficha">
+
+              <span>
+                Gafete
+              </span>
+
+              <strong id="fichaGafete">
+                Consultando...
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <!-- PAPELITOS: PREPARADO PARA DESPUÉS -->
+
+          <div class="control-pendiente">
+
+            <div>
+
+              <span class="control-titulo">
+                Papelitos
+              </span>
+
+              <p>
+                El control de confirmación se agregará en este apartado.
+              </p>
+
+            </div>
+
+            <span class="proximamente">
+              Próximamente
+            </span>
+
+          </div>
+
+
+          <div class="ficha-acciones">
+
+            <button
+              type="button"
+              id="copiarDatos"
+              class="boton-principal"
+            >
+              Copiar datos
+            </button>
+
+            <a
+              id="irAGafete"
+              href="panel.html"
+              class="boton-enlace"
+            >
+              Ir a Gafetes
+            </a>
+
+          </div>
+
+        </section>
+
+      </main>
+
+    </div>
+
+  </div>
+
+
+  <div
+    id="toast"
+    class="toast"
+    aria-live="polite"
+  ></div>
+
+
+  <script
+    type="module"
+    src="representantes.js"
+  ></script>
+
+</body>
+</html>
