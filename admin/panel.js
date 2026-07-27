@@ -1,118 +1,88 @@
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
 
-    import {
-      initializeApp
-    } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
-    import {
-      getAuth,
-      onAuthStateChanged,
-      signOut
-    } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyAesU9F4Oc7Lr8TPOFUk-Oi-lT086XjRKw",
+  authDomain: "hsmx-representantes.firebaseapp.com",
+  projectId: "hsmx-representantes",
+  storageBucket: "hsmx-representantes.firebasestorage.app",
+  messagingSenderId: "821385801252",
+  appId: "1:821385801252:web:c95ba9ffdeb90fe03732b1"
+};
 
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-    const firebaseConfig = {
+const cargando = document.getElementById("cargando");
+const contenido = document.getElementById("contenido");
+const logoutButton = document.getElementById("logoutButton");
 
-      apiKey:
-        "AIzaSyAesU9F4Oc7Lr8TPOFUk-Oi-lT086XjRKw",
-
-      authDomain:
-        "hsmx-representantes.firebaseapp.com",
-
-      projectId:
-        "hsmx-representantes",
-
-      storageBucket:
-        "hsmx-representantes.firebasestorage.app",
-
-      messagingSenderId:
-        "821385801252",
-
-      appId:
-        "1:821385801252:web:c95ba9ffdeb90fe03732b1"
-
-    };
-
-
-    const app =
-      initializeApp(firebaseConfig);
-
-    const auth =
-      getAuth(app);
-
-
-    const cargando =
-      document.getElementById("cargando");
-
-    const contenido =
-      document.getElementById("contenido");
-
-    const logoutButton =
-      document.getElementById("logoutButton");
-
-
-    onAuthStateChanged(auth, (user) => {
-
-      if (user) {
-
-        cargando.style.display = "none";
-
-        contenido.style.display = "block";
-
-      } else {
-
-        window.location.href = "./";
-
-      }
-
-    });
-
-
-    logoutButton.addEventListener(
-      "click",
-      async () => {
-
-        await signOut(auth);
-
-        window.location.href = "./";
-
-      }
-    );
-const nombreInput = document.getElementById("nombre");
-const zonaInput = document.getElementById("zona");
-const idInput = document.getElementById("idRepresentante");
-
-const textoNombre = document.getElementById("textoNombre");
-const textoZona = document.getElementById("textoZona");
-const textoId = document.getElementById("textoId");
-
-const generarGafete = document.getElementById("generarGafete");
-
-generarGafete.addEventListener("click", () => {
-
-  textoNombre.textContent = nombreInput.value;
-  textoZona.textContent = zonaInput.value;
-  textoId.textContent = idInput.value;
-
-});
 const idInput = document.getElementById("idRepresentante");
 const buscarButton = document.getElementById("buscarRepresentante");
 const estado = document.getElementById("estado");
 
-const datosEncontrados = document.getElementById("datosEncontrados");
+const datosEncontrados =
+  document.getElementById("datosEncontrados");
 
-const datoNombre = document.getElementById("datoNombre");
-const datoZona = document.getElementById("datoZona");
-const datoId = document.getElementById("datoId");
+const datoNombre =
+  document.getElementById("datoNombre");
 
-const textoNombre = document.getElementById("textoNombre");
-const textoZona = document.getElementById("textoZona");
-const textoId = document.getElementById("textoId");
+const datoZona =
+  document.getElementById("datoZona");
+
+const datoId =
+  document.getElementById("datoId");
+
+const textoNombre =
+  document.getElementById("textoNombre");
+
+const textoZona =
+  document.getElementById("textoZona");
+
+const textoId =
+  document.getElementById("textoId");
 
 const SHEET_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRsmA9mpebsNjPcTYMsklHNKShcPVEdU_xTkn-oHVjqil9SP1KrjPO8V1lEqxqnY-dna2IJY0BOUvg-/pub?gid=77234656&single=true&output=csv";
 
 
+onAuthStateChanged(auth, (user) => {
+
+  if (user) {
+
+    cargando.style.display = "none";
+    contenido.style.display = "block";
+
+  } else {
+
+    window.location.href = "./";
+
+  }
+
+});
+
+
+logoutButton.addEventListener(
+  "click",
+  async () => {
+
+    await signOut(auth);
+
+    window.location.href = "./";
+
+  }
+);
+
+
 function parsearCSV(texto) {
+
   const filas = [];
 
   let fila = [];
@@ -120,127 +90,216 @@ function parsearCSV(texto) {
   let dentroComillas = false;
 
   for (let i = 0; i < texto.length; i++) {
+
     const caracter = texto[i];
     const siguiente = texto[i + 1];
 
-    if (caracter === '"' && dentroComillas && siguiente === '"') {
+    if (
+      caracter === '"' &&
+      dentroComillas &&
+      siguiente === '"'
+    ) {
+
       campo += '"';
       i++;
+
     }
 
     else if (caracter === '"') {
+
       dentroComillas = !dentroComillas;
+
     }
 
-    else if (caracter === "," && !dentroComillas) {
+    else if (
+      caracter === "," &&
+      !dentroComillas
+    ) {
+
       fila.push(campo);
       campo = "";
+
     }
 
     else if (
       (caracter === "\n" || caracter === "\r") &&
       !dentroComillas
     ) {
-      if (caracter === "\r" && siguiente === "\n") {
+
+      if (
+        caracter === "\r" &&
+        siguiente === "\n"
+      ) {
         i++;
       }
 
       fila.push(campo);
 
-      if (fila.some(valor => valor.trim() !== "")) {
+      if (
+        fila.some(
+          valor => valor.trim() !== ""
+        )
+      ) {
         filas.push(fila);
       }
 
       fila = [];
       campo = "";
+
     }
 
     else {
+
       campo += caracter;
+
     }
+
   }
 
-  if (campo.length > 0 || fila.length > 0) {
+  if (
+    campo.length > 0 ||
+    fila.length > 0
+  ) {
+
     fila.push(campo);
     filas.push(fila);
+
   }
 
   return filas;
+
 }
 
 
 async function buscarRepresentante() {
-  const idBuscado = idInput.value
-    .trim()
-    .toUpperCase();
+
+  const idBuscado =
+    idInput.value
+      .trim()
+      .toUpperCase();
 
   if (!idBuscado) {
-    estado.textContent = "Escribe un ID.";
-    datosEncontrados.style.display = "none";
+
+    estado.textContent =
+      "Escribe un ID.";
+
+    datosEncontrados.style.display =
+      "none";
+
     return;
+
   }
 
-  estado.textContent = "Buscando representante...";
-  datosEncontrados.style.display = "none";
+  estado.textContent =
+    "Buscando representante...";
+
+  datosEncontrados.style.display =
+    "none";
 
   try {
-    const respuesta = await fetch(
-      SHEET_URL + "&t=" + Date.now()
-    );
+
+    const respuesta =
+      await fetch(
+        SHEET_URL +
+        "&t=" +
+        Date.now()
+      );
 
     if (!respuesta.ok) {
-      throw new Error("No se pudo leer Google Sheets.");
+
+      throw new Error(
+        "No se pudo leer Google Sheets."
+      );
+
     }
 
-    const csv = await respuesta.text();
-    const filas = parsearCSV(csv);
+    const csv =
+      await respuesta.text();
+
+    const filas =
+      parsearCSV(csv);
 
     let representante = null;
 
     for (const fila of filas) {
-      const id = (fila[0] || "")
-        .trim()
-        .toUpperCase();
+
+      const id =
+        (fila[0] || "")
+          .trim()
+          .toUpperCase();
 
       if (id === idBuscado) {
+
         representante = {
-          id: (fila[0] || "").trim(),
-          zona: (fila[2] || "").trim(),
-          nombre: (fila[3] || "").trim()
+
+          id:
+            (fila[0] || "").trim(),
+
+          zona:
+            (fila[2] || "").trim(),
+
+          nombre:
+            (fila[3] || "").trim()
+
         };
 
         break;
+
       }
+
     }
 
     if (!representante) {
-      estado.textContent = "No encontré ese ID.";
+
+      estado.textContent =
+        "No encontré ese ID.";
 
       textoNombre.textContent = "";
       textoZona.textContent = "";
       textoId.textContent = "";
 
+      datosEncontrados.style.display =
+        "none";
+
       return;
+
     }
 
-    estado.textContent = "Representante encontrado.";
+    estado.textContent =
+      "Representante encontrado.";
 
-    datoNombre.textContent = representante.nombre;
-    datoZona.textContent = representante.zona;
-    datoId.textContent = representante.id;
+    datoNombre.textContent =
+      representante.nombre;
 
-    datosEncontrados.style.display = "block";
+    datoZona.textContent =
+      representante.zona;
 
-    textoNombre.textContent = representante.nombre;
-    textoZona.textContent = representante.zona;
-    textoId.textContent = representante.id;
+    datoId.textContent =
+      representante.id;
 
-  } catch (error) {
+    datosEncontrados.style.display =
+      "block";
+
+    textoNombre.textContent =
+      representante.nombre;
+
+    textoZona.textContent =
+      representante.zona;
+
+    textoId.textContent =
+      representante.id;
+
+  }
+
+  catch (error) {
+
     console.error(error);
 
     estado.textContent =
       "Hubo un error al leer la lista de representantes.";
+
   }
+
 }
 
 
@@ -253,8 +312,12 @@ buscarButton.addEventListener(
 idInput.addEventListener(
   "keydown",
   (event) => {
+
     if (event.key === "Enter") {
+
       buscarRepresentante();
+
     }
+
   }
 );
