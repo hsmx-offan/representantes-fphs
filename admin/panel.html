@@ -10,7 +10,136 @@
   >
 
   <title>Panel Admin | HSMX OFFAN</title>
+ <style>
 
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f4f1;
+      margin: 0;
+      padding: 30px;
+    }
+
+    .panel {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .logout {
+      background: #222;
+      color: white;
+    }
+
+    #contenido {
+      display: none;
+    }
+
+    #cargando {
+      text-align: center;
+      padding: 50px 0;
+    }
+.generador {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.formulario input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.formulario button {
+  margin-top: 10px;
+  background: #222;
+  color: white;
+}
+
+.preview {
+  text-align: center;
+}
+
+.gafete-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  margin: auto;
+}
+
+#gafeteBase {
+  width: 100%;
+  display: block;
+}
+
+.dato {
+  position: absolute;
+  color: white;
+  font-weight: 600;
+  text-align: left;
+  pointer-events: none;
+}
+
+/* Posiciones aproximadas */
+.nombre {
+  left: 35%;
+  top: 52.2%;
+  font-size: 24px;
+}
+
+.zona {
+  left: 35%;
+  top: 57%;
+  font-size: 24px;
+}
+
+.id {
+  left: 35%;
+  top: 62%;
+  font-size: 24px;
+}
+
+@media (max-width: 800px) {
+  .generador {
+    grid-template-columns: 1fr;
+  }
+}
+  </style>
 
 </head>
 
