@@ -502,7 +502,7 @@ descargarButton.addEventListener(
     ctx.fillStyle = "#ffffff";
 
     ctx.font =
-      `600 ${canvas.width * 0.031}px Arial`;
+  `600 ${canvas.width * 0.041}px Arial`;
 
     ctx.textBaseline = "top";
 
@@ -548,7 +548,7 @@ descargarButton.addEventListener(
       canvas.width * 0.39;
 
     const qrY =
-      canvas.height * 0.665;
+  canvas.height * 0.68;
 
     const qrSize =
       canvas.width * 0.22;
