@@ -53,6 +53,8 @@ const nombreAdmin =
 
 const logoutButton =
   document.getElementById("logoutButton");
+const themeToggle =
+  document.getElementById("themeToggle");
 
 const totalRepresentantes =
   document.getElementById("totalRepresentantes");
@@ -426,6 +428,52 @@ logoutButton.addEventListener(
 
     window.location.href =
       "./";
+
+  }
+);
+// ========================================
+// TEMA CLARO / OSCURO
+// ========================================
+
+function aplicarTema(tema) {
+
+  document.documentElement.setAttribute(
+    "data-theme",
+    tema
+  );
+
+  themeToggle.textContent =
+    tema === "dark" ? "☀️" : "🌙";
+
+}
+
+
+const temaGuardado =
+  localStorage.getItem("temaAdmin") || "dark";
+
+aplicarTema(temaGuardado);
+
+
+themeToggle.addEventListener(
+  "click",
+  () => {
+
+    const temaActual =
+      document.documentElement.getAttribute(
+        "data-theme"
+      );
+
+    const nuevoTema =
+      temaActual === "dark"
+        ? "light"
+        : "dark";
+
+    aplicarTema(nuevoTema);
+
+    localStorage.setItem(
+      "temaAdmin",
+      nuevoTema
+    );
 
   }
 );
