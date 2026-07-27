@@ -511,21 +511,21 @@ descargarButton.addEventListener(
 ctx.fillText(
   nombre,
   canvas.width * 0.35,
-  canvas.height * 0.535
+  canvas.height * 0.529
 );
 
 // Zona
 ctx.fillText(
   zona,
   canvas.width * 0.35,
-  canvas.height * 0.583
+  canvas.height * 0.577
 );
 
 // ID
 ctx.fillText(
   id,
   canvas.width * 0.35,
-  canvas.height * 0.633
+  canvas.height * 0.627
 );
 
 
