@@ -125,3 +125,19 @@
     grid-template-columns: 1fr;
   }
 }
+.qr-container {
+  position: absolute;
+  width: 18%;
+  aspect-ratio: 1;
+  left: 41%;
+  top: 71%;
+  background: white;
+  padding: 4px;
+}
+
+.qr-container img,
+.qr-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
