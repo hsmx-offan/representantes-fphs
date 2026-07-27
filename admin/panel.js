@@ -494,7 +494,7 @@ descargarButton.addEventListener(
     ctx.fillStyle = "#ffffff";
 
     ctx.font =
-      `600 ${canvas.width * 0.067}px Arial`;
+  `600 ${canvas.width * 0.055}px Arial`;
 
     ctx.textBaseline = "top";
 
