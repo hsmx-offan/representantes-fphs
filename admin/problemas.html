@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Problemas | HSMX OFFAN</title>
+
+  <link
+    rel="stylesheet"
+    href="problemas.css"
+  >
+
+</head>
+
+<body>
+
+  <div id="cargando">
+    Verificando acceso...
+  </div>
+
+
+  <div
+    id="contenido"
+    style="display: none;"
+  >
+
+    <div class="app">
+
+      <!-- ENCABEZADO -->
+
+      <header class="topbar">
+
+        <div>
+
+          <p class="eyebrow">
+            HARRY STYLES MÉXICO OFFAN
+          </p>
+
+          <h1>Problemas</h1>
+
+          <p class="subtitulo">
+            Revisión automática de registros de representantes
+          </p>
+
+        </div>
+
+
+        <div class="acciones-topbar">
+
+          <button
+            type="button"
+            id="themeToggle"
+            class="theme-toggle"
+            aria-label="Cambiar tema"
+            title="Cambiar tema"
+          >
+            ☀️
+          </button>
+
+          <button
+            type="button"
+            id="logoutButton"
+            class="logout"
+          >
+            Cerrar sesión
+          </button>
+
+        </div>
+
+      </header>
+
+
+      <!-- MENÚ -->
+
+      <nav class="menu">
+
+        <a
+          href="dashboard.html"
+          class="menu-item"
+        >
+          Inicio
+        </a>
+
+        <a
+          href="representantes.html"
+          class="menu-item"
+        >
+          Representantes
+        </a>
+
+        <a
+          href="panel.html"
+          class="menu-item"
+        >
+          Gafetes
+        </a>
+
+        <a
+          href="problemas.html"
+          class="menu-item activo"
+        >
+          Problemas
+        </a>
+
+        <a
+          href="#"
+          class="menu-item deshabilitado"
+        >
+          Publicaciones
+        </a>
+
+        <a
+          href="#"
+          class="menu-item deshabilitado"
+        >
+          Material
+        </a>
+
+        <a
+          href="#"
+          class="menu-item deshabilitado"
+        >
+          Comunicados
+        </a>
+
+      </nav>
+
+
+      <main>
+
+        <!-- RESUMEN -->
+
+        <section class="bloque resumen-problemas">
+
+          <div>
+
+            <p class="etiqueta-seccion">
+              REVISIÓN
+            </p>
+
+            <h2>Problemas detectados</h2>
+
+            <p>
+              Esta sección solo revisa los datos. Los cambios se siguen haciendo desde el Sheet.
+            </p>
+
+          </div>
+
+
+          <div class="contador-principal">
+
+            <span id="totalProblemas">
+              —
+            </span>
+
+            <small>
+              requieren revisión
+            </small>
+
+          </div>
+
+        </section>
+
+
+        <!-- FILTROS -->
+
+        <section class="bloque">
+
+          <div class="titulo-bloque">
+
+            <div>
+
+              <p class="etiqueta-seccion">
+                FILTROS
+              </p>
+
+              <h2>Filtrar problemas</h2>
+
+            </div>
+
+          </div>
+
+
+          <div class="filtros">
+
+            <div class="campo">
+
+              <label for="filtroTipo">
+                Tipo de problema
+              </label>
+
+              <select id="filtroTipo">
+
+                <option value="">
+                  Todos
+                </option>
+
+                <option value="id-duplicado">
+                  ID duplicado
+                </option>
+
+                <option value="instagram-duplicado">
+                  Instagram con IDs distintos
+                </option>
+
+                <option value="sin-zona">
+                  Sin zona
+                </option>
+
+                <option value="sin-fecha">
+                  Sin fecha
+                </option>
+
+                <option value="sin-instagram">
+                  Sin Instagram
+                </option>
+
+                <option value="sin-nombre">
+                  Sin nombre
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="campo campo-busqueda">
+
+              <label for="busquedaProblema">
+                Buscar
+              </label>
+
+              <input
+                type="search"
+                id="busquedaProblema"
+                placeholder="ID, nombre o Instagram"
+                autocomplete="off"
+              >
+
+            </div>
+
+
+            <button
+              type="button"
+              id="limpiarFiltros"
+              class="boton-secundario"
+            >
+              Limpiar
+            </button>
+
+          </div>
+
+        </section>
+
+
+        <!-- RESULTADOS -->
+
+        <section class="bloque">
+
+          <div class="titulo-bloque">
+
+            <div>
+
+              <p class="etiqueta-seccion">
+                RESULTADOS
+              </p>
+
+              <h2>Registros para revisar</h2>
+
+              <p id="contadorResultados">
+                —
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div
+            id="cargandoProblemas"
+            class="estado-vacio"
+          >
+            Analizando registros...
+          </div>
+
+
+          <div
+            id="sinProblemas"
+            class="estado-vacio"
+            style="display: none;"
+          >
+
+            <span class="estado-icono">
+              ✅
+            </span>
+
+            <strong>
+              Todo se ve bien
+            </strong>
+
+            <p>
+              No encontramos problemas con los filtros actuales.
+            </p>
+
+          </div>
+
+
+          <div
+            id="listaProblemas"
+            class="lista-problemas"
+            style="display: none;"
+          ></div>
+
+        </section>
+
+      </main>
+
+    </div>
+
+  </div>
+
+
+  <div
+    id="toast"
+    class="toast"
+    aria-live="polite"
+  ></div>
+
+
+  <script
+    type="module"
+    src="problemas.js"
+  ></script>
+
+</body>
+</html>
