@@ -39,8 +39,10 @@ const db = getFirestore(app);
 
 const SHEET_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRsmA9mpebsNjPcTYMsklHNKShcPVEdU_xTkn-oHVjqil9SP1KrjPO8V1lEqxqnY-dna2IJY0BOUvg-/pub?gid=77234656&single=true&output=csv";
+
 const PAPELITOS_API_URL =
   "https://script.google.com/macros/s/AKfycbz1nbly2DHBiw5NiVW0s0MiQYX-s2hUQEbpcR_mGCHcL2JIwV1I53nZCwjvCrO8SzNC7g/exec";
+
 
 // ========================================
 // ELEMENTOS
@@ -121,6 +123,15 @@ const copiarDatos =
 const irAGafete =
   document.getElementById("irAGafete");
 
+const estadoPapelitos =
+  document.getElementById("estadoPapelitos");
+
+const detallePapelitos =
+  document.getElementById("detallePapelitos");
+
+const cambiarPapelitos =
+  document.getElementById("cambiarPapelitos");
+
 const toast =
   document.getElementById("toast");
 
@@ -132,6 +143,10 @@ const toast =
 let representantes = [];
 
 let representanteSeleccionado = null;
+
+let registrosPapelitos = [];
+
+let papelitosSeleccionado = null;
 
 
 // ========================================
@@ -278,7 +293,6 @@ function parsearCSV(texto) {
     ) {
 
       fila.push(campo);
-
       campo = "";
 
     }
@@ -371,6 +385,150 @@ function normalizarTexto(texto) {
 
 
 // ========================================
+// CLAVE ÚNICA PAPELITOS
+// ========================================
+
+function crearClavePapelitos(
+  id,
+  fecha,
+  zona
+) {
+
+  return [
+    normalizarTexto(id),
+    normalizarTexto(fecha),
+    normalizarTexto(zona)
+  ].join("|");
+
+}
+
+
+// ========================================
+// BUSCAR ESTADO LOCAL DE PAPELITOS
+// ========================================
+
+function obtenerPapelitos(
+  representante
+) {
+
+  const clave =
+    crearClavePapelitos(
+      representante.id,
+      representante.fecha,
+      representante.zona
+    );
+
+
+  return (
+    registrosPapelitos.find(
+      registro =>
+        crearClavePapelitos(
+          registro.id,
+          registro.fecha,
+          registro.zona
+        ) === clave
+    ) || null
+  );
+
+}
+
+
+// ========================================
+// PETICIÓN A APPS SCRIPT
+// ========================================
+
+async function peticionPapelitos(
+  datos
+) {
+
+  const user =
+    auth.currentUser;
+
+
+  if (!user) {
+
+    throw new Error(
+      "No hay una sesión activa."
+    );
+
+  }
+
+
+  const idToken =
+    await user.getIdToken();
+
+
+  const respuesta =
+    await fetch(
+      PAPELITOS_API_URL,
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type":
+            "text/plain;charset=utf-8"
+        },
+
+        body:
+          JSON.stringify({
+            ...datos,
+            idToken
+          })
+      }
+    );
+
+
+  if (!respuesta.ok) {
+
+    throw new Error(
+      "No se pudo conectar con el control de papelitos."
+    );
+
+  }
+
+
+  const resultado =
+    await respuesta.json();
+
+
+  if (!resultado.ok) {
+
+    throw new Error(
+      resultado.error ||
+      "Ocurrió un error con el control de papelitos."
+    );
+
+  }
+
+
+  return resultado;
+
+}
+
+
+// ========================================
+// CARGAR TODO EL CONTROL DE PAPELITOS
+// ========================================
+
+async function cargarPapelitos() {
+
+  const resultado =
+    await peticionPapelitos({
+      accion: "listar"
+    });
+
+
+  registrosPapelitos =
+    Array.isArray(
+      resultado.registros
+    )
+      ? resultado.registros
+      : [];
+
+}
+
+
+// ========================================
 // CARGAR REPRESENTANTES
 // ========================================
 
@@ -440,8 +598,7 @@ async function cargarRepresentantes() {
 
       representantes.push({
 
-        id:
-          id,
+        id,
 
         instagram:
           (fila[1] || "")
@@ -460,6 +617,32 @@ async function cargarRepresentantes() {
             .trim()
 
       });
+
+    }
+
+
+    // Cargamos el control de papelitos
+    // una sola vez.
+
+    try {
+
+      await cargarPapelitos();
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "Error cargando papelitos:",
+        error
+      );
+
+      registrosPapelitos =
+        [];
+
+      mostrarToast(
+        "No se pudo cargar el control de papelitos"
+      );
 
     }
 
@@ -513,8 +696,7 @@ function cargarOpcionesFiltros() {
           )
           .filter(Boolean)
       )
-    ]
-      .sort();
+    ].sort();
 
 
   const zonas =
@@ -654,7 +836,7 @@ function aplicarFiltros() {
 // MOSTRAR RESULTADOS
 // ========================================
 
-async function mostrarResultados(
+function mostrarResultados(
   resultados
 ) {
 
@@ -671,6 +853,9 @@ async function mostrarResultados(
     "none";
 
   representanteSeleccionado =
+    null;
+
+  papelitosSeleccionado =
     null;
 
 
@@ -716,6 +901,16 @@ async function mostrarResultados(
       );
 
 
+    const papelitos =
+      obtenerPapelitos(
+        representante
+      );
+
+    const papelitosConfirmados =
+      papelitos &&
+      papelitos.confirmado === true;
+
+
     fila.innerHTML = `
       <td>
         ${escaparHTML(
@@ -757,6 +952,14 @@ async function mostrarResultados(
           representante.zona ||
           "—"
         )}
+      </td>
+
+      <td class="estado-papelitos-tabla">
+        ${
+          papelitosConfirmados
+            ? "✅ Confirmados"
+            : "⏳ Pendiente"
+        }
       </td>
 
       <td
@@ -867,6 +1070,134 @@ async function consultarGafete(id) {
 
 
 // ========================================
+// FORMATEAR FECHA CONFIRMACIÓN
+// ========================================
+
+function formatearFechaConfirmacion(
+  fecha
+) {
+
+  if (!fecha) {
+
+    return "";
+
+  }
+
+
+  const objetoFecha =
+    new Date(fecha);
+
+
+  if (
+    Number.isNaN(
+      objetoFecha.getTime()
+    )
+  ) {
+
+    return "";
+
+  }
+
+
+  return objetoFecha.toLocaleString(
+    "es-MX",
+    {
+      dateStyle: "medium",
+      timeStyle: "short"
+    }
+  );
+
+}
+
+
+// ========================================
+// ACTUALIZAR CONTROL VISUAL DE PAPELITOS
+// ========================================
+
+function mostrarEstadoPapelitos(
+  representante
+) {
+
+  papelitosSeleccionado =
+    obtenerPapelitos(
+      representante
+    );
+
+
+  const confirmado =
+    papelitosSeleccionado &&
+    papelitosSeleccionado.confirmado ===
+      true;
+
+
+  if (confirmado) {
+
+    estadoPapelitos.textContent =
+      "✅ Confirmados";
+
+
+    const partes = [];
+
+
+    if (
+      papelitosSeleccionado
+        .confirmadoPor
+    ) {
+
+      partes.push(
+        `Confirmado por: ${
+          papelitosSeleccionado
+            .confirmadoPor
+        }`
+      );
+
+    }
+
+
+    const fecha =
+      formatearFechaConfirmacion(
+        papelitosSeleccionado
+          .fechaConfirmacion
+      );
+
+
+    if (fecha) {
+
+      partes.push(fecha);
+
+    }
+
+
+    detallePapelitos.textContent =
+      partes.join(" · ");
+
+
+    cambiarPapelitos.textContent =
+      "Marcar como pendiente";
+
+  }
+
+  else {
+
+    estadoPapelitos.textContent =
+      "⏳ Pendiente";
+
+    detallePapelitos.textContent =
+      "Aún no se ha confirmado la entrega de papelitos.";
+
+    cambiarPapelitos.textContent =
+      "Confirmar papelitos";
+
+  }
+
+
+  cambiarPapelitos.disabled =
+    false;
+
+}
+
+
+// ========================================
 // ABRIR FICHA
 // ========================================
 
@@ -906,8 +1237,26 @@ async function abrirFicha(
     "Consultando...";
 
 
+  estadoPapelitos.textContent =
+    "Consultando...";
+
+  detallePapelitos.textContent =
+    "";
+
+  cambiarPapelitos.textContent =
+    "Consultando...";
+
+  cambiarPapelitos.disabled =
+    true;
+
+
   fichaRepresentante.style.display =
     "block";
+
+
+  mostrarEstadoPapelitos(
+    representante
+  );
 
 
   try {
@@ -949,6 +1298,254 @@ async function abrirFicha(
 
 
 // ========================================
+// CAMBIAR ESTADO DE PAPELITOS
+// ========================================
+
+cambiarPapelitos.addEventListener(
+  "click",
+  async () => {
+
+    if (
+      !representanteSeleccionado
+    ) {
+
+      return;
+
+    }
+
+
+    const representante =
+      representanteSeleccionado;
+
+
+    const registroActual =
+      obtenerPapelitos(
+        representante
+      );
+
+
+    const estaConfirmado =
+      registroActual &&
+      registroActual.confirmado ===
+        true;
+
+
+    const nuevoEstado =
+      !estaConfirmado;
+
+
+    cambiarPapelitos.disabled =
+      true;
+
+    cambiarPapelitos.textContent =
+      nuevoEstado
+        ? "Confirmando..."
+        : "Actualizando...";
+
+
+    try {
+
+      const resultado =
+        await peticionPapelitos({
+
+          accion:
+            "actualizar",
+
+          id:
+            representante.id,
+
+          fecha:
+            representante.fecha,
+
+          zona:
+            representante.zona,
+
+          confirmado:
+            nuevoEstado
+
+        });
+
+
+      const clave =
+        crearClavePapelitos(
+          representante.id,
+          representante.fecha,
+          representante.zona
+        );
+
+
+      registrosPapelitos =
+        registrosPapelitos.filter(
+          registro =>
+            crearClavePapelitos(
+              registro.id,
+              registro.fecha,
+              registro.zona
+            ) !== clave
+        );
+
+
+      registrosPapelitos.push({
+
+        id:
+          representante.id,
+
+        fecha:
+          representante.fecha,
+
+        zona:
+          representante.zona,
+
+        confirmado:
+          resultado.confirmado ===
+          true,
+
+        confirmadoPor:
+          resultado.confirmadoPor ||
+          "",
+
+        fechaConfirmacion:
+          resultado.fechaConfirmacion ||
+          ""
+
+      });
+
+
+      mostrarEstadoPapelitos(
+        representante
+      );
+
+
+      // Actualiza la tabla sin volver
+      // a consultar Apps Script.
+
+      actualizarPapelitosEnTabla(
+        representante
+      );
+
+
+      mostrarToast(
+        nuevoEstado
+          ? "Papelitos confirmados"
+          : "Papelitos marcados como pendientes"
+      );
+
+    }
+
+    catch (error) {
+
+      console.error(error);
+
+      mostrarToast(
+        error.message ||
+        "No se pudo actualizar"
+      );
+
+
+      mostrarEstadoPapelitos(
+        representante
+      );
+
+    }
+
+  }
+);
+
+
+// ========================================
+// ACTUALIZAR PAPELITOS EN LA TABLA
+// ========================================
+
+function actualizarPapelitosEnTabla(
+  representante
+) {
+
+  const filas =
+    tablaRepresentantes
+      .querySelectorAll("tr");
+
+
+  const claveBuscada =
+    crearClavePapelitos(
+      representante.id,
+      representante.fecha,
+      representante.zona
+    );
+
+
+  for (const fila of filas) {
+
+    const boton =
+      fila.querySelector(
+        ".ver-ficha"
+      );
+
+
+    if (!boton) {
+
+      continue;
+
+    }
+
+
+    const celdas =
+      fila.querySelectorAll("td");
+
+
+    if (
+      celdas.length < 8
+    ) {
+
+      continue;
+
+    }
+
+
+    const id =
+      celdas[0].textContent.trim();
+
+    const fecha =
+      celdas[3].textContent.trim();
+
+    const zona =
+      celdas[4].textContent.trim();
+
+
+    const claveFila =
+      crearClavePapelitos(
+        id,
+        fecha,
+        zona
+      );
+
+
+    if (
+      claveFila === claveBuscada
+    ) {
+
+      const registro =
+        obtenerPapelitos(
+          representante
+        );
+
+
+      celdas[5].textContent =
+        registro &&
+        registro.confirmado === true
+          ? "✅ Confirmados"
+          : "⏳ Pendiente";
+
+
+      break;
+
+    }
+
+  }
+
+}
+
+
+// ========================================
 // CERRAR FICHA
 // ========================================
 
@@ -960,6 +1557,9 @@ cerrarFicha.addEventListener(
       "none";
 
     representanteSeleccionado =
+      null;
+
+    papelitosSeleccionado =
       null;
 
   }
