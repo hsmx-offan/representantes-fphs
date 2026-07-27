@@ -1,1 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
 
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Dashboard Admin | HSMX OFFAN</title>
+
+  <link rel="stylesheet" href="dashboard.css">
+
+</head>
+
+<body>
+
+  <!-- =====================================
+       VERIFICANDO SESIÓN
+       ===================================== -->
+
+  <div id="cargando">
+    Verificando acceso...
+  </div>
+
+
+  <!-- =====================================
+       PANEL
+       ===================================== -->
+
+  <div id="contenido" style="display: none;">
+
+    <div class="dashboard">
+
+      <!-- ENCABEZADO -->
+
+      <header class="topbar">
+
+        <div>
+          <p class="eyebrow">
+            HARRY STYLES MÉXICO OFFAN
+          </p>
+
+          <h1>Panel administrativo</h1>
+
+          <p class="bienvenida">
+            Hola, <strong id="nombreAdmin">Admin</strong>
+          </p>
+        </div>
+
+        <button
+          type="button"
+          id="logoutButton"
+          class="logout"
+        >
+          Cerrar sesión
+        </button>
+
+      </header>
+
+
+      <!-- =====================================
+           MENÚ
+           ===================================== -->
+
+      <nav class="menu">
+
+        <a
+          href="dashboard.html"
+          class="menu-item activo"
+        >
+          Inicio
+        </a>
+
+        <a
+          href="#"
+          class="menu-item deshabilitado"
+        >
+          Representantes
+        </a>
+
+        <a
+          href="panel.html"
+          class="menu-item"
+        >
+          Gafetes
+        </a>
+
+        <a
+          href="#"
+          class="menu-item deshabilitado"
+        >
+          Problemas
+        </a>
+
+        <a
+          href="#"
+          class="menu-item deshabilitado"
+        >
+          Publicaciones
+        </a>
+
+        <a
+          href="#"
+          class="menu-item deshabilitado"
+        >
+          Material
+        </a>
+
+        <a
+          href="#"
+          class="menu-item deshabilitado"
+        >
+          Comunicados
+        </a>
+
+      </nav>
+
+
+      <!-- =====================================
+           RESUMEN
+           ===================================== -->
+
+      <main>
+
+        <section class="encabezado-seccion">
+
+          <div>
+            <h2>Resumen general</h2>
+
+            <p>
+              Estado actual del Fan Project 2026
+            </p>
+          </div>
+
+        </section>
+
+
+        <section class="tarjetas">
+
+          <!-- REPRESENTANTES -->
+
+          <article class="tarjeta">
+
+            <span class="tarjeta-icono">
+              👥
+            </span>
+
+            <p class="tarjeta-titulo">
+              Representantes
+            </p>
+
+            <p
+              class="tarjeta-numero"
+              id="totalRepresentantes"
+            >
+              —
+            </p>
+
+            <p class="tarjeta-detalle">
+              registrados
+            </p>
+
+          </article>
+
+
+          <!-- PAPELITOS -->
+
+          <article class="tarjeta">
+
+            <span class="tarjeta-icono">
+              📄
+            </span>
+
+            <p class="tarjeta-titulo">
+              Papelitos
+            </p>
+
+            <p
+              class="tarjeta-numero"
+              id="papelitosConfirmados"
+            >
+              —
+            </p>
+
+            <p class="tarjeta-detalle">
+              confirmados
+            </p>
+
+          </article>
+
+
+          <!-- GAFETES -->
+
+          <article class="tarjeta">
+
+            <span class="tarjeta-icono">
+              🪪
+            </span>
+
+            <p class="tarjeta-titulo">
+              Gafetes
+            </p>
+
+            <p
+              class="tarjeta-numero"
+              id="gafetesEnviados"
+            >
+              —
+            </p>
+
+            <p class="tarjeta-detalle">
+              enviados
+            </p>
+
+          </article>
+
+
+          <!-- PROBLEMAS -->
+
+          <article class="tarjeta">
+
+            <span class="tarjeta-icono">
+              ⚠️
+            </span>
+
+            <p class="tarjeta-titulo">
+              Problemas
+            </p>
+
+            <p
+              class="tarjeta-numero"
+              id="totalProblemas"
+            >
+              —
+            </p>
+
+            <p class="tarjeta-detalle">
+              requieren revisión
+            </p>
+
+          </article>
+
+        </section>
+
+
+        <!-- =====================================
+             ACCESOS RÁPIDOS
+             ===================================== -->
+
+        <section class="bloque">
+
+          <div class="titulo-bloque">
+            <h2>Accesos rápidos</h2>
+          </div>
+
+          <div class="accesos">
+
+            <a
+              href="panel.html"
+              class="acceso"
+            >
+
+              <span>🪪</span>
+
+              <div>
+                <strong>Generador de gafetes</strong>
+                <p>
+                  Generar PNG y consultar estado de envío.
+                </p>
+              </div>
+
+            </a>
+
+
+            <div class="acceso proximamente">
+
+              <span>👥</span>
+
+              <div>
+                <strong>Buscar representante</strong>
+                <p>
+                  Próximamente
+                </p>
+              </div>
+
+            </div>
+
+
+            <div class="acceso proximamente">
+
+              <span>📰</span>
+
+              <div>
+                <strong>Nueva publicación</strong>
+                <p>
+                  Próximamente
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =====================================
+             COMUNICADOS
+             ===================================== -->
+
+        <section class="bloque">
+
+          <div class="titulo-bloque">
+
+            <div>
+              <h2>Último comunicado</h2>
+              <p>Información para el equipo de administración.</p>
+            </div>
+
+          </div>
+
+          <div
+            id="ultimoComunicado"
+            class="comunicado-vacio"
+          >
+            Todavía no hay comunicados.
+          </div>
+
+        </section>
+
+      </main>
+
+    </div>
+
+  </div>
+
+
+  <script
+    type="module"
+    src="dashboard.js"
+  ></script>
+
+</body>
+</html>
