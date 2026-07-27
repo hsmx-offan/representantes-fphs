@@ -7,6 +7,7 @@ import {
   onAuthStateChanged,
   signOut
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
 import {
   getFirestore,
   doc,
@@ -14,6 +15,12 @@ import {
   setDoc,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+
+// ========================================
+// FIREBASE
+// ========================================
+
 const firebaseConfig = {
   apiKey: "AIzaSyAesU9F4Oc7Lr8TPOFUk-Oi-lT086XjRKw",
   authDomain: "hsmx-representantes.firebaseapp.com",
@@ -24,8 +31,11 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
 const auth = getAuth(app);
+
 const db = getFirestore(app);
+
 
 // ========================================
 // ELEMENTOS
@@ -74,6 +84,32 @@ const gafeteBase =
   document.getElementById("gafeteBase");
 
 
+// NUEVOS ELEMENTOS DEL ESTADO DEL GAFETE
+
+const estadoGafete =
+  document.getElementById("estadoGafete");
+
+const textoEstadoGafete =
+  document.getElementById("textoEstadoGafete");
+
+const detalleEstadoGafete =
+  document.getElementById("detalleEstadoGafete");
+
+const cambiarEstadoGafete =
+  document.getElementById("cambiarEstadoGafete");
+
+
+// ========================================
+// VARIABLES
+// ========================================
+
+let usuarioActual = null;
+
+let idRepresentanteActual = "";
+
+let gafeteEstaEnviado = false;
+
+
 // ========================================
 // URLS
 // ========================================
@@ -93,10 +129,14 @@ onAuthStateChanged(auth, (user) => {
 
   if (user) {
 
+    usuarioActual = user;
+
     cargando.style.display = "none";
     contenido.style.display = "block";
 
   } else {
+
+    usuarioActual = null;
 
     window.location.href = "./";
 
@@ -250,6 +290,292 @@ function generarQR(idRepresentante) {
 
 
 // ========================================
+// LIMPIAR ESTADO DEL GAFETE
+// ========================================
+
+function limpiarEstadoGafete() {
+
+  idRepresentanteActual = "";
+
+  gafeteEstaEnviado = false;
+
+  estadoGafete.style.display = "none";
+
+  textoEstadoGafete.textContent = "";
+
+  detalleEstadoGafete.textContent = "";
+
+  cambiarEstadoGafete.textContent =
+    "Marcar como enviado";
+
+}
+
+
+// ========================================
+// MOSTRAR ESTADO DEL GAFETE
+// ========================================
+
+function mostrarEstadoGafete(datos) {
+
+  estadoGafete.style.display = "block";
+
+  gafeteEstaEnviado =
+    datos?.enviado === true;
+
+
+  if (gafeteEstaEnviado) {
+
+    textoEstadoGafete.textContent =
+      "✅ Enviado";
+
+    cambiarEstadoGafete.textContent =
+      "Marcar como pendiente";
+
+
+    let detalle = "";
+
+    if (
+      datos.fechaEnvio &&
+      typeof datos.fechaEnvio.toDate === "function"
+    ) {
+
+      const fecha =
+        datos.fechaEnvio.toDate();
+
+      detalle =
+        fecha.toLocaleString(
+          "es-MX",
+          {
+            dateStyle: "medium",
+            timeStyle: "short"
+          }
+        );
+
+    }
+
+
+    if (datos.admin) {
+
+      if (detalle) {
+        detalle += " · ";
+      }
+
+      detalle +=
+        `Marcado por ${datos.admin}`;
+
+    }
+
+
+    detalleEstadoGafete.textContent =
+      detalle;
+
+  }
+
+  else {
+
+    textoEstadoGafete.textContent =
+      "⏳ Pendiente de envío";
+
+    detalleEstadoGafete.textContent =
+      "";
+
+    cambiarEstadoGafete.textContent =
+      "Marcar como enviado";
+
+  }
+
+}
+
+
+// ========================================
+// CONSULTAR ESTADO DEL GAFETE
+// ========================================
+
+async function consultarEstadoGafete(
+  idRepresentante
+) {
+
+  idRepresentanteActual =
+    idRepresentante;
+
+  estadoGafete.style.display =
+    "block";
+
+  textoEstadoGafete.textContent =
+    "Consultando...";
+
+  detalleEstadoGafete.textContent =
+    "";
+
+  cambiarEstadoGafete.disabled =
+    true;
+
+
+  try {
+
+    const referencia =
+      doc(
+        db,
+        "gafetes",
+        idRepresentante
+      );
+
+    const documento =
+      await getDoc(referencia);
+
+
+    if (!documento.exists()) {
+
+      mostrarEstadoGafete({
+        enviado: false
+      });
+
+      return;
+
+    }
+
+
+    mostrarEstadoGafete(
+      documento.data()
+    );
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "Error consultando estado del gafete:",
+      error
+    );
+
+    textoEstadoGafete.textContent =
+      "No se pudo consultar el estado.";
+
+    detalleEstadoGafete.textContent =
+      "";
+
+  }
+
+  finally {
+
+    cambiarEstadoGafete.disabled =
+      false;
+
+  }
+
+}
+
+
+// ========================================
+// CAMBIAR ESTADO DEL GAFETE
+// ========================================
+
+cambiarEstadoGafete.addEventListener(
+  "click",
+  async () => {
+
+    if (!idRepresentanteActual) {
+
+      return;
+
+    }
+
+
+    cambiarEstadoGafete.disabled =
+      true;
+
+
+    try {
+
+      const referencia =
+        doc(
+          db,
+          "gafetes",
+          idRepresentanteActual
+        );
+
+
+      // ========================================
+      // MARCAR COMO ENVIADO
+      // ========================================
+
+      if (!gafeteEstaEnviado) {
+
+        await setDoc(
+          referencia,
+          {
+
+            enviado: true,
+
+            fechaEnvio:
+              serverTimestamp(),
+
+            admin:
+              usuarioActual?.email || "Admin"
+
+          },
+          {
+            merge: true
+          }
+        );
+
+      }
+
+
+      // ========================================
+      // REGRESAR A PENDIENTE
+      // ========================================
+
+      else {
+
+        await setDoc(
+          referencia,
+          {
+
+            enviado: false,
+
+            fechaEnvio: null,
+
+            admin: ""
+
+          },
+          {
+            merge: true
+          }
+        );
+
+      }
+
+
+      await consultarEstadoGafete(
+        idRepresentanteActual
+      );
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "Error cambiando estado del gafete:",
+      error
+    );
+
+    textoEstadoGafete.textContent =
+      "No se pudo guardar el cambio.";
+
+  }
+
+  finally {
+
+    cambiarEstadoGafete.disabled =
+      false;
+
+  }
+
+});
+
+
+// ========================================
 // BUSCAR REPRESENTANTE
 // ========================================
 
@@ -259,6 +585,7 @@ async function buscarRepresentante() {
     idInput.value
       .trim()
       .toUpperCase();
+
 
   if (!idBuscado) {
 
@@ -273,6 +600,8 @@ async function buscarRepresentante() {
 
     qrContainer.innerHTML = "";
 
+    limpiarEstadoGafete();
+
     return;
 
   }
@@ -284,6 +613,8 @@ async function buscarRepresentante() {
   datosEncontrados.style.display =
     "none";
 
+  limpiarEstadoGafete();
+
 
   try {
 
@@ -293,6 +624,7 @@ async function buscarRepresentante() {
         "&t=" +
         Date.now()
       );
+
 
     if (!respuesta.ok) {
 
@@ -318,6 +650,7 @@ async function buscarRepresentante() {
         (fila[0] || "")
           .trim()
           .toUpperCase();
+
 
       if (id === idBuscado) {
 
@@ -352,6 +685,8 @@ async function buscarRepresentante() {
 
       datosEncontrados.style.display =
         "none";
+
+      limpiarEstadoGafete();
 
       return;
 
@@ -394,6 +729,15 @@ async function buscarRepresentante() {
       representante.id
     );
 
+
+    // ========================================
+    // CONSULTAR SI YA FUE ENVIADO
+    // ========================================
+
+    await consultarEstadoGafete(
+      representante.id
+    );
+
   }
 
   catch (error) {
@@ -404,6 +748,8 @@ async function buscarRepresentante() {
       "Hubo un error al leer la lista de representantes.";
 
     qrContainer.innerHTML = "";
+
+    limpiarEstadoGafete();
 
   }
 
@@ -500,7 +846,7 @@ descargarButton.addEventListener(
     ctx.fillStyle = "#ffffff";
 
     ctx.font =
-  `600 ${canvas.width * 0.050}px Arial`;
+      `600 ${canvas.width * 0.050}px Arial`;
 
     ctx.textBaseline = "top";
 
@@ -567,9 +913,12 @@ descargarButton.addEventListener(
 
           resolve();
 
-        } else {
+        }
 
-          qrImagen.onload = resolve;
+        else {
+
+          qrImagen.onload =
+            resolve;
 
         }
 
