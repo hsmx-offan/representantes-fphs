@@ -2147,3 +2147,22 @@ body.guia-page {
     }
 
 }
+/* =========================
+   TÍTULO TUTORIALES - CELULAR
+   ========================= */
+
+@media screen and (max-width: 768px) {
+
+    .tutoriales-hero h1 {
+        font-size: 52px;
+        line-height: 0.95;
+
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+
+        overflow-wrap: normal;
+        word-break: normal;
+    }
+
+}
