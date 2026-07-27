@@ -507,31 +507,26 @@ descargarButton.addEventListener(
     ctx.textBaseline = "top";
 
 
-    // Nombre
+// Nombre
+ctx.fillText(
+  nombre,
+  canvas.width * 0.35,
+  canvas.height * 0.535
+);
 
-    ctx.fillText(
-      nombre,
-      canvas.width * 0.35,
-      canvas.height * 0.522
-    );
+// Zona
+ctx.fillText(
+  zona,
+  canvas.width * 0.35,
+  canvas.height * 0.583
+);
 
-
-    // Zona
-
-    ctx.fillText(
-      zona,
-      canvas.width * 0.35,
-      canvas.height * 0.57
-    );
-
-
-    // ID
-
-    ctx.fillText(
-      id,
-      canvas.width * 0.35,
-      canvas.height * 0.62
-    );
+// ID
+ctx.fillText(
+  id,
+  canvas.width * 0.35,
+  canvas.height * 0.633
+);
 
 
     // ========================================
