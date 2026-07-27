@@ -20,18 +20,10 @@
 
 <body>
 
-  <!-- =====================================
-       CARGANDO
-       ===================================== -->
-
   <div id="cargando">
     Verificando acceso...
   </div>
 
-
-  <!-- =====================================
-       CONTENIDO
-       ===================================== -->
 
   <div
     id="contenido"
@@ -274,8 +266,6 @@
           </div>
 
 
-          <!-- ESTADO INICIAL -->
-
           <div
             id="estadoInicial"
             class="estado-vacio"
@@ -296,8 +286,6 @@
           </div>
 
 
-          <!-- CARGANDO RESULTADOS -->
-
           <div
             id="cargandoResultados"
             class="estado-vacio"
@@ -310,8 +298,6 @@
 
           </div>
 
-
-          <!-- SIN RESULTADOS -->
 
           <div
             id="sinResultados"
@@ -334,7 +320,9 @@
           </div>
 
 
-          <!-- TABLA -->
+          <!-- =====================================
+               TABLA
+               ===================================== -->
 
           <div
             id="contenedorTabla"
@@ -352,6 +340,10 @@
                   <th>Instagram</th>
                   <th>Fecha</th>
                   <th>Zona</th>
+
+                  <!-- NUEVO -->
+                  <th>Papelitos</th>
+
                   <th>Gafete</th>
                   <th></th>
                 </tr>
@@ -468,28 +460,54 @@
           </div>
 
 
-          <!-- PAPELITOS: PREPARADO PARA DESPUÉS -->
+          <!-- =====================================
+               CONTROL DE PAPELITOS
+               ===================================== -->
 
-          <div class="control-pendiente">
+          <div
+            id="controlPapelitos"
+            class="control-pendiente"
+          >
 
-            <div>
+            <div class="info-papelitos">
 
               <span class="control-titulo">
                 Papelitos
               </span>
 
-              <p>
-                El control de confirmación se agregará en este apartado.
+
+              <strong
+                id="estadoPapelitos"
+                class="estado-papelitos"
+              >
+                Consultando...
+              </strong>
+
+
+              <p
+                id="detallePapelitos"
+                class="detalle-papelitos"
+              >
               </p>
 
             </div>
 
-            <span class="proximamente">
-              Próximamente
-            </span>
+
+            <button
+              type="button"
+              id="cambiarPapelitos"
+              class="boton-papelitos"
+              disabled
+            >
+              Consultando...
+            </button>
 
           </div>
 
+
+          <!-- =====================================
+               ACCIONES
+               ===================================== -->
 
           <div class="ficha-acciones">
 
@@ -519,6 +537,10 @@
 
   </div>
 
+
+  <!-- =====================================
+       MENSAJE FLOTANTE
+       ===================================== -->
 
   <div
     id="toast"
