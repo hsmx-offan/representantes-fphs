@@ -416,7 +416,11 @@ function obtenerPapelitos(
     );
 
 
-  return (
+  // ========================================
+  // 1. BUSCAR EN CONTROL PAPELITOS
+  // ========================================
+
+  const registroControl =
     registrosPapelitos.find(
       registro =>
         crearClavePapelitos(
@@ -424,8 +428,112 @@ function obtenerPapelitos(
           registro.fecha,
           registro.zona
         ) === clave
-    ) || null
-  );
+    );
+
+
+  if (registroControl) {
+
+    return registroControl;
+
+  }
+
+
+  // ========================================
+  // 2. RESPALDO: ESTADO DE LA TABLA ORIGINAL
+  // ========================================
+
+  const estadoOriginal =
+    normalizarTexto(
+      representante.estado
+    );
+
+
+  if (
+    estadoOriginal ===
+    "confirmado"
+  ) {
+
+    return {
+
+      id:
+        representante.id,
+
+      fecha:
+        representante.fecha,
+
+      zona:
+        representante.zona,
+
+      confirmado:
+        true,
+
+      confirmadoPor:
+        "Registro previo",
+
+      fechaConfirmacion:
+        ""
+
+    };
+
+  }
+
+
+  if (
+    estadoOriginal ===
+    "cancelado"
+  ) {
+
+    return {
+
+      id:
+        representante.id,
+
+      fecha:
+        representante.fecha,
+
+      zona:
+        representante.zona,
+
+      confirmado:
+        false,
+
+      cancelado:
+        true,
+
+      confirmadoPor:
+        "",
+
+      fechaConfirmacion:
+        ""
+
+    };
+
+  }
+
+
+  // Si está pendiente o vacío
+
+  return {
+
+    id:
+      representante.id,
+
+    fecha:
+      representante.fecha,
+
+    zona:
+      representante.zona,
+
+    confirmado:
+      false,
+
+    confirmadoPor:
+      "",
+
+    fechaConfirmacion:
+      ""
+
+  };
 
 }
 
