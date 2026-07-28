@@ -530,26 +530,55 @@
     class="toast"
     aria-live="polite"
   ></div>
-<img
-  id="logoPdf"
-  src="logo3.png"
-  alt=""
-  style="display: none;"
->
-<script src="menu.js"></script>
 
-<script
-  src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/4.2.1/jspdf.umd.min.js"
-></script>
 
-<script
-  src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/5.0.8/jspdf.plugin.autotable.min.js"
-></script>
+  <!-- =====================================
+       LOGO PARA EL PDF
+       ===================================== -->
 
-<script
-  type="module"
-  src="representantes.js"
-></script>
+  <img
+    id="logoPdf"
+    src="logo3.png"
+    alt=""
+    loading="eager"
+    style="
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    "
+  >
+
+
+  <!-- =====================================
+       MENÚ COMPARTIDO
+       ===================================== -->
+
+  <script src="menu.js"></script>
+
+
+  <!-- =====================================
+       LIBRERÍAS DEL PDF
+       ===================================== -->
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+  ></script>
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"
+  ></script>
+
+
+  <!-- =====================================
+       REPRESENTANTES
+       ===================================== -->
+
+  <script
+    type="module"
+    src="representantes.js"
+  ></script>
 
 </body>
 </html>
