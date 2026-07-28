@@ -1,66 +1,138 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+// ========================================
+// LOGIN DE ADMINISTRADORES
+// ========================================
 
 import {
-  getAuth,
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAesU9F4Oc7Lr8TPOFUk-Oi-lT086XjRKw",
-  authDomain: "hsmx-representantes.firebaseapp.com",
-  projectId: "hsmx-representantes",
-  storageBucket: "hsmx-representantes.firebasestorage.app",
-  messagingSenderId: "821385801252",
-  appId: "1:821385801252:web:c95ba9ffdeb90fe03732b1"
-};
+import {
+  auth
+} from "../shared/firebase.js";
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 
-const loginForm = document.getElementById("loginForm");
-const emailInput = document.getElementById("email");
-const passwordInput = document.getElementById("password");
-const errorMessage = document.getElementById("errorMessage");
+// ========================================
+// ELEMENTOS
+// ========================================
 
-loginForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
+const loginForm =
+  document.getElementById(
+    "loginForm"
+  );
 
-  errorMessage.textContent = "";
+const emailInput =
+  document.getElementById(
+    "email"
+  );
 
-  try {
+const passwordInput =
+  document.getElementById(
+    "password"
+  );
 
-    await signInWithEmailAndPassword(
-      auth,
-      emailInput.value.trim(),
-      passwordInput.value
-    );
+const errorMessage =
+  document.getElementById(
+    "errorMessage"
+  );
 
-    window.location.href = "dashboard.html";
 
-  } catch (error) {
+// ========================================
+// INICIAR SESIÓN
+// ========================================
 
-    console.error("Error de inicio de sesión:", error);
+if (
+  loginForm &&
+  emailInput &&
+  passwordInput &&
+  errorMessage
+) {
 
-    errorMessage.textContent =
-      "Correo o contraseña incorrectos.";
+  loginForm.addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+      errorMessage.textContent =
+        "";
+
+      try {
+
+        await signInWithEmailAndPassword(
+          auth,
+          emailInput.value.trim(),
+          passwordInput.value
+        );
+
+        window.location.href =
+          "dashboard.html";
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "Error de inicio de sesión:",
+          error
+        );
+
+        errorMessage.textContent =
+          "Correo o contraseña incorrectos.";
+
+      }
+
+    }
+  );
+
+}
+
+
+// ========================================
+// COMPROBAR SESIÓN EXISTENTE
+// ========================================
+
+onAuthStateChanged(
+  auth,
+  user => {
+
+    if (user) {
+
+      window.location.href =
+        "dashboard.html";
+
+    }
 
   }
-});
+);
 
-onAuthStateChanged(auth, (user) => {
 
-  if (user) {
-    window.location.href = "panel.html";
-  }
+// ========================================
+// CERRAR SESIÓN
+// ========================================
 
-});
+window.logoutAdmin =
+  async function () {
 
-window.logoutAdmin = async function () {
+    try {
 
-  await signOut(auth);
+      await signOut(
+        auth
+      );
 
-  window.location.href = "./";
+      window.location.href =
+        "index.html";
 
-};
+    }
+
+    catch (error) {
+
+      console.error(
+        "No se pudo cerrar la sesión:",
+        error
+      );
+
+    }
+
+  };
