@@ -1891,66 +1891,92 @@ copiarLista.addEventListener(
 // CARGAR IMAGEN COMO DATA URL
 // ========================================
 
-function cargarImagenDataURL(ruta) {
+async function cargarImagenDataURL(ruta) {
+
+  const url =
+    new URL(
+      ruta,
+      window.location.href
+    );
+
+  url.searchParams.set(
+    "t",
+    Date.now()
+  );
+
+
+  const respuesta =
+    await fetch(
+      url.toString(),
+      {
+        cache: "no-store"
+      }
+    );
+
+
+  if (!respuesta.ok) {
+
+    throw new Error(
+      `No se pudo cargar ${ruta}`
+    );
+
+  }
+
+
+  const blob =
+    await respuesta.blob();
+
+
+  if (
+    !blob.type.startsWith(
+      "image/"
+    )
+  ) {
+
+    throw new Error(
+      `${ruta} no se recibió como imagen`
+    );
+
+  }
+
 
   return new Promise(
     (resolve, reject) => {
 
-      const imagen =
-        new Image();
+      const lector =
+        new FileReader();
 
-      imagen.onload =
+
+      lector.onload =
         () => {
 
-          const canvas =
-            document.createElement(
-              "canvas"
-            );
-
-          canvas.width =
-            imagen.naturalWidth;
-
-          canvas.height =
-            imagen.naturalHeight;
-
-          const ctx =
-            canvas.getContext(
-              "2d"
-            );
-
-          ctx.drawImage(
-            imagen,
-            0,
-            0
-          );
-
           resolve(
-            canvas.toDataURL(
-              "image/png"
-            )
+            lector.result
           );
 
         };
 
-      imagen.onerror =
+
+      lector.onerror =
         () => {
 
           reject(
             new Error(
-              "No se pudo cargar logo3.png"
+              `No se pudo leer ${ruta}`
             )
           );
 
         };
 
-      imagen.src =
-        "logo3.png";
+
+      lector.readAsDataURL(
+        blob
+      );
 
     }
   );
 
 }
-
 
 // ========================================
 // DESCARGAR LISTA EN PDF
