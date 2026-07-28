@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
+
 <head>
 
   <meta charset="UTF-8">
@@ -9,166 +10,309 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Panel Admin | HSMX OFFAN</title>
+  <title>Gafetes | HSMX OFFAN</title>
 
-  <link rel="stylesheet" href="panel.css">
+  <link
+    rel="stylesheet"
+    href="panel.css"
+  >
 
 </head>
 
 <body>
 
-  <div class="panel">
+  <!-- =====================================
+       CARGANDO
+       ===================================== -->
 
-    <div id="cargando">
-      Verificando acceso...
-    </div>
+  <div id="cargando">
+    Verificando acceso...
+  </div>
 
-    <div id="contenido">
 
-      <div class="topbar">
+  <!-- =====================================
+       CONTENIDO
+       ===================================== -->
+
+  <div
+    id="contenido"
+    style="display: none;"
+  >
+
+    <div class="app">
+
+      <!-- =====================================
+           ENCABEZADO
+           ===================================== -->
+
+      <header class="topbar">
 
         <div>
-          <h1>Panel administrativo</h1>
-          <p>Generador de gafetes de representantes</p>
+
+          <p class="eyebrow">
+            HARRY STYLES MÉXICO OFFAN
+          </p>
+
+          <h1>
+            Gafetes
+          </h1>
+
+          <p class="subtitulo">
+            Generador y control de gafetes de representantes
+          </p>
+
         </div>
-<a href="dashboard.html" class="volver-dashboard">
-  ← Inicio
-</a>
-        <button
-          class="logout"
-          id="logoutButton"
-        >
-          Cerrar sesión
-        </button>
 
-      </div>
 
-      <hr>
+        <div class="acciones-topbar">
 
-      <div class="generador">
-
-        <div class="formulario">
-
-          <h2>Buscar representante</h2>
-
-          <label for="idRepresentante">
-            ID del representante
-          </label>
-
-          <input
-            type="text"
-            id="idRepresentante"
-            placeholder="Ej. FPHS-MX-002"
+          <button
+            type="button"
+            id="themeToggle"
+            class="theme-toggle"
+            aria-label="Cambiar tema"
+            title="Cambiar tema"
           >
-
-          <button id="buscarRepresentante">
-            Buscar y generar
+            ☀️
           </button>
 
-          <div
-            id="estado"
-            class="estado"
-          ></div>
-
-          <div
-            id="datosEncontrados"
-            class="datos-encontrados"
+          <button
+            type="button"
+            class="logout"
+            id="logoutButton"
           >
+            Cerrar sesión
+          </button>
 
-            <p>
-              <strong>Nombre:</strong>
-              <span id="datoNombre"></span>
+        </div>
+
+      </header>
+
+
+      <!-- =====================================
+           MENÚ COMPARTIDO
+           ===================================== -->
+
+      <div id="menuAdmin"></div>
+
+
+      <!-- =====================================
+           GENERADOR
+           ===================================== -->
+
+      <section class="bloque">
+
+        <div class="titulo-bloque">
+
+          <div>
+
+            <p class="etiqueta-seccion">
+              GENERADOR
             </p>
 
+            <h2>
+              Generar gafete
+            </h2>
+
             <p>
-              <strong>ID:</strong>
-              <span id="datoId"></span>
+              Busca al representante por ID para generar su gafete.
             </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="generador">
+
+          <!-- =====================================
+               FORMULARIO
+               ===================================== -->
+
+          <div class="formulario">
+
+            <h3>
+              Buscar representante
+            </h3>
+
+            <label for="idRepresentante">
+              ID del representante
+            </label>
+
+            <input
+              type="text"
+              id="idRepresentante"
+              placeholder="Ej. FPHS-MX-002"
+              autocomplete="off"
+            >
+
+            <button
+              type="button"
+              id="buscarRepresentante"
+              class="boton-principal"
+            >
+              Buscar y generar
+            </button>
+
+
+            <div
+              id="estado"
+              class="estado"
+            ></div>
+
+
+            <!-- =====================================
+                 DATOS ENCONTRADOS
+                 ===================================== -->
+
+            <div
+              id="datosEncontrados"
+              class="datos-encontrados"
+            >
+
+              <p>
+                <strong>Nombre:</strong>
+                <span id="datoNombre"></span>
+              </p>
+
+              <p>
+                <strong>ID:</strong>
+                <span id="datoId"></span>
+              </p>
+
+            </div>
+
+
+            <!-- =====================================
+                 ESTADO DE ENVÍO
+                 ===================================== -->
+
+            <div
+              id="estadoGafete"
+              class="estado-gafete"
+              style="display: none;"
+            >
+
+              <p class="etiqueta-seccion">
+                CONTROL
+              </p>
+
+              <h3>
+                Estado de envío
+              </h3>
+
+              <p
+                id="textoEstadoGafete"
+                class="texto-estado-gafete"
+              ></p>
+
+              <p
+                id="detalleEstadoGafete"
+                class="detalle-estado-gafete"
+              ></p>
+
+              <button
+                type="button"
+                id="cambiarEstadoGafete"
+                class="cambiar-estado-gafete"
+              >
+                Marcar como enviado
+              </button>
+
+            </div>
 
           </div>
 
 
           <!-- =====================================
-               ESTADO DE ENVÍO DEL GAFETE
+               VISTA PREVIA
                ===================================== -->
 
-          <div
-            id="estadoGafete"
-            class="estado-gafete"
-            style="display: none;"
-          >
+          <div class="preview">
 
-            <h3>Estado de envío</h3>
+            <div class="preview-encabezado">
 
-            <p
-              id="textoEstadoGafete"
-              class="texto-estado-gafete"
-            ></p>
+              <p class="etiqueta-seccion">
+                VISTA PREVIA
+              </p>
 
-            <p
-              id="detalleEstadoGafete"
-              class="detalle-estado-gafete"
-            ></p>
+              <h2>
+                Gafete
+              </h2>
+
+            </div>
+
+
+            <div class="gafete-wrapper">
+
+              <img
+                src="gafete-base4.png"
+                id="gafeteBase"
+                alt="Gafete base"
+              >
+
+              <div
+                id="textoNombre"
+                class="dato nombre"
+              ></div>
+
+              <div
+                id="textoId"
+                class="dato id"
+              ></div>
+
+              <div
+                id="qrContainer"
+                class="qr-container"
+              ></div>
+
+            </div>
+
 
             <button
               type="button"
-              id="cambiarEstadoGafete"
-              class="cambiar-estado-gafete"
+              id="descargarGafete"
+              class="descargar-gafete"
             >
-              Marcar como enviado
+              Descargar gafete PNG
             </button>
 
           </div>
 
         </div>
 
-
-        <div class="preview">
-
-          <h2>Vista previa</h2>
-
-          <div class="gafete-wrapper">
-
-            <img
-              src="gafete-base4.png"
-              id="gafeteBase"
-              alt="Gafete base"
-            >
-
-            <div
-              id="textoNombre"
-              class="dato nombre"
-            ></div>
-
-            <div
-              id="textoId"
-              class="dato id"
-            ></div>
-
-            <div
-              id="qrContainer"
-              class="qr-container"
-            ></div>
-
-          </div>
-
-          <button
-            id="descargarGafete"
-            class="descargar-gafete"
-          >
-            Descargar gafete PNG
-          </button>
-
-        </div>
-
-      </div>
+      </section>
 
     </div>
 
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <script type="module" src="panel.js"></script>
+
+  <!-- =====================================
+       QR
+       ===================================== -->
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+  ></script>
+
+
+  <!-- =====================================
+       MENÚ COMPARTIDO
+       ===================================== -->
+
+  <script src="menu.js"></script>
+
+
+  <!-- =====================================
+       PANEL
+       ===================================== -->
+
+  <script
+    type="module"
+    src="panel.js"
+  ></script>
 
 </body>
+
 </html>
