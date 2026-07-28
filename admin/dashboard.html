@@ -1,7 +1,30 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>
 
+  const mantenimientoActivo =
+    true;
+
+  const modoDesarrollo =
+    new URLSearchParams(
+      window.location.search
+    ).has(
+      "dev"
+    );
+
+  if (
+    mantenimientoActivo &&
+    !modoDesarrollo
+  ) {
+
+    window.location.replace(
+      "mantenimiento.html"
+    );
+
+  }
+
+</script>
   <meta charset="UTF-8">
 
   <meta
