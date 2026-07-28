@@ -120,6 +120,9 @@ const cerrarFicha =
 const copiarDatos =
   document.getElementById("copiarDatos");
 
+const copiarLista =
+  document.getElementById("copiarLista");
+
 const irAGafete =
   document.getElementById("irAGafete");
 
@@ -141,8 +144,13 @@ const toast =
 // ========================================
 
 let representantes = [];
+
+let resultadosActuales = [];
+
 let representanteSeleccionado = null;
+
 let registrosPapelitos = [];
+
 let papelitosSeleccionado = null;
 
 
@@ -416,10 +424,6 @@ function obtenerPapelitos(
     );
 
 
-  // ========================================
-  // 1. BUSCAR EN CONTROL PAPELITOS
-  // ========================================
-
   const registroControl =
     registrosPapelitos.find(
       registro =>
@@ -437,10 +441,6 @@ function obtenerPapelitos(
 
   }
 
-
-  // ========================================
-  // 2. RESPALDO: ESTADO DE LA TABLA ORIGINAL
-  // ========================================
 
   const estadoOriginal =
     normalizarTexto(
@@ -510,8 +510,6 @@ function obtenerPapelitos(
 
   }
 
-
-  // Si está pendiente o vacío
 
   return {
 
@@ -972,6 +970,10 @@ function aplicarFiltros() {
 function mostrarResultados(
   resultados
 ) {
+
+  resultadosActuales =
+    resultados;
+
 
   cargandoResultados.style.display =
     "none";
@@ -1697,7 +1699,7 @@ cerrarFicha.addEventListener(
 
 
 // ========================================
-// COPIAR DATOS
+// COPIAR DATOS DE UNA FICHA
 // ========================================
 
 copiarDatos.addEventListener(
@@ -1751,6 +1753,130 @@ copiarDatos.addEventListener(
 
       mostrarToast(
         "No se pudieron copiar los datos"
+      );
+
+    }
+
+  }
+);
+
+
+// ========================================
+// COPIAR LISTA FILTRADA
+// ========================================
+
+copiarLista.addEventListener(
+  "click",
+  async () => {
+
+    if (
+      resultadosActuales.length === 0
+    ) {
+
+      mostrarToast(
+        "No hay resultados para copiar"
+      );
+
+      return;
+
+    }
+
+
+    const encabezados = [];
+
+
+    if (
+      filtroFecha.value
+    ) {
+
+      encabezados.push(
+        `FECHA: ${filtroFecha.value}`
+      );
+
+    }
+
+
+    if (
+      filtroZona.value
+    ) {
+
+      encabezados.push(
+        `ZONA: ${filtroZona.value}`
+      );
+
+    }
+
+
+    if (
+      busqueda.value.trim()
+    ) {
+
+      encabezados.push(
+        `BÚSQUEDA: ${busqueda.value.trim()}`
+      );
+
+    }
+
+
+    const lineas =
+      resultadosActuales.map(
+        representante => {
+
+          const instagram =
+            representante.instagram
+              ? `@${representante.instagram.replace(
+                  /^@/,
+                  ""
+                )}`
+              : "Sin Instagram";
+
+
+          return (
+            `${representante.id} — ` +
+            `${representante.nombre || "Sin nombre"} — ` +
+            `${instagram} — ` +
+            `${representante.fecha || "Sin fecha"} — ` +
+            `${representante.zona || "Sin zona"}`
+          );
+
+        }
+      );
+
+
+    const texto = [
+      "LISTA DE REPRESENTANTES",
+      encabezados.length
+        ? encabezados.join(" · ")
+        : "Todos los resultados",
+      "",
+      ...lineas,
+      "",
+      `TOTAL: ${resultadosActuales.length}`
+    ]
+      .join("\n");
+
+
+    try {
+
+      await navigator.clipboard.writeText(
+        texto
+      );
+
+
+      mostrarToast(
+        resultadosActuales.length === 1
+          ? "1 registro copiado"
+          : `${resultadosActuales.length} registros copiados`
+      );
+
+    }
+
+    catch (error) {
+
+      console.error(error);
+
+      mostrarToast(
+        "No se pudo copiar la lista"
       );
 
     }
