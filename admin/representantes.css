@@ -559,3 +559,56 @@ tbody tr:hover {
   }
 
 }
+/* =========================================
+   ACCIONES DE LISTA
+   ========================================= */
+
+.acciones-lista {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-top: 18px;
+  padding: 16px;
+  background: var(--fondo);
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+}
+
+.acciones-lista strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.acciones-lista p {
+  margin: 0;
+  color: var(--texto-secundario);
+  font-size: 13px;
+}
+
+.botones-lista {
+  display: flex;
+  gap: 10px;
+}
+
+.botones-lista button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+
+  .acciones-lista {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .botones-lista {
+    flex-direction: column;
+  }
+
+  .botones-lista button {
+    width: 100%;
+  }
+
+}
