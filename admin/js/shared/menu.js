@@ -112,17 +112,28 @@ function crearMenuAdmin() {
     // Apartados todavía no disponibles
 
     if (
-      !opcion.disponible
-    ) {
+  !opcion.disponible
+) {
 
-      enlace.href =
-        "#";
+  enlace.href = "#";
 
-      enlace.classList.add(
-        "deshabilitado"
-      );
+  enlace.classList.add(
+    "deshabilitado"
+  );
 
+  enlace.setAttribute(
+    "aria-disabled",
+    "true"
+  );
+
+  enlace.addEventListener(
+    "click",
+    event => {
+      event.preventDefault();
     }
+  );
+
+}
 
     else {
 
