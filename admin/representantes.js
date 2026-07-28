@@ -141,11 +141,8 @@ const toast =
 // ========================================
 
 let representantes = [];
-
 let representanteSeleccionado = null;
-
 let registrosPapelitos = [];
-
 let papelitosSeleccionado = null;
 
 
@@ -598,35 +595,32 @@ async function cargarRepresentantes() {
 
       representantes.push({
 
-  id,
+        id,
 
-  fecha:
-    (fila[1] || "")
-      .trim(),
+        fecha:
+          (fila[1] || "")
+            .trim(),
 
-  zona:
-    (fila[2] || "")
-      .trim(),
+        zona:
+          (fila[2] || "")
+            .trim(),
 
-  nombre:
-    (fila[3] || "")
-      .trim(),
+        nombre:
+          (fila[3] || "")
+            .trim(),
 
-  instagram:
-    (fila[4] || "")
-      .trim(),
+        instagram:
+          (fila[4] || "")
+            .trim(),
 
-  estado:
-    (fila[9] || "")
-      .trim()
+        estado:
+          (fila[9] || "")
+            .trim()
 
-});
+      });
 
     }
 
-
-    // Cargamos el control de papelitos
-    // una sola vez.
 
     try {
 
@@ -653,9 +647,36 @@ async function cargarRepresentantes() {
 
     cargarOpcionesFiltros();
 
-    mostrarResultados(
-      representantes
-    );
+
+    // ========================================
+    // BÚSQUEDA RECIBIDA DESDE OTRA PÁGINA
+    // ========================================
+
+    const parametros =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    const busquedaRecibida =
+      parametros.get("buscar");
+
+
+    if (busquedaRecibida) {
+
+      busqueda.value =
+        busquedaRecibida;
+
+      aplicarFiltros();
+
+    }
+
+    else {
+
+      mostrarResultados(
+        representantes
+      );
+
+    }
 
   }
 
@@ -1420,9 +1441,6 @@ cambiarPapelitos.addEventListener(
       );
 
 
-      // Actualiza la tabla sin volver
-      // a consultar Apps Script.
-
       actualizarPapelitosEnTabla(
         representante
       );
@@ -1748,33 +1766,4 @@ limpiarFiltros.addEventListener(
     );
 
   }
-);
-// ========================================
-// BÚSQUEDA RECIBIDA DESDE OTRA PÁGINA
-// ========================================
-
-function aplicarBusquedaDesdeURL() {
-
-  const parametros =
-    new URLSearchParams(
-      window.location.search
-    );
-
-  const buscar =
-    parametros.get("buscar");
-
-  if (!buscar) {
-    return;
-  }
-
-  busqueda.value =
-    buscar;
-
-  aplicarFiltros();
-
-}
-
-window.addEventListener(
-  "load",
-  aplicarBusquedaDesdeURL
 );
