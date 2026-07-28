@@ -12,7 +12,12 @@ import {
   auth,
   db
 } from "../shared/firebase.js";
-
+import {
+  parsearCSV,
+  normalizarTexto,
+  crearClavePapelitos,
+  escaparHTML
+} from "../shared/utils.js";
 
 // ========================================
 // GOOGLE SHEETS / APPS SCRIPT
