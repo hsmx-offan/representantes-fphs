@@ -140,7 +140,8 @@ const cambiarPapelitos =
 
 const toast =
   document.getElementById("toast");
-
+const logoPdf =
+  document.getElementById("logoPdf");
 
 // ========================================
 // VARIABLES
@@ -2043,27 +2044,23 @@ descargarLista.addEventListener(
       // LOGO
       // ========================================
 
-      let logo = null;
+      // Esperar a que el logo esté cargado
 
+if (!logoPdf.complete) {
 
-      try {
+  await new Promise(
+    (resolve, reject) => {
 
-        logo =
-          await cargarImagenDataURL(
-            "logo3.png"
-          );
+      logoPdf.onload =
+        resolve;
 
-      }
+      logoPdf.onerror =
+        reject;
 
-      catch (error) {
+    }
+  );
 
-        console.warn(
-          "No se pudo cargar el logo:",
-          error
-        );
-
-      }
-
+}
 
       // ========================================
       // ENCABEZADO
@@ -2084,24 +2081,18 @@ descargarLista.addEventListener(
       );
 
 
-      if (logo) {
-
-        pdf.addImage(
-          logo,
-          "PNG",
-          12,
-          5,
-          24,
-          24
-        );
-
-      }
+      pdf.addImage(
+  logoPdf,
+  "PNG",
+  12,
+  5,
+  24,
+  24
+);
 
 
-      const inicioTexto =
-        logo
-          ? 43
-          : 14;
+     const inicioTexto =
+  43;
 
 
       pdf.setTextColor(
