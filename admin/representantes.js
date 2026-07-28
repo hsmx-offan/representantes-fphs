@@ -123,6 +123,9 @@ const copiarDatos =
 const copiarLista =
   document.getElementById("copiarLista");
 
+const descargarLista =
+  document.getElementById("descargarLista");
+
 const irAGafete =
   document.getElementById("irAGafete");
 
