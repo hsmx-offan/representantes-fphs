@@ -2,41 +2,24 @@
 <html lang="es">
 <head>
 <script>
+  const mantenimientoActivo = true;
 
-const mantenimientoActivo = true;
+  const params =
+    new URLSearchParams(window.location.search);
 
-const params =
-  new URLSearchParams(
-    window.location.search
-  );
+  if (params.has("dev")) {
+    localStorage.setItem("devMode", "1");
+  }
 
-if (
-  params.has("dev")
-) {
+  const modoDesarrollo =
+    localStorage.getItem("devMode") === "1";
 
-  sessionStorage.setItem(
-    "devMode",
-    "1"
-  );
-
-}
-
-const modoDesarrollo =
-  sessionStorage.getItem(
-    "devMode"
-  ) === "1";
-
-if (
-  mantenimientoActivo &&
-  !modoDesarrollo
-) {
-
-  window.location.replace(
-    "mantenimiento.html"
-  );
-
-}
-
+  if (
+    mantenimientoActivo &&
+    !modoDesarrollo
+  ) {
+    window.location.replace("mantenimiento.html");
+  }
 </script>
   <meta charset="UTF-8">
 
