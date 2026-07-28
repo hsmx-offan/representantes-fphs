@@ -106,72 +106,118 @@ export function crearPdfController({
   // CONVERTIR LOGO
   // ========================================
 
-  function convertirImagenADataURL(imagen) {
+ function convertirImagenADataURL(imagen) {
 
-    if (
-      !imagen ||
-      imagen.naturalWidth <= 0 ||
-      imagen.naturalHeight <= 0
-    ) {
+  if (
+    !imagen ||
+    imagen.naturalWidth <= 0 ||
+    imagen.naturalHeight <= 0
+  ) {
 
-      throw new Error(
-        "El logo no tiene dimensiones válidas."
-      );
-
-    }
-
-
-    const canvas =
-      document.createElement(
-        "canvas"
-      );
-
-
-    canvas.width =
-      imagen.naturalWidth;
-
-    canvas.height =
-      imagen.naturalHeight;
-
-
-    const contexto =
-      canvas.getContext(
-        "2d"
-      );
-
-
-    if (!contexto) {
-
-      throw new Error(
-        "No se pudo preparar el logo."
-      );
-
-    }
-
-
-    contexto.clearRect(
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
-
-
-    contexto.drawImage(
-      imagen,
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
-
-
-    return canvas.toDataURL(
-      "image/png",
-      1
+    throw new Error(
+      "El logo no tiene dimensiones válidas."
     );
 
   }
+
+
+  const lado =
+    Math.min(
+      imagen.naturalWidth,
+      imagen.naturalHeight
+    );
+
+
+  const canvas =
+    document.createElement(
+      "canvas"
+    );
+
+
+  canvas.width = lado;
+  canvas.height = lado;
+
+
+  const contexto =
+    canvas.getContext(
+      "2d"
+    );
+
+
+  if (!contexto) {
+
+    throw new Error(
+      "No se pudo preparar el logo."
+    );
+
+  }
+
+
+  const origenX =
+    (
+      imagen.naturalWidth -
+      lado
+    ) / 2;
+
+
+  const origenY =
+    (
+      imagen.naturalHeight -
+      lado
+    ) / 2;
+
+
+  contexto.clearRect(
+    0,
+    0,
+    lado,
+    lado
+  );
+
+
+  contexto.save();
+
+
+  contexto.beginPath();
+
+
+  contexto.arc(
+    lado / 2,
+    lado / 2,
+    lado / 2,
+    0,
+    Math.PI * 2
+  );
+
+
+  contexto.closePath();
+
+
+  contexto.clip();
+
+
+  contexto.drawImage(
+    imagen,
+    origenX,
+    origenY,
+    lado,
+    lado,
+    0,
+    0,
+    lado,
+    lado
+  );
+
+
+  contexto.restore();
+
+
+  return canvas.toDataURL(
+    "image/png",
+    1
+  );
+
+}
 
 
   // ========================================
