@@ -34,7 +34,7 @@ const db = getFirestore(app);
 
 
 // ========================================
-// GOOGLE SHEETS
+// GOOGLE SHEETS / APPS SCRIPT
 // ========================================
 
 const SHEET_URL =
@@ -140,21 +140,19 @@ const cambiarPapelitos =
 
 const toast =
   document.getElementById("toast");
+
 const logoPdf =
   document.getElementById("logoPdf");
+
 
 // ========================================
 // VARIABLES
 // ========================================
 
 let representantes = [];
-
 let resultadosActuales = [];
-
 let representanteSeleccionado = null;
-
 let registrosPapelitos = [];
-
 let papelitosSeleccionado = null;
 
 
@@ -177,9 +175,12 @@ function aplicarTema(tema) {
 }
 
 const temaGuardado =
-  localStorage.getItem("temaAdmin") || "dark";
+  localStorage.getItem("temaAdmin") ||
+  "dark";
 
-aplicarTema(temaGuardado);
+aplicarTema(
+  temaGuardado
+);
 
 themeToggle.addEventListener(
   "click",
@@ -195,7 +196,9 @@ themeToggle.addEventListener(
         ? "light"
         : "dark";
 
-    aplicarTema(nuevo);
+    aplicarTema(
+      nuevo
+    );
 
     localStorage.setItem(
       "temaAdmin",
@@ -207,12 +210,12 @@ themeToggle.addEventListener(
 
 
 // ========================================
-// VERIFICAR SESIÓN
+// SESIÓN
 // ========================================
 
 onAuthStateChanged(
   auth,
-  async (user) => {
+  async user => {
 
     if (!user) {
 
@@ -234,10 +237,6 @@ onAuthStateChanged(
   }
 );
 
-
-// ========================================
-// CERRAR SESIÓN
-// ========================================
 
 logoutButton.addEventListener(
   "click",
@@ -264,6 +263,7 @@ function parsearCSV(texto) {
   let campo = "";
   let dentroComillas = false;
 
+
   for (
     let i = 0;
     i < texto.length;
@@ -275,6 +275,7 @@ function parsearCSV(texto) {
 
     const siguiente =
       texto[i + 1];
+
 
     if (
       caracter === '"' &&
@@ -376,7 +377,7 @@ function parsearCSV(texto) {
 
 
 // ========================================
-// NORMALIZAR TEXTO
+// UTILIDADES
 // ========================================
 
 function normalizarTexto(texto) {
@@ -393,10 +394,6 @@ function normalizarTexto(texto) {
 }
 
 
-// ========================================
-// CLAVE ÚNICA PAPELITOS
-// ========================================
-
 function crearClavePapelitos(
   id,
   fecha,
@@ -412,8 +409,58 @@ function crearClavePapelitos(
 }
 
 
+function escaparHTML(texto) {
+
+  return String(texto || "")
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
+}
+
+
+function mostrarToast(mensaje) {
+
+  toast.textContent =
+    mensaje;
+
+  toast.classList.add(
+    "visible"
+  );
+
+  setTimeout(
+    () => {
+
+      toast.classList.remove(
+        "visible"
+      );
+
+    },
+    2200
+  );
+
+}
+
+
 // ========================================
-// BUSCAR ESTADO LOCAL DE PAPELITOS
+// PAPELITOS
 // ========================================
 
 function obtenerPapelitos(
@@ -458,7 +505,6 @@ function obtenerPapelitos(
   ) {
 
     return {
-
       id:
         representante.id,
 
@@ -476,7 +522,6 @@ function obtenerPapelitos(
 
       fechaConfirmacion:
         ""
-
     };
 
   }
@@ -488,7 +533,6 @@ function obtenerPapelitos(
   ) {
 
     return {
-
       id:
         representante.id,
 
@@ -509,14 +553,12 @@ function obtenerPapelitos(
 
       fechaConfirmacion:
         ""
-
     };
 
   }
 
 
   return {
-
     id:
       representante.id,
 
@@ -534,15 +576,10 @@ function obtenerPapelitos(
 
     fechaConfirmacion:
       ""
-
   };
 
 }
 
-
-// ========================================
-// PETICIÓN A APPS SCRIPT
-// ========================================
 
 async function peticionPapelitos(
   datos
@@ -569,7 +606,8 @@ async function peticionPapelitos(
     await fetch(
       PAPELITOS_API_URL,
       {
-        method: "POST",
+        method:
+          "POST",
 
         headers: {
           "Content-Type":
@@ -613,15 +651,12 @@ async function peticionPapelitos(
 }
 
 
-// ========================================
-// CARGAR TODO EL CONTROL DE PAPELITOS
-// ========================================
-
 async function cargarPapelitos() {
 
   const resultado =
     await peticionPapelitos({
-      accion: "listar"
+      accion:
+        "listar"
     });
 
 
@@ -683,7 +718,10 @@ async function cargarRepresentantes() {
     representantes = [];
 
 
-    for (const fila of filas) {
+    for (
+      const fila
+      of filas
+    ) {
 
       const id =
         (fila[0] || "")
@@ -704,7 +742,6 @@ async function cargarRepresentantes() {
 
 
       representantes.push({
-
         id,
 
         fecha:
@@ -726,7 +763,6 @@ async function cargarRepresentantes() {
         estado:
           (fila[9] || "")
             .trim()
-
       });
 
     }
@@ -758,17 +794,15 @@ async function cargarRepresentantes() {
     cargarOpcionesFiltros();
 
 
-    // ========================================
-    // BÚSQUEDA RECIBIDA DESDE OTRA PÁGINA
-    // ========================================
-
     const parametros =
       new URLSearchParams(
         window.location.search
       );
 
     const busquedaRecibida =
-      parametros.get("buscar");
+      parametros.get(
+        "buscar"
+      );
 
 
     if (busquedaRecibida) {
@@ -816,7 +850,7 @@ async function cargarRepresentantes() {
 
 
 // ========================================
-// OPCIONES DE FECHA Y ZONA
+// FILTROS
 // ========================================
 
 function cargarOpcionesFiltros() {
@@ -844,14 +878,13 @@ function cargarOpcionesFiltros() {
           )
           .filter(Boolean)
       )
-    ]
-      .sort(
-        (a, b) =>
-          a.localeCompare(
-            b,
-            "es"
-          )
-      );
+    ].sort(
+      (a, b) =>
+        a.localeCompare(
+          b,
+          "es"
+        )
+    );
 
 
   filtroFecha.innerHTML =
@@ -861,51 +894,53 @@ function cargarOpcionesFiltros() {
     `<option value="">Todas</option>`;
 
 
-  for (const fecha of fechas) {
+  for (
+    const fecha
+    of fechas
+  ) {
 
-    const option =
+    const opcion =
       document.createElement(
         "option"
       );
 
-    option.value =
+    opcion.value =
       fecha;
 
-    option.textContent =
+    opcion.textContent =
       fecha;
 
     filtroFecha.appendChild(
-      option
+      opcion
     );
 
   }
 
 
-  for (const zona of zonas) {
+  for (
+    const zona
+    of zonas
+  ) {
 
-    const option =
+    const opcion =
       document.createElement(
         "option"
       );
 
-    option.value =
+    opcion.value =
       zona;
 
-    option.textContent =
+    opcion.textContent =
       zona;
 
     filtroZona.appendChild(
-      option
+      opcion
     );
 
   }
 
 }
 
-
-// ========================================
-// FILTRAR
-// ========================================
 
 function aplicarFiltros() {
 
@@ -1045,9 +1080,11 @@ function mostrarResultados(
         representante
       );
 
+
     const papelitosConfirmados =
       papelitos &&
-      papelitos.confirmado === true;
+      papelitos.confirmado ===
+        true;
 
 
     fila.innerHTML = `
@@ -1069,11 +1106,10 @@ function mostrarResultados(
           representante.instagram
             ? "@" +
               escaparHTML(
-                representante.instagram
-                  .replace(
-                    /^@/,
-                    ""
-                  )
+                representante.instagram.replace(
+                  /^@/,
+                  ""
+                )
               )
             : "—"
         }
@@ -1101,9 +1137,7 @@ function mostrarResultados(
         }
       </td>
 
-      <td
-        class="estado-gafete-tabla"
-      >
+      <td class="estado-gafete-tabla">
         Consultando...
       </td>
 
@@ -1173,7 +1207,7 @@ function mostrarResultados(
 
 
 // ========================================
-// CONSULTAR GAFETE
+// GAFETES
 // ========================================
 
 async function consultarGafete(id) {
@@ -1191,9 +1225,7 @@ async function consultarGafete(id) {
     );
 
 
-  if (
-    !documento.exists()
-  ) {
+  if (!documento.exists()) {
 
     return false;
 
@@ -1209,7 +1241,7 @@ async function consultarGafete(id) {
 
 
 // ========================================
-// FORMATEAR FECHA CONFIRMACIÓN
+// FICHA
 // ========================================
 
 function formatearFechaConfirmacion(
@@ -1241,17 +1273,16 @@ function formatearFechaConfirmacion(
   return objetoFecha.toLocaleString(
     "es-MX",
     {
-      dateStyle: "medium",
-      timeStyle: "short"
+      dateStyle:
+        "medium",
+
+      timeStyle:
+        "short"
     }
   );
 
 }
 
-
-// ========================================
-// ACTUALIZAR CONTROL VISUAL DE PAPELITOS
-// ========================================
 
 function mostrarEstadoPapelitos(
   representante
@@ -1275,19 +1306,16 @@ function mostrarEstadoPapelitos(
       "✅ Confirmados";
 
 
-    const partes = [];
+    const partes =
+      [];
 
 
     if (
-      papelitosSeleccionado
-        .confirmadoPor
+      papelitosSeleccionado.confirmadoPor
     ) {
 
       partes.push(
-        `Confirmado por: ${
-          papelitosSeleccionado
-            .confirmadoPor
-        }`
+        `Confirmado por: ${papelitosSeleccionado.confirmadoPor}`
       );
 
     }
@@ -1295,21 +1323,23 @@ function mostrarEstadoPapelitos(
 
     const fecha =
       formatearFechaConfirmacion(
-        papelitosSeleccionado
-          .fechaConfirmacion
+        papelitosSeleccionado.fechaConfirmacion
       );
 
 
     if (fecha) {
 
-      partes.push(fecha);
+      partes.push(
+        fecha
+      );
 
     }
 
 
     detallePapelitos.textContent =
-      partes.join(" · ");
-
+      partes.join(
+        " · "
+      );
 
     cambiarPapelitos.textContent =
       "Marcar como pendiente";
@@ -1335,10 +1365,6 @@ function mostrarEstadoPapelitos(
 
 }
 
-
-// ========================================
-// ABRIR FICHA
-// ========================================
 
 async function abrirFicha(
   representante
@@ -1429,24 +1455,25 @@ async function abrirFicha(
 
 
   fichaRepresentante.scrollIntoView({
-    behavior: "smooth",
-    block: "start"
+    behavior:
+      "smooth",
+
+    block:
+      "start"
   });
 
 }
 
 
 // ========================================
-// CAMBIAR ESTADO DE PAPELITOS
+// ACTUALIZAR PAPELITOS
 // ========================================
 
 cambiarPapelitos.addEventListener(
   "click",
   async () => {
 
-    if (
-      !representanteSeleccionado
-    ) {
+    if (!representanteSeleccionado) {
 
       return;
 
@@ -1456,18 +1483,15 @@ cambiarPapelitos.addEventListener(
     const representante =
       representanteSeleccionado;
 
-
     const registroActual =
       obtenerPapelitos(
         representante
       );
 
-
     const estaConfirmado =
       registroActual &&
       registroActual.confirmado ===
         true;
-
 
     const nuevoEstado =
       !estaConfirmado;
@@ -1486,7 +1510,6 @@ cambiarPapelitos.addEventListener(
 
       const resultado =
         await peticionPapelitos({
-
           accion:
             "actualizar",
 
@@ -1501,7 +1524,6 @@ cambiarPapelitos.addEventListener(
 
           confirmado:
             nuevoEstado
-
         });
 
 
@@ -1525,7 +1547,6 @@ cambiarPapelitos.addEventListener(
 
 
       registrosPapelitos.push({
-
         id:
           representante.id,
 
@@ -1537,7 +1558,7 @@ cambiarPapelitos.addEventListener(
 
         confirmado:
           resultado.confirmado ===
-          true,
+            true,
 
         confirmadoPor:
           resultado.confirmadoPor ||
@@ -1546,14 +1567,12 @@ cambiarPapelitos.addEventListener(
         fechaConfirmacion:
           resultado.fechaConfirmacion ||
           ""
-
       });
 
 
       mostrarEstadoPapelitos(
         representante
       );
-
 
       actualizarPapelitosEnTabla(
         representante
@@ -1577,7 +1596,6 @@ cambiarPapelitos.addEventListener(
         "No se pudo actualizar"
       );
 
-
       mostrarEstadoPapelitos(
         representante
       );
@@ -1588,18 +1606,14 @@ cambiarPapelitos.addEventListener(
 );
 
 
-// ========================================
-// ACTUALIZAR PAPELITOS EN LA TABLA
-// ========================================
-
 function actualizarPapelitosEnTabla(
   representante
 ) {
 
   const filas =
-    tablaRepresentantes
-      .querySelectorAll("tr");
-
+    tablaRepresentantes.querySelectorAll(
+      "tr"
+    );
 
   const claveBuscada =
     crearClavePapelitos(
@@ -1609,23 +1623,15 @@ function actualizarPapelitosEnTabla(
     );
 
 
-  for (const fila of filas) {
-
-    const boton =
-      fila.querySelector(
-        ".ver-ficha"
-      );
-
-
-    if (!boton) {
-
-      continue;
-
-    }
-
+  for (
+    const fila
+    of filas
+  ) {
 
     const celdas =
-      fila.querySelectorAll("td");
+      fila.querySelectorAll(
+        "td"
+      );
 
 
     if (
@@ -1637,26 +1643,17 @@ function actualizarPapelitosEnTabla(
     }
 
 
-    const id =
-      celdas[0].textContent.trim();
-
-    const fecha =
-      celdas[3].textContent.trim();
-
-    const zona =
-      celdas[4].textContent.trim();
-
-
     const claveFila =
       crearClavePapelitos(
-        id,
-        fecha,
-        zona
+        celdas[0].textContent.trim(),
+        celdas[3].textContent.trim(),
+        celdas[4].textContent.trim()
       );
 
 
     if (
-      claveFila === claveBuscada
+      claveFila ===
+      claveBuscada
     ) {
 
       const registro =
@@ -1667,10 +1664,10 @@ function actualizarPapelitosEnTabla(
 
       celdas[5].textContent =
         registro &&
-        registro.confirmado === true
+        registro.confirmado ===
+          true
           ? "✅ Confirmados"
           : "⏳ Pendiente";
-
 
       break;
 
@@ -1682,7 +1679,7 @@ function actualizarPapelitosEnTabla(
 
 
 // ========================================
-// CERRAR FICHA
+// BOTONES DE FICHA
 // ========================================
 
 cerrarFicha.addEventListener(
@@ -1702,17 +1699,11 @@ cerrarFicha.addEventListener(
 );
 
 
-// ========================================
-// COPIAR DATOS DE UNA FICHA
-// ========================================
-
 copiarDatos.addEventListener(
   "click",
   async () => {
 
-    if (
-      !representanteSeleccionado
-    ) {
+    if (!representanteSeleccionado) {
 
       return;
 
@@ -1766,7 +1757,7 @@ copiarDatos.addEventListener(
 
 
 // ========================================
-// COPIAR LISTA FILTRADA
+// COPIAR LISTA
 // ========================================
 
 copiarLista.addEventListener(
@@ -1774,7 +1765,8 @@ copiarLista.addEventListener(
   async () => {
 
     if (
-      resultadosActuales.length === 0
+      resultadosActuales.length ===
+      0
     ) {
 
       mostrarToast(
@@ -1786,7 +1778,8 @@ copiarLista.addEventListener(
     }
 
 
-    const encabezados = [];
+    const encabezados =
+      [];
 
 
     if (
@@ -1849,15 +1842,21 @@ copiarLista.addEventListener(
 
     const texto = [
       "LISTA DE REPRESENTANTES",
+
       encabezados.length
-        ? encabezados.join(" · ")
+        ? encabezados.join(
+            " · "
+          )
         : "Todos los resultados",
+
       "",
+
       ...lineas,
+
       "",
+
       `TOTAL: ${resultadosActuales.length}`
-    ]
-      .join("\n");
+    ].join("\n");
 
 
     try {
@@ -1865,7 +1864,6 @@ copiarLista.addEventListener(
       await navigator.clipboard.writeText(
         texto
       );
-
 
       mostrarToast(
         resultadosActuales.length === 1
@@ -1888,90 +1886,90 @@ copiarLista.addEventListener(
   }
 );
 
+
 // ========================================
-// CARGAR IMAGEN COMO DATA URL
+// PREPARAR LOGO PARA PDF
 // ========================================
 
-async function cargarImagenDataURL(ruta) {
-
-  const url =
-    new URL(
-      ruta,
-      window.location.href
-    );
-
-  url.searchParams.set(
-    "t",
-    Date.now()
-  );
-
-
-  const respuesta =
-    await fetch(
-      url.toString(),
-      {
-        cache: "no-store"
-      }
-    );
-
-
-  if (!respuesta.ok) {
-
-    throw new Error(
-      `No se pudo cargar ${ruta}`
-    );
-
-  }
-
-
-  const blob =
-    await respuesta.blob();
-
-
-  if (
-    !blob.type.startsWith(
-      "image/"
-    )
-  ) {
-
-    throw new Error(
-      `${ruta} no se recibió como imagen`
-    );
-
-  }
-
+function esperarImagen(imagen) {
 
   return new Promise(
     (resolve, reject) => {
 
-      const lector =
-        new FileReader();
+      if (!imagen) {
+
+        reject(
+          new Error(
+            "No se encontró logoPdf en representantes.html."
+          )
+        );
+
+        return;
+
+      }
 
 
-      lector.onload =
+      if (
+        imagen.complete &&
+        imagen.naturalWidth > 0 &&
+        imagen.naturalHeight > 0
+      ) {
+
+        resolve();
+
+        return;
+
+      }
+
+
+      const alCargar =
         () => {
 
-          resolve(
-            lector.result
-          );
+          limpiarEventos();
+
+          resolve();
 
         };
 
 
-      lector.onerror =
+      const alFallar =
         () => {
+
+          limpiarEventos();
 
           reject(
             new Error(
-              `No se pudo leer ${ruta}`
+              "No se pudo cargar logo3.png."
             )
           );
 
         };
 
 
-      lector.readAsDataURL(
-        blob
+      const limpiarEventos =
+        () => {
+
+          imagen.removeEventListener(
+            "load",
+            alCargar
+          );
+
+          imagen.removeEventListener(
+            "error",
+            alFallar
+          );
+
+        };
+
+
+      imagen.addEventListener(
+        "load",
+        alCargar
+      );
+
+      imagen.addEventListener(
+        "error",
+        alFallar
       );
 
     }
@@ -1979,8 +1977,78 @@ async function cargarImagenDataURL(ruta) {
 
 }
 
+
+function convertirImagenADataURL(
+  imagen
+) {
+
+  if (
+    !imagen ||
+    imagen.naturalWidth <= 0 ||
+    imagen.naturalHeight <= 0
+  ) {
+
+    throw new Error(
+      "El logo no tiene dimensiones válidas."
+    );
+
+  }
+
+
+  const canvas =
+    document.createElement(
+      "canvas"
+    );
+
+  canvas.width =
+    imagen.naturalWidth;
+
+  canvas.height =
+    imagen.naturalHeight;
+
+
+  const contexto =
+    canvas.getContext(
+      "2d"
+    );
+
+
+  if (!contexto) {
+
+    throw new Error(
+      "No se pudo preparar el logo para el PDF."
+    );
+
+  }
+
+
+  contexto.clearRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+
+  contexto.drawImage(
+    imagen,
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+
+  return canvas.toDataURL(
+    "image/png",
+    1
+  );
+
+}
+
+
 // ========================================
-// DESCARGAR LISTA EN PDF
+// DESCARGAR PDF
 // ========================================
 
 descargarLista.addEventListener(
@@ -1988,7 +2056,8 @@ descargarLista.addEventListener(
   async () => {
 
     if (
-      resultadosActuales.length === 0
+      resultadosActuales.length ===
+      0
     ) {
 
       mostrarToast(
@@ -2030,9 +2099,14 @@ descargarLista.addEventListener(
 
       const pdf =
         new jsPDF({
-          orientation: "landscape",
-          unit: "mm",
-          format: "a4"
+          orientation:
+            "landscape",
+
+          unit:
+            "mm",
+
+          format:
+            "a4"
         });
 
 
@@ -2040,31 +2114,18 @@ descargarLista.addEventListener(
         pdf.internal.pageSize.getWidth();
 
 
-      // ========================================
-      // LOGO
-      // ========================================
+      await esperarImagen(
+        logoPdf
+      );
 
-      // Esperar a que el logo esté cargado
 
-if (!logoPdf.complete) {
+      const logoDataURL =
+        convertirImagenADataURL(
+          logoPdf
+        );
 
-  await new Promise(
-    (resolve, reject) => {
 
-      logoPdf.onload =
-        resolve;
-
-      logoPdf.onerror =
-        reject;
-
-    }
-  );
-
-}
-
-      // ========================================
       // ENCABEZADO
-      // ========================================
 
       pdf.setFillColor(
         231,
@@ -2076,23 +2137,21 @@ if (!logoPdf.complete) {
         0,
         0,
         anchoPagina,
-        34,
+        36,
         "F"
       );
 
 
       pdf.addImage(
-  logoPdf,
-  "PNG",
-  12,
-  5,
-  24,
-  24
-);
-
-
-     const inicioTexto =
-  43;
+        logoDataURL,
+        "PNG",
+        11,
+        4,
+        28,
+        28,
+        undefined,
+        "FAST"
+      );
 
 
       pdf.setTextColor(
@@ -2112,8 +2171,8 @@ if (!logoPdf.complete) {
 
       pdf.text(
         "HARRY STYLES MÉXICO OFFAN",
-        inicioTexto,
-        14
+        45,
+        15
       );
 
 
@@ -2128,14 +2187,12 @@ if (!logoPdf.complete) {
 
       pdf.text(
         "LISTA DE REPRESENTANTES · FAN PROJECT 2026",
-        inicioTexto,
-        22
+        45,
+        23
       );
 
 
-      // ========================================
-      // DATOS DE LA LISTA
-      // ========================================
+      // TÍTULO
 
       pdf.setTextColor(
         23,
@@ -2155,9 +2212,11 @@ if (!logoPdf.complete) {
       pdf.text(
         "Lista de representantes",
         14,
-        45
+        47
       );
 
+
+      // FILTROS
 
       pdf.setFont(
         "helvetica",
@@ -2169,7 +2228,8 @@ if (!logoPdf.complete) {
       );
 
 
-      const detalles = [];
+      const detalles =
+        [];
 
 
       if (
@@ -2211,15 +2271,15 @@ if (!logoPdf.complete) {
 
 
       pdf.text(
-        detalles.join("   ·   "),
+        detalles.join(
+          "   ·   "
+        ),
         14,
-        52
+        54
       );
 
 
-      // ========================================
-      // TABLA
-      // ========================================
+      // FILAS
 
       const filasPDF =
         resultadosActuales.map(
@@ -2259,7 +2319,6 @@ if (!logoPdf.complete) {
 
 
             return [
-
               representante.id ||
                 "",
 
@@ -2280,7 +2339,6 @@ if (!logoPdf.complete) {
                 "",
 
               estadoPapelitos
-
             ];
 
           }
@@ -2288,9 +2346,8 @@ if (!logoPdf.complete) {
 
 
       pdf.autoTable({
-
         startY:
-          59,
+          61,
 
         head: [[
           "ID",
@@ -2308,13 +2365,17 @@ if (!logoPdf.complete) {
           "grid",
 
         margin: {
-          left: 14,
-          right: 14,
-          bottom: 16
+          left:
+            14,
+
+          right:
+            14,
+
+          bottom:
+            16
         },
 
         styles: {
-
           font:
             "helvetica",
 
@@ -2331,12 +2392,16 @@ if (!logoPdf.complete) {
             [214, 203, 210],
 
           lineWidth:
-            0.2
+            0.2,
 
+          overflow:
+            "linebreak",
+
+          valign:
+            "middle"
         },
 
         headStyles: {
-
           fillColor:
             [231, 43, 145],
 
@@ -2344,94 +2409,124 @@ if (!logoPdf.complete) {
             [255, 249, 252],
 
           fontStyle:
-            "bold"
+            "bold",
 
+          halign:
+            "left",
+
+          valign:
+            "middle"
         },
 
         alternateRowStyles: {
-
           fillColor:
             [255, 249, 252]
-
         },
 
         columnStyles: {
-
           0: {
-            cellWidth: 28
+            cellWidth:
+              28
           },
 
           1: {
-            cellWidth: 55
+            cellWidth:
+              55
           },
 
           2: {
-            cellWidth: 48
+            cellWidth:
+              48
           },
 
           3: {
-            cellWidth: 30
+            cellWidth:
+              30
           },
 
           4: {
-            cellWidth: 48
+            cellWidth:
+              48
           },
 
           5: {
-            cellWidth: 30
+            cellWidth:
+              30
           }
-
         },
 
-        didDrawPage: function () {
+        didDrawPage:
+          function () {
 
-          const altoPagina =
-            pdf.internal.pageSize.getHeight();
+            const altoPagina =
+              pdf.internal.pageSize.getHeight();
 
-          const paginaActual =
-            pdf.internal.getCurrentPageInfo()
-              .pageNumber;
-
-
-          pdf.setFontSize(
-            7
-          );
-
-          pdf.setTextColor(
-            111,
-            101,
-            112
-          );
+            const paginaActual =
+              pdf.internal
+                .getCurrentPageInfo()
+                .pageNumber;
 
 
-          pdf.text(
-            "Documento generado desde el Panel Administrativo · HSMX OFFAN",
-            14,
-            altoPagina - 7
-          );
+            pdf.setDrawColor(
+              231,
+              43,
+              145
+            );
+
+            pdf.setLineWidth(
+              0.2
+            );
+
+            pdf.line(
+              14,
+              altoPagina - 12,
+              anchoPagina - 14,
+              altoPagina - 12
+            );
 
 
-          pdf.text(
-            `Página ${paginaActual}`,
-            anchoPagina - 14,
-            altoPagina - 7,
-            {
-              align: "right"
-            }
-          );
+            pdf.setFont(
+              "helvetica",
+              "normal"
+            );
 
-        }
+            pdf.setFontSize(
+              7
+            );
 
+            pdf.setTextColor(
+              111,
+              101,
+              112
+            );
+
+
+            pdf.text(
+              "Documento generado desde el Panel Administrativo · HSMX OFFAN",
+              14,
+              altoPagina - 7
+            );
+
+            pdf.text(
+              `Página ${paginaActual}`,
+              anchoPagina - 14,
+              altoPagina - 7,
+              {
+                align:
+                  "right"
+              }
+            );
+
+          }
       });
 
 
-      // ========================================
       // NOMBRE DEL ARCHIVO
-      // ========================================
 
-      const partesNombre = [
-        "Representantes"
-      ];
+      const partesNombre =
+        [
+          "Representantes"
+        ];
 
 
       if (
@@ -2439,11 +2534,10 @@ if (!logoPdf.complete) {
       ) {
 
         partesNombre.push(
-          filtroFecha.value
-            .replaceAll(
-              " ",
-              "-"
-            )
+          filtroFecha.value.replaceAll(
+            " ",
+            "-"
+          )
         );
 
       }
@@ -2454,7 +2548,22 @@ if (!logoPdf.complete) {
       ) {
 
         partesNombre.push(
-          filtroZona.value
+          filtroZona.value.replaceAll(
+            " ",
+            "-"
+          )
+        );
+
+      }
+
+
+      if (
+        busqueda.value.trim()
+      ) {
+
+        partesNombre.push(
+          busqueda.value
+            .trim()
             .replaceAll(
               " ",
               "-"
@@ -2465,7 +2574,9 @@ if (!logoPdf.complete) {
 
 
       const nombreArchivo =
-        partesNombre.join("_") +
+        partesNombre.join(
+          "_"
+        ) +
         ".pdf";
 
 
@@ -2490,6 +2601,7 @@ if (!logoPdf.complete) {
       );
 
       mostrarToast(
+        error?.message ||
         "No se pudo generar el PDF"
       );
 
@@ -2510,66 +2622,7 @@ if (!logoPdf.complete) {
 
 
 // ========================================
-// TOAST
-// ========================================
-
-function mostrarToast(mensaje) {
-
-  toast.textContent =
-    mensaje;
-
-  toast.classList.add(
-    "visible"
-  );
-
-
-  setTimeout(
-    () => {
-
-      toast.classList.remove(
-        "visible"
-      );
-
-    },
-    2200
-  );
-
-}
-
-
-// ========================================
-// ESCAPAR HTML
-// ========================================
-
-function escaparHTML(texto) {
-
-  return String(texto)
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
-
-}
-
-
-// ========================================
-// BOTONES / EVENTOS
+// EVENTOS DE FILTROS
 // ========================================
 
 buscarButton.addEventListener(
@@ -2583,7 +2636,8 @@ busqueda.addEventListener(
   event => {
 
     if (
-      event.key === "Enter"
+      event.key ===
+      "Enter"
     ) {
 
       aplicarFiltros();
