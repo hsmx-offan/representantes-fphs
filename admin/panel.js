@@ -84,7 +84,7 @@ const gafeteBase =
   document.getElementById("gafeteBase");
 
 
-// NUEVOS ELEMENTOS DEL ESTADO DEL GAFETE
+// ESTADO DEL GAFETE
 
 const estadoGafete =
   document.getElementById("estadoGafete");
@@ -104,11 +104,15 @@ const cambiarEstadoGafete =
 // ========================================
 
 let usuarioActual = null;
-let nombreAdminActual = "Admin";
 
-let idRepresentanteActual = "";
+let nombreAdminActual =
+  "Admin";
 
-let gafeteEstaEnviado = false;
+let idRepresentanteActual =
+  "";
+
+let gafeteEstaEnviado =
+  false;
 
 
 // ========================================
@@ -120,6 +124,7 @@ const SHEET_URL =
 
 const REPRESENTANTE_URL =
   "https://hsmx-offan.github.io/representantes-fphs/representante.html?id=";
+
 
 // ========================================
 // CARGAR PERFIL DEL ADMIN
@@ -137,17 +142,25 @@ async function cargarPerfilAdmin(user) {
       );
 
     const documento =
-      await getDoc(referencia);
+      await getDoc(
+        referencia
+      );
 
-    if (documento.exists()) {
+
+    if (
+      documento.exists()
+    ) {
 
       const datos =
         documento.data();
 
       nombreAdminActual =
-        datos.usuario || "Admin";
+        datos.usuario ||
+        "Admin";
 
-    } else {
+    }
+
+    else {
 
       nombreAdminActual =
         "Admin";
@@ -169,6 +182,8 @@ async function cargarPerfilAdmin(user) {
   }
 
 }
+
+
 // ========================================
 // VERIFICAR SESIÓN ADMIN
 // ========================================
@@ -179,9 +194,12 @@ onAuthStateChanged(
 
     if (user) {
 
-      usuarioActual = user;
+      usuarioActual =
+        user;
 
-      await cargarPerfilAdmin(user);
+      await cargarPerfilAdmin(
+        user
+      );
 
       cargando.style.display =
         "none";
@@ -189,11 +207,37 @@ onAuthStateChanged(
       contenido.style.display =
         "block";
 
+
+      // ========================================
+      // ID RECIBIDO DESDE REPRESENTANTES
+      // ========================================
+
+      const parametros =
+        new URLSearchParams(
+          window.location.search
+        );
+
+      const idRecibido =
+        parametros.get("id");
+
+
+      if (idRecibido) {
+
+        idInput.value =
+          idRecibido
+            .trim()
+            .toUpperCase();
+
+        await buscarRepresentante();
+
+      }
+
     }
 
     else {
 
-      usuarioActual = null;
+      usuarioActual =
+        null;
 
       nombreAdminActual =
         "Admin";
@@ -215,9 +259,12 @@ logoutButton.addEventListener(
   "click",
   async () => {
 
-    await signOut(auth);
+    await signOut(
+      auth
+    );
 
-    window.location.href = "./";
+    window.location.href =
+      "./";
 
   }
 );
@@ -233,12 +280,22 @@ function parsearCSV(texto) {
 
   let fila = [];
   let campo = "";
-  let dentroComillas = false;
+  let dentroComillas =
+    false;
 
-  for (let i = 0; i < texto.length; i++) {
 
-    const caracter = texto[i];
-    const siguiente = texto[i + 1];
+  for (
+    let i = 0;
+    i < texto.length;
+    i++
+  ) {
+
+    const caracter =
+      texto[i];
+
+    const siguiente =
+      texto[i + 1];
+
 
     if (
       caracter === '"' &&
@@ -251,9 +308,12 @@ function parsearCSV(texto) {
 
     }
 
-    else if (caracter === '"') {
+    else if (
+      caracter === '"'
+    ) {
 
-      dentroComillas = !dentroComillas;
+      dentroComillas =
+        !dentroComillas;
 
     }
 
@@ -262,13 +322,19 @@ function parsearCSV(texto) {
       !dentroComillas
     ) {
 
-      fila.push(campo);
+      fila.push(
+        campo
+      );
+
       campo = "";
 
     }
 
     else if (
-      (caracter === "\n" || caracter === "\r") &&
+      (
+        caracter === "\n" ||
+        caracter === "\r"
+      ) &&
       !dentroComillas
     ) {
 
@@ -281,17 +347,25 @@ function parsearCSV(texto) {
 
       }
 
-      fila.push(campo);
+
+      fila.push(
+        campo
+      );
+
 
       if (
         fila.some(
-          valor => valor.trim() !== ""
+          valor =>
+            valor.trim() !== ""
         )
       ) {
 
-        filas.push(fila);
+        filas.push(
+          fila
+        );
 
       }
+
 
       fila = [];
       campo = "";
@@ -306,15 +380,22 @@ function parsearCSV(texto) {
 
   }
 
+
   if (
     campo.length > 0 ||
     fila.length > 0
   ) {
 
-    fila.push(campo);
-    filas.push(fila);
+    fila.push(
+      campo
+    );
+
+    filas.push(
+      fila
+    );
 
   }
+
 
   return filas;
 
@@ -325,28 +406,45 @@ function parsearCSV(texto) {
 // GENERAR QR
 // ========================================
 
-function generarQR(idRepresentante) {
+function generarQR(
+  idRepresentante
+) {
 
   const urlRepresentante =
     REPRESENTANTE_URL +
-    encodeURIComponent(idRepresentante);
+    encodeURIComponent(
+      idRepresentante
+    );
 
-  qrContainer.innerHTML = "";
 
-  new QRCode(qrContainer, {
+  qrContainer.innerHTML =
+    "";
 
-    text: urlRepresentante,
 
-    width: 260,
-    height: 260,
+  new QRCode(
+    qrContainer,
+    {
 
-    colorDark: "#ffffff",
-    colorLight: "#000000",
+      text:
+        urlRepresentante,
 
-    correctLevel:
-      QRCode.CorrectLevel.H
+      width:
+        260,
 
-  });
+      height:
+        260,
+
+      colorDark:
+        "#ffffff",
+
+      colorLight:
+        "#000000",
+
+      correctLevel:
+        QRCode.CorrectLevel.H
+
+    }
+  );
 
 }
 
@@ -357,15 +455,20 @@ function generarQR(idRepresentante) {
 
 function limpiarEstadoGafete() {
 
-  idRepresentanteActual = "";
+  idRepresentanteActual =
+    "";
 
-  gafeteEstaEnviado = false;
+  gafeteEstaEnviado =
+    false;
 
-  estadoGafete.style.display = "none";
+  estadoGafete.style.display =
+    "none";
 
-  textoEstadoGafete.textContent = "";
+  textoEstadoGafete.textContent =
+    "";
 
-  detalleEstadoGafete.textContent = "";
+  detalleEstadoGafete.textContent =
+    "";
 
   cambiarEstadoGafete.textContent =
     "Marcar como enviado";
@@ -377,15 +480,20 @@ function limpiarEstadoGafete() {
 // MOSTRAR ESTADO DEL GAFETE
 // ========================================
 
-function mostrarEstadoGafete(datos) {
+function mostrarEstadoGafete(
+  datos
+) {
 
-  estadoGafete.style.display = "block";
+  estadoGafete.style.display =
+    "block";
 
   gafeteEstaEnviado =
     datos?.enviado === true;
 
 
-  if (gafeteEstaEnviado) {
+  if (
+    gafeteEstaEnviado
+  ) {
 
     textoEstadoGafete.textContent =
       "✅ Enviado";
@@ -394,33 +502,48 @@ function mostrarEstadoGafete(datos) {
       "Marcar como pendiente";
 
 
-    let detalle = "";
+    let detalle =
+      "";
+
 
     if (
       datos.fechaEnvio &&
-      typeof datos.fechaEnvio.toDate === "function"
+      typeof datos.fechaEnvio.toDate ===
+        "function"
     ) {
 
       const fecha =
         datos.fechaEnvio.toDate();
 
+
       detalle =
         fecha.toLocaleString(
           "es-MX",
           {
-            dateStyle: "medium",
-            timeStyle: "short"
+            dateStyle:
+              "medium",
+
+            timeStyle:
+              "short"
           }
         );
 
     }
 
 
-    if (datos.admin) {
+    if (
+      datos.admin
+    ) {
 
-      if (detalle) {
-        detalle += " · ";
+      if (
+        detalle
+      ) {
+
+        detalle +=
+          " · ";
+
       }
+
 
       detalle +=
         `Marcado por ${datos.admin}`;
@@ -482,14 +605,20 @@ async function consultarEstadoGafete(
         idRepresentante
       );
 
+
     const documento =
-      await getDoc(referencia);
+      await getDoc(
+        referencia
+      );
 
 
-    if (!documento.exists()) {
+    if (
+      !documento.exists()
+    ) {
 
       mostrarEstadoGafete({
-        enviado: false
+        enviado:
+          false
       });
 
       return;
@@ -509,6 +638,7 @@ async function consultarEstadoGafete(
       "Error consultando estado del gafete:",
       error
     );
+
 
     textoEstadoGafete.textContent =
       "No se pudo consultar el estado.";
@@ -536,7 +666,9 @@ cambiarEstadoGafete.addEventListener(
   "click",
   async () => {
 
-    if (!idRepresentanteActual) {
+    if (
+      !idRepresentanteActual
+    ) {
 
       return;
 
@@ -557,36 +689,36 @@ cambiarEstadoGafete.addEventListener(
         );
 
 
-      // ========================================
       // MARCAR COMO ENVIADO
-      // ========================================
 
-      if (!gafeteEstaEnviado) {
+      if (
+        !gafeteEstaEnviado
+      ) {
 
         await setDoc(
           referencia,
           {
 
-            enviado: true,
+            enviado:
+              true,
 
             fechaEnvio:
               serverTimestamp(),
 
-           admin:
-  nombreAdminActual
+            admin:
+              nombreAdminActual
 
           },
           {
-            merge: true
+            merge:
+              true
           }
         );
 
       }
 
 
-      // ========================================
       // REGRESAR A PENDIENTE
-      // ========================================
 
       else {
 
@@ -594,15 +726,19 @@ cambiarEstadoGafete.addEventListener(
           referencia,
           {
 
-            enviado: false,
+            enviado:
+              false,
 
-            fechaEnvio: null,
+            fechaEnvio:
+              null,
 
-            admin: ""
+            admin:
+              ""
 
           },
           {
-            merge: true
+            merge:
+              true
           }
         );
 
@@ -613,28 +749,30 @@ cambiarEstadoGafete.addEventListener(
         idRepresentanteActual
       );
 
+    }
+
+    catch (error) {
+
+      console.error(
+        "Error cambiando estado del gafete:",
+        error
+      );
+
+
+      textoEstadoGafete.textContent =
+        "No se pudo guardar el cambio.";
+
+    }
+
+    finally {
+
+      cambiarEstadoGafete.disabled =
+        false;
+
+    }
+
   }
-
-  catch (error) {
-
-    console.error(
-      "Error cambiando estado del gafete:",
-      error
-    );
-
-    textoEstadoGafete.textContent =
-      "No se pudo guardar el cambio.";
-
-  }
-
-  finally {
-
-    cambiarEstadoGafete.disabled =
-      false;
-
-  }
-
-});
+);
 
 
 // ========================================
@@ -649,7 +787,9 @@ async function buscarRepresentante() {
       .toUpperCase();
 
 
-  if (!idBuscado) {
+  if (
+    !idBuscado
+  ) {
 
     estado.textContent =
       "Escribe un ID.";
@@ -657,10 +797,14 @@ async function buscarRepresentante() {
     datosEncontrados.style.display =
       "none";
 
-    textoNombre.textContent = "";
-    textoId.textContent = "";
+    textoNombre.textContent =
+      "";
 
-    qrContainer.innerHTML = "";
+    textoId.textContent =
+      "";
+
+    qrContainer.innerHTML =
+      "";
 
     limpiarEstadoGafete();
 
@@ -688,7 +832,9 @@ async function buscarRepresentante() {
       );
 
 
-    if (!respuesta.ok) {
+    if (
+      !respuesta.ok
+    ) {
 
       throw new Error(
         "No se pudo leer Google Sheets."
@@ -700,13 +846,21 @@ async function buscarRepresentante() {
     const csv =
       await respuesta.text();
 
+
     const filas =
-      parsearCSV(csv);
+      parsearCSV(
+        csv
+      );
 
-    let representante = null;
+
+    let representante =
+      null;
 
 
-    for (const fila of filas) {
+    for (
+      const fila
+      of filas
+    ) {
 
       const id =
         (fila[0] || "")
@@ -714,7 +868,10 @@ async function buscarRepresentante() {
           .toUpperCase();
 
 
-      if (id === idBuscado) {
+      if (
+        id ===
+        idBuscado
+      ) {
 
         representante = {
 
@@ -728,6 +885,7 @@ async function buscarRepresentante() {
 
         };
 
+
         break;
 
       }
@@ -735,15 +893,21 @@ async function buscarRepresentante() {
     }
 
 
-    if (!representante) {
+    if (
+      !representante
+    ) {
 
       estado.textContent =
         "No encontré ese ID.";
 
-      textoNombre.textContent = "";
-      textoId.textContent = "";
+      textoNombre.textContent =
+        "";
 
-      qrContainer.innerHTML = "";
+      textoId.textContent =
+        "";
+
+      qrContainer.innerHTML =
+        "";
 
       datosEncontrados.style.display =
         "none";
@@ -755,9 +919,7 @@ async function buscarRepresentante() {
     }
 
 
-    // ========================================
     // DATOS ENCONTRADOS
-    // ========================================
 
     estado.textContent =
       "Representante encontrado.";
@@ -772,9 +934,7 @@ async function buscarRepresentante() {
       "block";
 
 
-    // ========================================
     // DATOS EN EL GAFETE
-    // ========================================
 
     textoNombre.textContent =
       representante.nombre;
@@ -783,18 +943,14 @@ async function buscarRepresentante() {
       representante.id;
 
 
-    // ========================================
     // QR AUTOMÁTICO
-    // ========================================
 
     generarQR(
       representante.id
     );
 
 
-    // ========================================
-    // CONSULTAR SI YA FUE ENVIADO
-    // ========================================
+    // ESTADO DE ENVÍO
 
     await consultarEstadoGafete(
       representante.id
@@ -804,12 +960,16 @@ async function buscarRepresentante() {
 
   catch (error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
+
 
     estado.textContent =
       "Hubo un error al leer la lista de representantes.";
 
-    qrContainer.innerHTML = "";
+    qrContainer.innerHTML =
+      "";
 
     limpiarEstadoGafete();
 
@@ -834,9 +994,12 @@ buscarButton.addEventListener(
 
 idInput.addEventListener(
   "keydown",
-  (event) => {
+  event => {
 
-    if (event.key === "Enter") {
+    if (
+      event.key ===
+      "Enter"
+    ) {
 
       buscarRepresentante();
 
@@ -861,9 +1024,9 @@ descargarButton.addEventListener(
       datoId.textContent.trim();
 
 
-    // Evitar descargar si no se ha buscado representante
-
-    if (!id) {
+    if (
+      !id
+    ) {
 
       estado.textContent =
         "Primero busca un representante.";
@@ -873,10 +1036,11 @@ descargarButton.addEventListener(
     }
 
 
-    // Crear canvas con el tamaño ORIGINAL del gafete
-
     const canvas =
-      document.createElement("canvas");
+      document.createElement(
+        "canvas"
+      );
+
 
     canvas.width =
       gafeteBase.naturalWidth;
@@ -884,13 +1048,14 @@ descargarButton.addEventListener(
     canvas.height =
       gafeteBase.naturalHeight;
 
+
     const ctx =
-      canvas.getContext("2d");
+      canvas.getContext(
+        "2d"
+      );
 
 
-    // ========================================
-    // DIBUJAR IMAGEN BASE
-    // ========================================
+    // IMAGEN BASE
 
     ctx.drawImage(
       gafeteBase,
@@ -901,21 +1066,19 @@ descargarButton.addEventListener(
     );
 
 
-    // ========================================
-    // CONFIGURACIÓN DEL TEXTO
-    // ========================================
+    // TEXTO
 
-    ctx.fillStyle = "#ffffff";
+    ctx.fillStyle =
+      "#ffffff";
 
     ctx.font =
       `600 ${canvas.width * 0.050}px Arial`;
 
-    ctx.textBaseline = "top";
+    ctx.textBaseline =
+      "top";
 
 
-    // ========================================
     // NOMBRE
-    // ========================================
 
     ctx.fillText(
       nombre,
@@ -924,9 +1087,7 @@ descargarButton.addEventListener(
     );
 
 
-    // ========================================
     // ID
-    // ========================================
 
     ctx.fillText(
       id,
@@ -935,15 +1096,18 @@ descargarButton.addEventListener(
     );
 
 
-    // ========================================
-    // DIBUJAR QR
-    // ========================================
+    // QR
 
     const qrCanvas =
-      qrContainer.querySelector("canvas");
+      qrContainer.querySelector(
+        "canvas"
+      );
 
     const qrImagen =
-      qrContainer.querySelector("img");
+      qrContainer.querySelector(
+        "img"
+      );
+
 
     const qrX =
       canvas.width * 0.39;
@@ -955,7 +1119,9 @@ descargarButton.addEventListener(
       canvas.width * 0.22;
 
 
-    if (qrCanvas) {
+    if (
+      qrCanvas
+    ) {
 
       ctx.drawImage(
         qrCanvas,
@@ -967,24 +1133,30 @@ descargarButton.addEventListener(
 
     }
 
-    else if (qrImagen) {
+    else if (
+      qrImagen
+    ) {
 
-      await new Promise((resolve) => {
+      await new Promise(
+        resolve => {
 
-        if (qrImagen.complete) {
+          if (
+            qrImagen.complete
+          ) {
 
-          resolve();
+            resolve();
+
+          }
+
+          else {
+
+            qrImagen.onload =
+              resolve;
+
+          }
 
         }
-
-        else {
-
-          qrImagen.onload =
-            resolve;
-
-        }
-
-      });
+      );
 
 
       ctx.drawImage(
@@ -998,20 +1170,72 @@ descargarButton.addEventListener(
     }
 
 
-    // ========================================
-    // DESCARGAR PNG
-    // ========================================
+    // DESCARGAR
 
     const enlace =
-      document.createElement("a");
+      document.createElement(
+        "a"
+      );
+
 
     enlace.download =
       `Gafete-${id}.png`;
 
+
     enlace.href =
-      canvas.toDataURL("image/png");
+      canvas.toDataURL(
+        "image/png"
+      );
+
 
     enlace.click();
 
+  }
+);
+// ========================================
+// TEMA CLARO / OSCURO
+// ========================================
+
+const themeToggle =
+  document.getElementById("themeToggle");
+
+function aplicarTema(tema) {
+
+  document.documentElement.setAttribute(
+    "data-theme",
+    tema
+  );
+
+  themeToggle.textContent =
+    tema === "dark"
+      ? "☀️"
+      : "🌙";
+}
+
+const temaGuardado =
+  localStorage.getItem("temaAdmin") || "dark";
+
+aplicarTema(temaGuardado);
+
+themeToggle.addEventListener(
+  "click",
+  () => {
+
+    const temaActual =
+      document.documentElement.getAttribute(
+        "data-theme"
+      );
+
+    const nuevoTema =
+      temaActual === "dark"
+        ? "light"
+        : "dark";
+
+    aplicarTema(nuevoTema);
+
+    localStorage.setItem(
+      "temaAdmin",
+      nuevoTema
+    );
   }
 );
