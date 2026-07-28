@@ -1887,6 +1887,610 @@ copiarLista.addEventListener(
   }
 );
 
+// ========================================
+// CARGAR IMAGEN COMO DATA URL
+// ========================================
+
+function cargarImagenDataURL(ruta) {
+
+  return new Promise(
+    (resolve, reject) => {
+
+      const imagen =
+        new Image();
+
+      imagen.onload =
+        () => {
+
+          const canvas =
+            document.createElement(
+              "canvas"
+            );
+
+          canvas.width =
+            imagen.naturalWidth;
+
+          canvas.height =
+            imagen.naturalHeight;
+
+          const ctx =
+            canvas.getContext(
+              "2d"
+            );
+
+          ctx.drawImage(
+            imagen,
+            0,
+            0
+          );
+
+          resolve(
+            canvas.toDataURL(
+              "image/png"
+            )
+          );
+
+        };
+
+      imagen.onerror =
+        () => {
+
+          reject(
+            new Error(
+              "No se pudo cargar logo3.png"
+            )
+          );
+
+        };
+
+      imagen.src =
+        "logo3.png";
+
+    }
+  );
+
+}
+
+
+// ========================================
+// DESCARGAR LISTA EN PDF
+// ========================================
+
+descargarLista.addEventListener(
+  "click",
+  async () => {
+
+    if (
+      resultadosActuales.length === 0
+    ) {
+
+      mostrarToast(
+        "No hay resultados para descargar"
+      );
+
+      return;
+
+    }
+
+
+    if (
+      !window.jspdf ||
+      !window.jspdf.jsPDF
+    ) {
+
+      mostrarToast(
+        "No se pudo cargar el generador de PDF"
+      );
+
+      return;
+
+    }
+
+
+    descargarLista.disabled =
+      true;
+
+    descargarLista.textContent =
+      "Generando PDF...";
+
+
+    try {
+
+      const {
+        jsPDF
+      } = window.jspdf;
+
+
+      const pdf =
+        new jsPDF({
+          orientation: "landscape",
+          unit: "mm",
+          format: "a4"
+        });
+
+
+      const anchoPagina =
+        pdf.internal.pageSize.getWidth();
+
+
+      // ========================================
+      // LOGO
+      // ========================================
+
+      let logo = null;
+
+
+      try {
+
+        logo =
+          await cargarImagenDataURL(
+            "logo3.png"
+          );
+
+      }
+
+      catch (error) {
+
+        console.warn(
+          "No se pudo cargar el logo:",
+          error
+        );
+
+      }
+
+
+      // ========================================
+      // ENCABEZADO
+      // ========================================
+
+      pdf.setFillColor(
+        231,
+        43,
+        145
+      );
+
+      pdf.rect(
+        0,
+        0,
+        anchoPagina,
+        34,
+        "F"
+      );
+
+
+      if (logo) {
+
+        pdf.addImage(
+          logo,
+          "PNG",
+          12,
+          5,
+          24,
+          24
+        );
+
+      }
+
+
+      const inicioTexto =
+        logo
+          ? 43
+          : 14;
+
+
+      pdf.setTextColor(
+        255,
+        249,
+        252
+      );
+
+      pdf.setFont(
+        "helvetica",
+        "bold"
+      );
+
+      pdf.setFontSize(
+        17
+      );
+
+      pdf.text(
+        "HARRY STYLES MÉXICO OFFAN",
+        inicioTexto,
+        14
+      );
+
+
+      pdf.setFont(
+        "helvetica",
+        "normal"
+      );
+
+      pdf.setFontSize(
+        10
+      );
+
+      pdf.text(
+        "LISTA DE REPRESENTANTES · FAN PROJECT 2026",
+        inicioTexto,
+        22
+      );
+
+
+      // ========================================
+      // DATOS DE LA LISTA
+      // ========================================
+
+      pdf.setTextColor(
+        23,
+        19,
+        27
+      );
+
+      pdf.setFont(
+        "helvetica",
+        "bold"
+      );
+
+      pdf.setFontSize(
+        12
+      );
+
+      pdf.text(
+        "Lista de representantes",
+        14,
+        45
+      );
+
+
+      pdf.setFont(
+        "helvetica",
+        "normal"
+      );
+
+      pdf.setFontSize(
+        9
+      );
+
+
+      const detalles = [];
+
+
+      if (
+        filtroFecha.value
+      ) {
+
+        detalles.push(
+          `Fecha: ${filtroFecha.value}`
+        );
+
+      }
+
+
+      if (
+        filtroZona.value
+      ) {
+
+        detalles.push(
+          `Zona: ${filtroZona.value}`
+        );
+
+      }
+
+
+      if (
+        busqueda.value.trim()
+      ) {
+
+        detalles.push(
+          `Búsqueda: ${busqueda.value.trim()}`
+        );
+
+      }
+
+
+      detalles.push(
+        `Registros: ${resultadosActuales.length}`
+      );
+
+
+      pdf.text(
+        detalles.join("   ·   "),
+        14,
+        52
+      );
+
+
+      // ========================================
+      // TABLA
+      // ========================================
+
+      const filasPDF =
+        resultadosActuales.map(
+          representante => {
+
+            const papelitos =
+              obtenerPapelitos(
+                representante
+              );
+
+
+            let estadoPapelitos =
+              "Pendiente";
+
+
+            if (
+              papelitos &&
+              papelitos.confirmado ===
+                true
+            ) {
+
+              estadoPapelitos =
+                "Confirmado";
+
+            }
+
+            else if (
+              papelitos &&
+              papelitos.cancelado ===
+                true
+            ) {
+
+              estadoPapelitos =
+                "Cancelado";
+
+            }
+
+
+            return [
+
+              representante.id ||
+                "",
+
+              representante.nombre ||
+                "",
+
+              representante.instagram
+                ? `@${representante.instagram.replace(
+                    /^@/,
+                    ""
+                  )}`
+                : "",
+
+              representante.fecha ||
+                "",
+
+              representante.zona ||
+                "",
+
+              estadoPapelitos
+
+            ];
+
+          }
+        );
+
+
+      pdf.autoTable({
+
+        startY:
+          59,
+
+        head: [[
+          "ID",
+          "REPRESENTANTE",
+          "INSTAGRAM",
+          "FECHA",
+          "ZONA",
+          "PAPELITOS"
+        ]],
+
+        body:
+          filasPDF,
+
+        theme:
+          "grid",
+
+        margin: {
+          left: 14,
+          right: 14,
+          bottom: 16
+        },
+
+        styles: {
+
+          font:
+            "helvetica",
+
+          fontSize:
+            8,
+
+          cellPadding:
+            2.5,
+
+          textColor:
+            [23, 19, 27],
+
+          lineColor:
+            [214, 203, 210],
+
+          lineWidth:
+            0.2
+
+        },
+
+        headStyles: {
+
+          fillColor:
+            [231, 43, 145],
+
+          textColor:
+            [255, 249, 252],
+
+          fontStyle:
+            "bold"
+
+        },
+
+        alternateRowStyles: {
+
+          fillColor:
+            [255, 249, 252]
+
+        },
+
+        columnStyles: {
+
+          0: {
+            cellWidth: 28
+          },
+
+          1: {
+            cellWidth: 55
+          },
+
+          2: {
+            cellWidth: 48
+          },
+
+          3: {
+            cellWidth: 30
+          },
+
+          4: {
+            cellWidth: 48
+          },
+
+          5: {
+            cellWidth: 30
+          }
+
+        },
+
+        didDrawPage: function () {
+
+          const altoPagina =
+            pdf.internal.pageSize.getHeight();
+
+          const paginaActual =
+            pdf.internal.getCurrentPageInfo()
+              .pageNumber;
+
+
+          pdf.setFontSize(
+            7
+          );
+
+          pdf.setTextColor(
+            111,
+            101,
+            112
+          );
+
+
+          pdf.text(
+            "Documento generado desde el Panel Administrativo · HSMX OFFAN",
+            14,
+            altoPagina - 7
+          );
+
+
+          pdf.text(
+            `Página ${paginaActual}`,
+            anchoPagina - 14,
+            altoPagina - 7,
+            {
+              align: "right"
+            }
+          );
+
+        }
+
+      });
+
+
+      // ========================================
+      // NOMBRE DEL ARCHIVO
+      // ========================================
+
+      const partesNombre = [
+        "Representantes"
+      ];
+
+
+      if (
+        filtroFecha.value
+      ) {
+
+        partesNombre.push(
+          filtroFecha.value
+            .replaceAll(
+              " ",
+              "-"
+            )
+        );
+
+      }
+
+
+      if (
+        filtroZona.value
+      ) {
+
+        partesNombre.push(
+          filtroZona.value
+            .replaceAll(
+              " ",
+              "-"
+            )
+        );
+
+      }
+
+
+      const nombreArchivo =
+        partesNombre.join("_") +
+        ".pdf";
+
+
+      pdf.save(
+        nombreArchivo
+      );
+
+
+      mostrarToast(
+        resultadosActuales.length === 1
+          ? "PDF generado con 1 registro"
+          : `PDF generado con ${resultadosActuales.length} registros`
+      );
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "Error generando PDF:",
+        error
+      );
+
+      mostrarToast(
+        "No se pudo generar el PDF"
+      );
+
+    }
+
+    finally {
+
+      descargarLista.disabled =
+        false;
+
+      descargarLista.textContent =
+        "📄 Descargar PDF";
+
+    }
+
+  }
+);
+
 
 // ========================================
 // TOAST
