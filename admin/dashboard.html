@@ -1,26 +1,49 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<script>
-  const mantenimientoActivo = true;
 
-  const params =
-    new URLSearchParams(window.location.search);
+  <!-- =====================================
+       MODO MANTENIMIENTO
+       ===================================== -->
 
-  if (params.has("dev")) {
-    localStorage.setItem("devMode", "1");
-  }
+  <script>
+    const mantenimientoActivo = true;
 
-  const modoDesarrollo =
-    localStorage.getItem("devMode") === "1";
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
 
-  if (
-    mantenimientoActivo &&
-    !modoDesarrollo
-  ) {
-    window.location.replace("mantenimiento.html");
-  }
-</script>
+    if (
+      params.has("dev")
+    ) {
+      localStorage.setItem(
+        "devMode",
+        "1"
+      );
+    }
+
+    const modoDesarrollo =
+      localStorage.getItem(
+        "devMode"
+      ) === "1";
+
+    if (
+      mantenimientoActivo &&
+      !modoDesarrollo
+    ) {
+      window.location.replace(
+        "mantenimiento.html"
+      );
+    }
+  </script>
+
+
+  <!-- =====================================
+       CONFIGURACIÓN
+       ===================================== -->
+
   <meta charset="UTF-8">
 
   <meta
@@ -28,11 +51,17 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Dashboard Admin | HSMX OFFAN</title>
+  <title>
+    Dashboard Admin | HSMX OFFAN
+  </title>
 
-  <link rel="stylesheet" href="css/dashboard.css">
+  <link
+    rel="stylesheet"
+    href="css/dashboard.css"
+  >
 
 </head>
+
 
 <body>
 
@@ -46,50 +75,65 @@
 
 
   <!-- =====================================
-       PANEL
+       CONTENIDO PROTEGIDO
        ===================================== -->
 
-  <div id="contenido" style="display: none;">
+  <div
+    id="contenido"
+    style="display: none;"
+  >
 
     <div class="dashboard">
 
-      <!-- ENCABEZADO -->
+
+      <!-- =====================================
+           ENCABEZADO
+           ===================================== -->
 
       <header class="topbar">
 
         <div>
+
           <p class="eyebrow">
             HARRY STYLES MÉXICO OFFAN
           </p>
 
-          <h1>Panel administrativo</h1>
+          <h1>
+            Panel administrativo
+          </h1>
 
           <p class="bienvenida">
-            Hola, <strong id="nombreAdmin">Admin</strong>
+            Hola,
+            <strong id="nombreAdmin">
+              Admin
+            </strong>
           </p>
+
         </div>
+
 
         <div class="acciones-topbar">
 
-  <button
-    type="button"
-    id="themeToggle"
-    class="theme-toggle"
-    aria-label="Cambiar tema"
-    title="Cambiar tema"
-  >
-    🌙
-  </button>
+          <button
+            type="button"
+            id="themeToggle"
+            class="theme-toggle"
+            aria-label="Cambiar tema"
+            title="Cambiar tema"
+          >
+            🌙
+          </button>
 
-  <button
-    type="button"
-    id="logoutButton"
-    class="logout"
-  >
-    Cerrar sesión
-  </button>
 
-</div>
+          <button
+            type="button"
+            id="logoutButton"
+            class="logout"
+          >
+            Cerrar sesión
+          </button>
+
+        </div>
 
       </header>
 
@@ -102,25 +146,35 @@
 
 
       <!-- =====================================
-           RESUMEN
+           CONTENIDO PRINCIPAL
            ===================================== -->
 
       <main>
 
+
+        <!-- RESUMEN GENERAL -->
+
         <section class="encabezado-seccion">
 
           <div>
-            <h2>Resumen general</h2>
+
+            <h2>
+              Resumen general
+            </h2>
 
             <p>
               Estado actual del Fan Project 2026
             </p>
+
           </div>
 
         </section>
 
 
+        <!-- TARJETAS DE RESUMEN -->
+
         <section class="tarjetas">
+
 
           <!-- REPRESENTANTES -->
 
@@ -203,30 +257,30 @@
           <!-- PROBLEMAS -->
 
           <a
-  href="problemas.html"
-  class="tarjeta tarjeta-enlace"
->
+            href="problemas.html"
+            class="tarjeta tarjeta-enlace"
+          >
 
-  <span class="tarjeta-icono">
-    ⚠️
-  </span>
+            <span class="tarjeta-icono">
+              ⚠️
+            </span>
 
-  <p class="tarjeta-titulo">
-    Problemas
-  </p>
+            <p class="tarjeta-titulo">
+              Problemas
+            </p>
 
-  <p
-    class="tarjeta-numero"
-    id="totalProblemas"
-  >
-    —
-  </p>
+            <p
+              class="tarjeta-numero"
+              id="totalProblemas"
+            >
+              —
+            </p>
 
-  <p class="tarjeta-detalle">
-    requieren revisión
-  </p>
+            <p class="tarjeta-detalle">
+              requieren revisión
+            </p>
 
-</a>
+          </a>
 
         </section>
 
@@ -238,55 +292,88 @@
         <section class="bloque">
 
           <div class="titulo-bloque">
-            <h2>Accesos rápidos</h2>
+
+            <h2>
+              Accesos rápidos
+            </h2>
+
           </div>
 
+
           <div class="accesos">
+
+
+            <!-- GENERADOR DE GAFETES -->
 
             <a
               href="panel.html"
               class="acceso"
             >
 
-              <span>🪪</span>
+              <span>
+                🪪
+              </span>
 
               <div>
-                <strong>Generador de gafetes</strong>
+
+                <strong>
+                  Generador de gafetes
+                </strong>
+
                 <p>
                   Generar PNG y consultar estado de envío.
                 </p>
+
               </div>
 
             </a>
 
 
+            <!-- REPRESENTANTES -->
+
             <a
-  href="representantes.html"
-  class="acceso"
->
+              href="representantes.html"
+              class="acceso"
+            >
 
-  <span>👥</span>
+              <span>
+                👥
+              </span>
 
-  <div>
-    <strong>Buscar representante</strong>
+              <div>
 
-    <p>
-      Consulta por ID, nombre, Instagram, fecha o zona.
-    </p>
-  </div>
+                <strong>
+                  Buscar representante
+                </strong>
 
-</a>
+                <p>
+                  Consulta por ID, nombre, Instagram,
+                  fecha o zona.
+                </p>
 
+              </div>
+
+            </a>
+
+
+            <!-- PRÓXIMAMENTE -->
 
             <div class="acceso proximamente">
 
-              <span>📰</span>
+              <span>
+                📰
+              </span>
 
               <div>
-                <strong>Nueva publicación</strong>
+
+                <strong>
+                  Nueva publicación
+                </strong>
+
                 <p>
                   Próximamente
                 </p>
+
               </div>
 
             </div>
@@ -305,11 +392,19 @@
           <div class="titulo-bloque">
 
             <div>
-              <h2>Último comunicado</h2>
-              <p>Información para el equipo de administración.</p>
+
+              <h2>
+                Último comunicado
+              </h2>
+
+              <p>
+                Información para el equipo de administración.
+              </p>
+
             </div>
 
           </div>
+
 
           <div
             id="ultimoComunicado"
@@ -326,15 +421,21 @@
 
   </div>
 
-<script
-  type="module"
-  src="js/shared/menu.js"
-></script>
 
-<script
-  type="module"
-  src="js/dashboard/index.js"
-></script>
+  <!-- =====================================
+       SCRIPTS
+       ===================================== -->
+
+  <script
+    type="module"
+    src="js/shared/menu.js"
+  ></script>
+
+  <script
+    type="module"
+    src="js/dashboard/index.js"
+  ></script>
 
 </body>
+
 </html>
