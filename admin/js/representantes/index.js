@@ -1,3 +1,7 @@
+// ========================================
+// IMPORTS
+// ========================================
+
 import {
   onAuthStateChanged,
   signOut
@@ -13,6 +17,27 @@ import {
   db
 } from "../shared/firebase.js";
 
+import {
+  configurarCopiado
+} from "./copiar.js";
+
+import {
+  configurarFicha,
+  formatearFechaConfirmacion
+} from "./ficha.js";
+
+import {
+  crearPapelitosController
+} from "./papelitos.js";
+
+import {
+  crearTablaController
+} from "./tabla.js";
+
+import {
+  crearFiltrosController
+} from "./filtros.js";
+
 
 // ========================================
 // GOOGLE SHEETS / APPS SCRIPT
@@ -26,217 +51,311 @@ const PAPELITOS_API_URL =
 
 
 // ========================================
-// ELEMENTOS
+// ELEMENTOS GENERALES
 // ========================================
 
 const cargando =
-  document.getElementById("cargando");
+  document.getElementById(
+    "cargando"
+  );
 
 const contenido =
-  document.getElementById("contenido");
+  document.getElementById(
+    "contenido"
+  );
 
 const logoutButton =
-  document.getElementById("logoutButton");
+  document.getElementById(
+    "logoutButton"
+  );
 
 const themeToggle =
-  document.getElementById("themeToggle");
-
-const busqueda =
-  document.getElementById("busqueda");
-
-const filtroFecha =
-  document.getElementById("filtroFecha");
-
-const filtroZona =
-  document.getElementById("filtroZona");
-
-const buscarButton =
-  document.getElementById("buscarButton");
-
-const limpiarFiltros =
-  document.getElementById("limpiarFiltros");
-
-const contadorResultados =
-  document.getElementById("contadorResultados");
-
-const estadoInicial =
-  document.getElementById("estadoInicial");
-
-const cargandoResultados =
-  document.getElementById("cargandoResultados");
-
-const sinResultados =
-  document.getElementById("sinResultados");
-
-const contenedorTabla =
-  document.getElementById("contenedorTabla");
-
-const tablaRepresentantes =
-  document.getElementById("tablaRepresentantes");
-
-const fichaRepresentante =
-  document.getElementById("fichaRepresentante");
-
-const fichaNombre =
-  document.getElementById("fichaNombre");
-
-const fichaInstagram =
-  document.getElementById("fichaInstagram");
-
-const fichaId =
-  document.getElementById("fichaId");
-
-const fichaFecha =
-  document.getElementById("fichaFecha");
-
-const fichaZona =
-  document.getElementById("fichaZona");
-
-const fichaGafete =
-  document.getElementById("fichaGafete");
-
-const cerrarFicha =
-  document.getElementById("cerrarFicha");
-
-const copiarDatos =
-  document.getElementById("copiarDatos");
-
-const copiarLista =
-  document.getElementById("copiarLista");
-
-const descargarLista =
-  document.getElementById("descargarLista");
-
-const irAGafete =
-  document.getElementById("irAGafete");
-
-const estadoPapelitos =
-  document.getElementById("estadoPapelitos");
-
-const detallePapelitos =
-  document.getElementById("detallePapelitos");
-
-const cambiarPapelitos =
-  document.getElementById("cambiarPapelitos");
+  document.getElementById(
+    "themeToggle"
+  );
 
 const toast =
-  document.getElementById("toast");
-
-const logoPdf =
-  document.getElementById("logoPdf");
+  document.getElementById(
+    "toast"
+  );
 
 
 // ========================================
-// VARIABLES
+// ELEMENTOS DE FILTROS
+// ========================================
+
+const busqueda =
+  document.getElementById(
+    "busqueda"
+  );
+
+const filtroFecha =
+  document.getElementById(
+    "filtroFecha"
+  );
+
+const filtroZona =
+  document.getElementById(
+    "filtroZona"
+  );
+
+const buscarButton =
+  document.getElementById(
+    "buscarButton"
+  );
+
+const limpiarFiltrosButton =
+  document.getElementById(
+    "limpiarFiltros"
+  );
+
+
+// ========================================
+// ELEMENTOS DE RESULTADOS
+// ========================================
+
+const contadorResultados =
+  document.getElementById(
+    "contadorResultados"
+  );
+
+const estadoInicial =
+  document.getElementById(
+    "estadoInicial"
+  );
+
+const cargandoResultados =
+  document.getElementById(
+    "cargandoResultados"
+  );
+
+const sinResultados =
+  document.getElementById(
+    "sinResultados"
+  );
+
+const contenedorTabla =
+  document.getElementById(
+    "contenedorTabla"
+  );
+
+const tablaRepresentantes =
+  document.getElementById(
+    "tablaRepresentantes"
+  );
+
+
+// ========================================
+// ELEMENTOS DE FICHA
+// ========================================
+
+const fichaRepresentante =
+  document.getElementById(
+    "fichaRepresentante"
+  );
+
+const fichaNombre =
+  document.getElementById(
+    "fichaNombre"
+  );
+
+const fichaInstagram =
+  document.getElementById(
+    "fichaInstagram"
+  );
+
+const fichaId =
+  document.getElementById(
+    "fichaId"
+  );
+
+const fichaFecha =
+  document.getElementById(
+    "fichaFecha"
+  );
+
+const fichaZona =
+  document.getElementById(
+    "fichaZona"
+  );
+
+const fichaGafete =
+  document.getElementById(
+    "fichaGafete"
+  );
+
+const cerrarFicha =
+  document.getElementById(
+    "cerrarFicha"
+  );
+
+const copiarDatos =
+  document.getElementById(
+    "copiarDatos"
+  );
+
+const irAGafete =
+  document.getElementById(
+    "irAGafete"
+  );
+
+
+// ========================================
+// ELEMENTOS DE PAPELITOS
+// ========================================
+
+const estadoPapelitos =
+  document.getElementById(
+    "estadoPapelitos"
+  );
+
+const detallePapelitos =
+  document.getElementById(
+    "detallePapelitos"
+  );
+
+const cambiarPapelitos =
+  document.getElementById(
+    "cambiarPapelitos"
+  );
+
+
+// ========================================
+// ELEMENTOS DE LISTA Y PDF
+// ========================================
+
+const copiarLista =
+  document.getElementById(
+    "copiarLista"
+  );
+
+const descargarLista =
+  document.getElementById(
+    "descargarLista"
+  );
+
+const logoPdf =
+  document.getElementById(
+    "logoPdf"
+  );
+
+
+// ========================================
+// ESTADO GENERAL
 // ========================================
 
 let representantes = [];
+
 let resultadosActuales = [];
-let representanteSeleccionado = null;
-let registrosPapelitos = [];
-let papelitosSeleccionado = null;
+
+let representanteSeleccionado =
+  null;
 
 
 // ========================================
-// TEMA CLARO / OSCURO
+// UTILIDADES
 // ========================================
 
-function aplicarTema(tema) {
+function normalizarTexto(
+  texto
+) {
 
-  document.documentElement.setAttribute(
-    "data-theme",
-    tema
-  );
-
-  themeToggle.textContent =
-    tema === "dark"
-      ? "☀️"
-      : "🌙";
+  return String(
+    texto || ""
+  )
+    .normalize("NFD")
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+    .trim()
+    .toLowerCase();
 
 }
 
-const temaGuardado =
-  localStorage.getItem("temaAdmin") ||
-  "dark";
 
-aplicarTema(
-  temaGuardado
-);
+function crearClavePapelitos(
+  id,
+  fecha,
+  zona
+) {
 
-themeToggle.addEventListener(
-  "click",
-  () => {
+  return [
+    normalizarTexto(id),
+    normalizarTexto(fecha),
+    normalizarTexto(zona)
+  ].join("|");
 
-    const actual =
-      document.documentElement.getAttribute(
-        "data-theme"
+}
+
+
+function escaparHTML(
+  texto
+) {
+
+  return String(
+    texto || ""
+  )
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
+}
+
+
+function mostrarToast(
+  mensaje
+) {
+
+  if (!toast) {
+    return;
+  }
+
+  toast.textContent =
+    mensaje;
+
+  toast.classList.add(
+    "visible"
+  );
+
+  window.setTimeout(
+    () => {
+
+      toast.classList.remove(
+        "visible"
       );
 
-    const nuevo =
-      actual === "dark"
-        ? "light"
-        : "dark";
+    },
+    2200
+  );
 
-    aplicarTema(
-      nuevo
-    );
-
-    localStorage.setItem(
-      "temaAdmin",
-      nuevo
-    );
-
-  }
-);
-
-
-// ========================================
-// SESIÓN
-// ========================================
-
-onAuthStateChanged(
-  auth,
-  async user => {
-
-    if (!user) {
-
-      window.location.href =
-        "./";
-
-      return;
-
-    }
-
-    cargando.style.display =
-      "none";
-
-    contenido.style.display =
-      "block";
-
-    await cargarRepresentantes();
-
-  }
-);
-
-
-logoutButton.addEventListener(
-  "click",
-  async () => {
-
-    await signOut(auth);
-
-    window.location.href =
-      "./";
-
-  }
-);
+}
 
 
 // ========================================
 // PARSEAR CSV
 // ========================================
 
-function parsearCSV(texto) {
+function parsearCSV(
+  texto
+) {
 
   const filas = [];
 
@@ -265,6 +384,7 @@ function parsearCSV(texto) {
     ) {
 
       campo += '"';
+
       i++;
 
     }
@@ -283,7 +403,10 @@ function parsearCSV(texto) {
       !dentroComillas
     ) {
 
-      fila.push(campo);
+      fila.push(
+        campo
+      );
+
       campo = "";
 
     }
@@ -305,7 +428,11 @@ function parsearCSV(texto) {
 
       }
 
-      fila.push(campo);
+
+      fila.push(
+        campo
+      );
+
 
       if (
         fila.some(
@@ -314,18 +441,23 @@ function parsearCSV(texto) {
         )
       ) {
 
-        filas.push(fila);
+        filas.push(
+          fila
+        );
 
       }
 
+
       fila = [];
+
       campo = "";
 
     }
 
     else {
 
-      campo += caracter;
+      campo +=
+        caracter;
 
     }
 
@@ -337,7 +469,10 @@ function parsearCSV(texto) {
     fila.length > 0
   ) {
 
-    fila.push(campo);
+    fila.push(
+      campo
+    );
+
 
     if (
       fila.some(
@@ -346,11 +481,14 @@ function parsearCSV(texto) {
       )
     ) {
 
-      filas.push(fila);
+      filas.push(
+        fila
+      );
 
     }
 
   }
+
 
   return filas;
 
@@ -358,297 +496,295 @@ function parsearCSV(texto) {
 
 
 // ========================================
-// UTILIDADES
+// TEMA CLARO / OSCURO
 // ========================================
 
-function normalizarTexto(texto) {
-
-  return String(texto || "")
-    .normalize("NFD")
-    .replace(
-      /[\u0300-\u036f]/g,
-      ""
-    )
-    .trim()
-    .toLowerCase();
-
-}
-
-
-function crearClavePapelitos(
-  id,
-  fecha,
-  zona
+function aplicarTema(
+  tema
 ) {
 
-  return [
-    normalizarTexto(id),
-    normalizarTexto(fecha),
-    normalizarTexto(zona)
-  ].join("|");
-
-}
-
-
-function escaparHTML(texto) {
-
-  return String(texto || "")
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
-
-}
-
-
-function mostrarToast(mensaje) {
-
-  toast.textContent =
-    mensaje;
-
-  toast.classList.add(
-    "visible"
+  document.documentElement.setAttribute(
+    "data-theme",
+    tema
   );
 
-  setTimeout(
+
+  if (themeToggle) {
+
+    themeToggle.textContent =
+      tema === "dark"
+        ? "☀️"
+        : "🌙";
+
+  }
+
+}
+
+
+const temaGuardado =
+  localStorage.getItem(
+    "temaAdmin"
+  ) || "dark";
+
+
+aplicarTema(
+  temaGuardado
+);
+
+
+if (themeToggle) {
+
+  themeToggle.addEventListener(
+    "click",
     () => {
 
-      toast.classList.remove(
-        "visible"
+      const temaActual =
+        document.documentElement.getAttribute(
+          "data-theme"
+        );
+
+
+      const nuevoTema =
+        temaActual === "dark"
+          ? "light"
+          : "dark";
+
+
+      aplicarTema(
+        nuevoTema
       );
 
-    },
-    2200
+
+      localStorage.setItem(
+        "temaAdmin",
+        nuevoTema
+      );
+
+    }
   );
 
 }
 
 
 // ========================================
-// PAPELITOS
+// CONSULTAR GAFETE
 // ========================================
 
-function obtenerPapelitos(
-  representante
+async function consultarGafete(
+  id
 ) {
 
-  const clave =
-    crearClavePapelitos(
-      representante.id,
-      representante.fecha,
-      representante.zona
+  const referencia =
+    doc(
+      db,
+      "gafetes",
+      id
     );
 
 
-  const registroControl =
-    registrosPapelitos.find(
-      registro =>
-        crearClavePapelitos(
-          registro.id,
-          registro.fecha,
-          registro.zona
-        ) === clave
-    );
-
-
-  if (registroControl) {
-
-    return registroControl;
-
-  }
-
-
-  const estadoOriginal =
-    normalizarTexto(
-      representante.estado
+  const documento =
+    await getDoc(
+      referencia
     );
 
 
   if (
-    estadoOriginal ===
-    "confirmado"
+    !documento.exists()
   ) {
 
-    return {
-      id:
-        representante.id,
-
-      fecha:
-        representante.fecha,
-
-      zona:
-        representante.zona,
-
-      confirmado:
-        true,
-
-      confirmadoPor:
-        "Registro previo",
-
-      fechaConfirmacion:
-        ""
-    };
+    return false;
 
   }
 
 
-  if (
-    estadoOriginal ===
-    "cancelado"
-  ) {
-
-    return {
-      id:
-        representante.id,
-
-      fecha:
-        representante.fecha,
-
-      zona:
-        representante.zona,
-
-      confirmado:
-        false,
-
-      cancelado:
-        true,
-
-      confirmadoPor:
-        "",
-
-      fechaConfirmacion:
-        ""
-    };
-
-  }
-
-
-  return {
-    id:
-      representante.id,
-
-    fecha:
-      representante.fecha,
-
-    zona:
-      representante.zona,
-
-    confirmado:
-      false,
-
-    confirmadoPor:
-      "",
-
-    fechaConfirmacion:
-      ""
-  };
+  return (
+    documento.data().enviado ===
+    true
+  );
 
 }
 
 
-async function peticionPapelitos(
-  datos
-) {
+// ========================================
+// CONTROLADOR DE PAPELITOS
+// ========================================
 
-  const user =
-    auth.currentUser;
+const papelitosController =
+  crearPapelitosController({
 
+    auth,
 
-  if (!user) {
-
-    throw new Error(
-      "No hay una sesión activa."
-    );
-
-  }
-
-
-  const idToken =
-    await user.getIdToken();
-
-
-  const respuesta =
-    await fetch(
+    apiUrl:
       PAPELITOS_API_URL,
-      {
-        method:
-          "POST",
 
-        headers: {
-          "Content-Type":
-            "text/plain;charset=utf-8"
-        },
+    tablaRepresentantes,
 
-        body:
-          JSON.stringify({
-            ...datos,
-            idToken
-          })
+    estadoPapelitos,
+    detallePapelitos,
+    cambiarPapelitos,
+
+    crearClavePapelitos,
+    normalizarTexto,
+    mostrarToast,
+    formatearFechaConfirmacion,
+
+    obtenerRepresentanteSeleccionado:
+      () =>
+        representanteSeleccionado
+
+  });
+
+
+// ========================================
+// CONTROLADOR DE FICHA
+// ========================================
+
+const abrirFicha =
+  configurarFicha({
+
+    fichaRepresentante,
+    fichaNombre,
+    fichaInstagram,
+    fichaId,
+    fichaFecha,
+    fichaZona,
+    fichaGafete,
+
+    estadoPapelitos,
+    detallePapelitos,
+    cambiarPapelitos,
+    cerrarFicha,
+    irAGafete,
+
+    consultarGafete,
+
+    mostrarEstadoPapelitos:
+      papelitosController
+        .mostrarEstadoPapelitos,
+
+    obtenerRepresentanteSeleccionado:
+      () =>
+        representanteSeleccionado,
+
+    establecerRepresentanteSeleccionado:
+      representante => {
+
+        representanteSeleccionado =
+          representante;
+
+      },
+
+    establecerPapelitosSeleccionado:
+      valor => {
+
+        if (
+          valor === null
+        ) {
+
+          papelitosController
+            .limpiarSeleccion();
+
+        }
+
       }
-    );
+
+  });
 
 
-  if (!respuesta.ok) {
+// ========================================
+// CONTROLADOR DE TABLA
+// ========================================
 
-    throw new Error(
-      "No se pudo conectar con el control de papelitos."
-    );
+const tablaController =
+  crearTablaController({
 
-  }
+    tablaRepresentantes,
+    contenedorTabla,
+    contadorResultados,
+    cargandoResultados,
+    estadoInicial,
+    sinResultados,
+    fichaRepresentante,
+
+    escaparHTML,
+
+    obtenerPapelitos:
+      papelitosController
+        .obtenerPapelitos,
+
+    consultarGafete,
+    abrirFicha,
+
+    establecerResultadosActuales:
+      resultados => {
+
+        resultadosActuales =
+          resultados;
+
+      },
+
+    limpiarSeleccion:
+      () => {
+
+        representanteSeleccionado =
+          null;
+
+        papelitosController
+          .limpiarSeleccion();
+
+      }
+
+  });
 
 
-  const resultado =
-    await respuesta.json();
+// ========================================
+// CONTROLADOR DE FILTROS
+// ========================================
+
+const filtrosController =
+  crearFiltrosController({
+
+    representantes:
+      () =>
+        representantes,
+
+    busqueda,
+    filtroFecha,
+    filtroZona,
+
+    mostrarResultados:
+      tablaController
+        .mostrarResultados,
+
+    normalizarTexto
+
+  });
 
 
-  if (!resultado.ok) {
+// ========================================
+// COPIAR DATOS Y LISTAS
+// ========================================
 
-    throw new Error(
-      resultado.error ||
-      "Ocurrió un error con el control de papelitos."
-    );
+configurarCopiado({
 
-  }
+  copiarDatos,
+  copiarLista,
 
+  busqueda,
+  filtroFecha,
+  filtroZona,
 
-  return resultado;
+  obtenerRepresentanteSeleccionado:
+    () =>
+      representanteSeleccionado,
 
-}
+  obtenerResultadosActuales:
+    () =>
+      resultadosActuales,
 
+  mostrarToast
 
-async function cargarPapelitos() {
-
-  const resultado =
-    await peticionPapelitos({
-      accion:
-        "listar"
-    });
-
-
-  registrosPapelitos =
-    Array.isArray(
-      resultado.registros
-    )
-      ? resultado.registros
-      : [];
-
-}
+});
 
 
 // ========================================
@@ -674,13 +810,13 @@ async function cargarRepresentantes() {
 
     const respuesta =
       await fetch(
-        SHEET_URL +
-        "&t=" +
-        Date.now()
+        `${SHEET_URL}&t=${Date.now()}`
       );
 
 
-    if (!respuesta.ok) {
+    if (
+      !respuesta.ok
+    ) {
 
       throw new Error(
         "No se pudo leer Google Sheets."
@@ -692,8 +828,11 @@ async function cargarRepresentantes() {
     const csv =
       await respuesta.text();
 
+
     const filas =
-      parsearCSV(csv);
+      parsearCSV(
+        csv
+      );
 
 
     representantes = [];
@@ -705,8 +844,9 @@ async function cargarRepresentantes() {
     ) {
 
       const id =
-        (fila[0] || "")
-          .trim();
+        String(
+          fila[0] || ""
+        ).trim();
 
 
       if (
@@ -723,27 +863,34 @@ async function cargarRepresentantes() {
 
 
       representantes.push({
+
         id,
 
         fecha:
-          (fila[1] || "")
-            .trim(),
+          String(
+            fila[1] || ""
+          ).trim(),
 
         zona:
-          (fila[2] || "")
-            .trim(),
+          String(
+            fila[2] || ""
+          ).trim(),
 
         nombre:
-          (fila[3] || "")
-            .trim(),
+          String(
+            fila[3] || ""
+          ).trim(),
 
         instagram:
-          (fila[4] || "")
-            .trim(),
+          String(
+            fila[4] || ""
+          ).trim(),
 
         estado:
-          (fila[9] || "")
-            .trim()
+          String(
+            fila[9] || ""
+          ).trim()
+
       });
 
     }
@@ -751,7 +898,8 @@ async function cargarRepresentantes() {
 
     try {
 
-      await cargarPapelitos();
+      await papelitosController
+        .cargarPapelitos();
 
     }
 
@@ -762,8 +910,6 @@ async function cargarRepresentantes() {
         error
       );
 
-      registrosPapelitos =
-        [];
 
       mostrarToast(
         "No se pudo cargar el control de papelitos"
@@ -772,7 +918,8 @@ async function cargarRepresentantes() {
     }
 
 
-    cargarOpcionesFiltros();
+    filtrosController
+      .cargarOpcionesFiltros();
 
 
     const parametros =
@@ -780,26 +927,32 @@ async function cargarRepresentantes() {
         window.location.search
       );
 
+
     const busquedaRecibida =
       parametros.get(
         "buscar"
       );
 
 
-    if (busquedaRecibida) {
+    if (
+      busquedaRecibida
+    ) {
 
       busqueda.value =
         busquedaRecibida;
 
-      aplicarFiltros();
+
+      filtrosController
+        .aplicarFiltros();
 
     }
 
     else {
 
-      mostrarResultados(
-        representantes
-      );
+      tablaController
+        .mostrarResultados(
+          representantes
+        );
 
     }
 
@@ -807,850 +960,46 @@ async function cargarRepresentantes() {
 
   catch (error) {
 
-    console.error(error);
+    console.error(
+      "Error cargando representantes:",
+      error
+    );
+
 
     cargandoResultados.style.display =
       "none";
 
-    sinResultados.style.display =
-      "block";
-
-    sinResultados.querySelector(
-      "strong"
-    ).textContent =
-      "No se pudo cargar la lista";
-
-    sinResultados.querySelector(
-      "p"
-    ).textContent =
-      "Intenta recargar la página.";
-
-  }
-
-}
-
-
-// ========================================
-// FILTROS
-// ========================================
-
-function cargarOpcionesFiltros() {
-
-  const fechas =
-    [
-      ...new Set(
-        representantes
-          .map(
-            representante =>
-              representante.fecha
-          )
-          .filter(Boolean)
-      )
-    ].sort();
-
-
-  const zonas =
-    [
-      ...new Set(
-        representantes
-          .map(
-            representante =>
-              representante.zona
-          )
-          .filter(Boolean)
-      )
-    ].sort(
-      (a, b) =>
-        a.localeCompare(
-          b,
-          "es"
-        )
-    );
-
-
-  filtroFecha.innerHTML =
-    `<option value="">Todas</option>`;
-
-  filtroZona.innerHTML =
-    `<option value="">Todas</option>`;
-
-
-  for (
-    const fecha
-    of fechas
-  ) {
-
-    const opcion =
-      document.createElement(
-        "option"
-      );
-
-    opcion.value =
-      fecha;
-
-    opcion.textContent =
-      fecha;
-
-    filtroFecha.appendChild(
-      opcion
-    );
-
-  }
-
-
-  for (
-    const zona
-    of zonas
-  ) {
-
-    const opcion =
-      document.createElement(
-        "option"
-      );
-
-    opcion.value =
-      zona;
-
-    opcion.textContent =
-      zona;
-
-    filtroZona.appendChild(
-      opcion
-    );
-
-  }
-
-}
-
-
-function aplicarFiltros() {
-
-  const texto =
-    normalizarTexto(
-      busqueda.value
-    );
-
-  const fecha =
-    filtroFecha.value;
-
-  const zona =
-    filtroZona.value;
-
-
-  const resultados =
-    representantes.filter(
-      representante => {
-
-        const coincideTexto =
-          !texto ||
-          normalizarTexto(
-            representante.id
-          ).includes(texto) ||
-          normalizarTexto(
-            representante.nombre
-          ).includes(texto) ||
-          normalizarTexto(
-            representante.instagram
-          ).includes(texto);
-
-
-        const coincideFecha =
-          !fecha ||
-          representante.fecha ===
-            fecha;
-
-
-        const coincideZona =
-          !zona ||
-          representante.zona ===
-            zona;
-
-
-        return (
-          coincideTexto &&
-          coincideFecha &&
-          coincideZona
-        );
-
-      }
-    );
-
-
-  mostrarResultados(
-    resultados
-  );
-
-}
-
-
-// ========================================
-// MOSTRAR RESULTADOS
-// ========================================
-
-function mostrarResultados(
-  resultados
-) {
-
-  resultadosActuales =
-    resultados;
-
-
-  cargandoResultados.style.display =
-    "none";
-
-  estadoInicial.style.display =
-    "none";
-
-  tablaRepresentantes.innerHTML =
-    "";
-
-  fichaRepresentante.style.display =
-    "none";
-
-  representanteSeleccionado =
-    null;
-
-  papelitosSeleccionado =
-    null;
-
-
-  if (
-    resultados.length === 0
-  ) {
-
-    sinResultados.style.display =
-      "block";
-
     contenedorTabla.style.display =
       "none";
 
-    contadorResultados.textContent =
-      "0 resultados";
-
-    return;
-
-  }
+    sinResultados.style.display =
+      "block";
 
 
-  sinResultados.style.display =
-    "none";
-
-  contenedorTabla.style.display =
-    "block";
-
-
-  contadorResultados.textContent =
-    resultados.length === 1
-      ? "1 resultado"
-      : `${resultados.length} resultados`;
-
-
-  for (
-    const representante
-    of resultados
-  ) {
-
-    const fila =
-      document.createElement(
-        "tr"
+    const tituloError =
+      sinResultados.querySelector(
+        "strong"
       );
 
 
-    const papelitos =
-      obtenerPapelitos(
-        representante
+    const textoError =
+      sinResultados.querySelector(
+        "p"
       );
 
 
-    const papelitosConfirmados =
-      papelitos &&
-      papelitos.confirmado ===
-        true;
+    if (tituloError) {
 
-
-    fila.innerHTML = `
-      <td>
-        ${escaparHTML(
-          representante.id
-        )}
-      </td>
-
-      <td>
-        ${escaparHTML(
-          representante.nombre ||
-          "—"
-        )}
-      </td>
-
-      <td>
-        ${
-          representante.instagram
-            ? "@" +
-              escaparHTML(
-                representante.instagram.replace(
-                  /^@/,
-                  ""
-                )
-              )
-            : "—"
-        }
-      </td>
-
-      <td>
-        ${escaparHTML(
-          representante.fecha ||
-          "—"
-        )}
-      </td>
-
-      <td>
-        ${escaparHTML(
-          representante.zona ||
-          "—"
-        )}
-      </td>
-
-      <td class="estado-papelitos-tabla">
-        ${
-          papelitosConfirmados
-            ? "✅ Confirmados"
-            : "⏳ Pendiente"
-        }
-      </td>
-
-      <td class="estado-gafete-tabla">
-        Consultando...
-      </td>
-
-      <td>
-        <button
-          type="button"
-          class="ver-ficha"
-        >
-          Ver
-        </button>
-      </td>
-    `;
-
-
-    const celdaGafete =
-      fila.querySelector(
-        ".estado-gafete-tabla"
-      );
-
-
-    consultarGafete(
-      representante.id
-    )
-      .then(
-        enviado => {
-
-          celdaGafete.textContent =
-            enviado
-              ? "✅ Enviado"
-              : "⏳ Pendiente";
-
-        }
-      )
-      .catch(
-        () => {
-
-          celdaGafete.textContent =
-            "—";
-
-        }
-      );
-
-
-    fila
-      .querySelector(
-        ".ver-ficha"
-      )
-      .addEventListener(
-        "click",
-        () => {
-
-          abrirFicha(
-            representante
-          );
-
-        }
-      );
-
-
-    tablaRepresentantes.appendChild(
-      fila
-    );
-
-  }
-
-}
-
-
-// ========================================
-// GAFETES
-// ========================================
-
-async function consultarGafete(id) {
-
-  const referencia =
-    doc(
-      db,
-      "gafetes",
-      id
-    );
-
-  const documento =
-    await getDoc(
-      referencia
-    );
-
-
-  if (!documento.exists()) {
-
-    return false;
-
-  }
-
-
-  return (
-    documento.data().enviado ===
-    true
-  );
-
-}
-
-
-// ========================================
-// FICHA
-// ========================================
-
-function formatearFechaConfirmacion(
-  fecha
-) {
-
-  if (!fecha) {
-
-    return "";
-
-  }
-
-
-  const objetoFecha =
-    new Date(fecha);
-
-
-  if (
-    Number.isNaN(
-      objetoFecha.getTime()
-    )
-  ) {
-
-    return "";
-
-  }
-
-
-  return objetoFecha.toLocaleString(
-    "es-MX",
-    {
-      dateStyle:
-        "medium",
-
-      timeStyle:
-        "short"
-    }
-  );
-
-}
-
-
-function mostrarEstadoPapelitos(
-  representante
-) {
-
-  papelitosSeleccionado =
-    obtenerPapelitos(
-      representante
-    );
-
-
-  const confirmado =
-    papelitosSeleccionado &&
-    papelitosSeleccionado.confirmado ===
-      true;
-
-
-  if (confirmado) {
-
-    estadoPapelitos.textContent =
-      "✅ Confirmados";
-
-
-    const partes =
-      [];
-
-
-    if (
-      papelitosSeleccionado.confirmadoPor
-    ) {
-
-      partes.push(
-        `Confirmado por: ${papelitosSeleccionado.confirmadoPor}`
-      );
+      tituloError.textContent =
+        "No se pudo cargar la lista";
 
     }
 
 
-    const fecha =
-      formatearFechaConfirmacion(
-        papelitosSeleccionado.fechaConfirmacion
-      );
+    if (textoError) {
 
-
-    if (fecha) {
-
-      partes.push(
-        fecha
-      );
-
-    }
-
-
-    detallePapelitos.textContent =
-      partes.join(
-        " · "
-      );
-
-    cambiarPapelitos.textContent =
-      "Marcar como pendiente";
-
-  }
-
-  else {
-
-    estadoPapelitos.textContent =
-      "⏳ Pendiente";
-
-    detallePapelitos.textContent =
-      "Aún no se ha confirmado la entrega de papelitos.";
-
-    cambiarPapelitos.textContent =
-      "Confirmar papelitos";
-
-  }
-
-
-  cambiarPapelitos.disabled =
-    false;
-
-}
-
-
-async function abrirFicha(
-  representante
-) {
-
-  representanteSeleccionado =
-    representante;
-
-
-  fichaNombre.textContent =
-    representante.nombre ||
-    "Sin nombre";
-
-  fichaInstagram.textContent =
-    representante.instagram
-      ? "@" +
-        representante.instagram.replace(
-          /^@/,
-          ""
-        )
-      : "Sin Instagram";
-
-  fichaId.textContent =
-    representante.id;
-
-  fichaFecha.textContent =
-    representante.fecha ||
-    "—";
-
-  fichaZona.textContent =
-    representante.zona ||
-    "—";
-
-  fichaGafete.textContent =
-    "Consultando...";
-
-
-  estadoPapelitos.textContent =
-    "Consultando...";
-
-  detallePapelitos.textContent =
-    "";
-
-  cambiarPapelitos.textContent =
-    "Consultando...";
-
-  cambiarPapelitos.disabled =
-    true;
-
-
-  fichaRepresentante.style.display =
-    "block";
-
-
-  mostrarEstadoPapelitos(
-    representante
-  );
-
-
-  try {
-
-    const enviado =
-      await consultarGafete(
-        representante.id
-      );
-
-    fichaGafete.textContent =
-      enviado
-        ? "✅ Enviado"
-        : "⏳ Pendiente";
-
-  }
-
-  catch (error) {
-
-    console.error(error);
-
-    fichaGafete.textContent =
-      "—";
-
-  }
-
-
-  irAGafete.href =
-    `panel.html?id=${encodeURIComponent(
-      representante.id
-    )}`;
-
-
-  fichaRepresentante.scrollIntoView({
-    behavior:
-      "smooth",
-
-    block:
-      "start"
-  });
-
-}
-
-
-// ========================================
-// ACTUALIZAR PAPELITOS
-// ========================================
-
-cambiarPapelitos.addEventListener(
-  "click",
-  async () => {
-
-    if (!representanteSeleccionado) {
-
-      return;
-
-    }
-
-
-    const representante =
-      representanteSeleccionado;
-
-    const registroActual =
-      obtenerPapelitos(
-        representante
-      );
-
-    const estaConfirmado =
-      registroActual &&
-      registroActual.confirmado ===
-        true;
-
-    const nuevoEstado =
-      !estaConfirmado;
-
-
-    cambiarPapelitos.disabled =
-      true;
-
-    cambiarPapelitos.textContent =
-      nuevoEstado
-        ? "Confirmando..."
-        : "Actualizando...";
-
-
-    try {
-
-      const resultado =
-        await peticionPapelitos({
-          accion:
-            "actualizar",
-
-          id:
-            representante.id,
-
-          fecha:
-            representante.fecha,
-
-          zona:
-            representante.zona,
-
-          confirmado:
-            nuevoEstado
-        });
-
-
-      const clave =
-        crearClavePapelitos(
-          representante.id,
-          representante.fecha,
-          representante.zona
-        );
-
-
-      registrosPapelitos =
-        registrosPapelitos.filter(
-          registro =>
-            crearClavePapelitos(
-              registro.id,
-              registro.fecha,
-              registro.zona
-            ) !== clave
-        );
-
-
-      registrosPapelitos.push({
-        id:
-          representante.id,
-
-        fecha:
-          representante.fecha,
-
-        zona:
-          representante.zona,
-
-        confirmado:
-          resultado.confirmado ===
-            true,
-
-        confirmadoPor:
-          resultado.confirmadoPor ||
-          "",
-
-        fechaConfirmacion:
-          resultado.fechaConfirmacion ||
-          ""
-      });
-
-
-      mostrarEstadoPapelitos(
-        representante
-      );
-
-      actualizarPapelitosEnTabla(
-        representante
-      );
-
-
-      mostrarToast(
-        nuevoEstado
-          ? "Papelitos confirmados"
-          : "Papelitos marcados como pendientes"
-      );
-
-    }
-
-    catch (error) {
-
-      console.error(error);
-
-      mostrarToast(
-        error.message ||
-        "No se pudo actualizar"
-      );
-
-      mostrarEstadoPapelitos(
-        representante
-      );
-
-    }
-
-  }
-);
-
-
-function actualizarPapelitosEnTabla(
-  representante
-) {
-
-  const filas =
-    tablaRepresentantes.querySelectorAll(
-      "tr"
-    );
-
-  const claveBuscada =
-    crearClavePapelitos(
-      representante.id,
-      representante.fecha,
-      representante.zona
-    );
-
-
-  for (
-    const fila
-    of filas
-  ) {
-
-    const celdas =
-      fila.querySelectorAll(
-        "td"
-      );
-
-
-    if (
-      celdas.length < 8
-    ) {
-
-      continue;
-
-    }
-
-
-    const claveFila =
-      crearClavePapelitos(
-        celdas[0].textContent.trim(),
-        celdas[3].textContent.trim(),
-        celdas[4].textContent.trim()
-      );
-
-
-    if (
-      claveFila ===
-      claveBuscada
-    ) {
-
-      const registro =
-        obtenerPapelitos(
-          representante
-        );
-
-
-      celdas[5].textContent =
-        registro &&
-        registro.confirmado ===
-          true
-          ? "✅ Confirmados"
-          : "⏳ Pendiente";
-
-      break;
+      textoError.textContent =
+        "Intenta recargar la página.";
 
     }
 
@@ -1660,76 +1009,30 @@ function actualizarPapelitosEnTabla(
 
 
 // ========================================
-// BOTONES DE FICHA
+// EVENTOS DE FILTROS
 // ========================================
 
-cerrarFicha.addEventListener(
+buscarButton.addEventListener(
   "click",
   () => {
 
-    fichaRepresentante.style.display =
-      "none";
-
-    representanteSeleccionado =
-      null;
-
-    papelitosSeleccionado =
-      null;
+    filtrosController
+      .aplicarFiltros();
 
   }
 );
 
 
-copiarDatos.addEventListener(
-  "click",
-  async () => {
+busqueda.addEventListener(
+  "keydown",
+  event => {
 
-    if (!representanteSeleccionado) {
+    if (
+      event.key === "Enter"
+    ) {
 
-      return;
-
-    }
-
-
-    const representante =
-      representanteSeleccionado;
-
-
-    const texto = [
-      representante.id,
-      representante.nombre,
-      representante.instagram
-        ? `@${representante.instagram.replace(
-            /^@/,
-            ""
-          )}`
-        : "",
-      representante.fecha,
-      representante.zona
-    ]
-      .filter(Boolean)
-      .join(" — ");
-
-
-    try {
-
-      await navigator.clipboard.writeText(
-        texto
-      );
-
-      mostrarToast(
-        "Datos copiados"
-      );
-
-    }
-
-    catch (error) {
-
-      console.error(error);
-
-      mostrarToast(
-        "No se pudieron copiar los datos"
-      );
+      filtrosController
+        .aplicarFiltros();
 
     }
 
@@ -1737,132 +1040,34 @@ copiarDatos.addEventListener(
 );
 
 
-// ========================================
-// COPIAR LISTA
-// ========================================
+filtroFecha.addEventListener(
+  "change",
+  () => {
 
-copiarLista.addEventListener(
+    filtrosController
+      .aplicarFiltros();
+
+  }
+);
+
+
+filtroZona.addEventListener(
+  "change",
+  () => {
+
+    filtrosController
+      .aplicarFiltros();
+
+  }
+);
+
+
+limpiarFiltrosButton.addEventListener(
   "click",
-  async () => {
+  () => {
 
-    if (
-      resultadosActuales.length ===
-      0
-    ) {
-
-      mostrarToast(
-        "No hay resultados para copiar"
-      );
-
-      return;
-
-    }
-
-
-    const encabezados =
-      [];
-
-
-    if (
-      filtroFecha.value
-    ) {
-
-      encabezados.push(
-        `FECHA: ${filtroFecha.value}`
-      );
-
-    }
-
-
-    if (
-      filtroZona.value
-    ) {
-
-      encabezados.push(
-        `ZONA: ${filtroZona.value}`
-      );
-
-    }
-
-
-    if (
-      busqueda.value.trim()
-    ) {
-
-      encabezados.push(
-        `BÚSQUEDA: ${busqueda.value.trim()}`
-      );
-
-    }
-
-
-    const lineas =
-      resultadosActuales.map(
-        representante => {
-
-          const instagram =
-            representante.instagram
-              ? `@${representante.instagram.replace(
-                  /^@/,
-                  ""
-                )}`
-              : "Sin Instagram";
-
-
-          return (
-            `${representante.id} — ` +
-            `${representante.nombre || "Sin nombre"} — ` +
-            `${instagram} — ` +
-            `${representante.fecha || "Sin fecha"} — ` +
-            `${representante.zona || "Sin zona"}`
-          );
-
-        }
-      );
-
-
-    const texto = [
-      "LISTA DE REPRESENTANTES",
-
-      encabezados.length
-        ? encabezados.join(
-            " · "
-          )
-        : "Todos los resultados",
-
-      "",
-
-      ...lineas,
-
-      "",
-
-      `TOTAL: ${resultadosActuales.length}`
-    ].join("\n");
-
-
-    try {
-
-      await navigator.clipboard.writeText(
-        texto
-      );
-
-      mostrarToast(
-        resultadosActuales.length === 1
-          ? "1 registro copiado"
-          : `${resultadosActuales.length} registros copiados`
-      );
-
-    }
-
-    catch (error) {
-
-      console.error(error);
-
-      mostrarToast(
-        "No se pudo copiar la lista"
-      );
-
-    }
+    filtrosController
+      .limpiarFiltros();
 
   }
 );
@@ -1872,10 +1077,15 @@ copiarLista.addEventListener(
 // PREPARAR LOGO PARA PDF
 // ========================================
 
-function esperarImagen(imagen) {
+function esperarImagen(
+  imagen
+) {
 
   return new Promise(
-    (resolve, reject) => {
+    (
+      resolve,
+      reject
+    ) => {
 
       if (!imagen) {
 
@@ -1903,6 +1113,22 @@ function esperarImagen(imagen) {
       }
 
 
+      const limpiarEventos =
+        () => {
+
+          imagen.removeEventListener(
+            "load",
+            alCargar
+          );
+
+          imagen.removeEventListener(
+            "error",
+            alFallar
+          );
+
+        };
+
+
       const alCargar =
         () => {
 
@@ -1920,24 +1146,8 @@ function esperarImagen(imagen) {
 
           reject(
             new Error(
-              "No se pudo cargar logo3.png."
+              "No se pudo cargar el logo."
             )
-          );
-
-        };
-
-
-      const limpiarEventos =
-        () => {
-
-          imagen.removeEventListener(
-            "load",
-            alCargar
-          );
-
-          imagen.removeEventListener(
-            "error",
-            alFallar
           );
 
         };
@@ -1947,6 +1157,7 @@ function esperarImagen(imagen) {
         "load",
         alCargar
       );
+
 
       imagen.addEventListener(
         "error",
@@ -1980,6 +1191,7 @@ function convertirImagenADataURL(
     document.createElement(
       "canvas"
     );
+
 
   canvas.width =
     imagen.naturalWidth;
@@ -2080,6 +1292,7 @@ descargarLista.addEventListener(
 
       const pdf =
         new jsPDF({
+
           orientation:
             "landscape",
 
@@ -2088,11 +1301,13 @@ descargarLista.addEventListener(
 
           format:
             "a4"
+
         });
 
 
       const anchoPagina =
-        pdf.internal.pageSize.getWidth();
+        pdf.internal.pageSize
+          .getWidth();
 
 
       await esperarImagen(
@@ -2113,6 +1328,7 @@ descargarLista.addEventListener(
         43,
         145
       );
+
 
       pdf.rect(
         0,
@@ -2141,14 +1357,17 @@ descargarLista.addEventListener(
         252
       );
 
+
       pdf.setFont(
         "helvetica",
         "bold"
       );
 
+
       pdf.setFontSize(
         17
       );
+
 
       pdf.text(
         "HARRY STYLES MÉXICO OFFAN",
@@ -2162,9 +1381,11 @@ descargarLista.addEventListener(
         "normal"
       );
 
+
       pdf.setFontSize(
         10
       );
+
 
       pdf.text(
         "LISTA DE REPRESENTANTES · FAN PROJECT 2026",
@@ -2181,14 +1402,17 @@ descargarLista.addEventListener(
         27
       );
 
+
       pdf.setFont(
         "helvetica",
         "bold"
       );
 
+
       pdf.setFontSize(
         12
       );
+
 
       pdf.text(
         "Lista de representantes",
@@ -2204,13 +1428,13 @@ descargarLista.addEventListener(
         "normal"
       );
 
+
       pdf.setFontSize(
         9
       );
 
 
-      const detalles =
-        [];
+      const detalles = [];
 
 
       if (
@@ -2260,66 +1484,60 @@ descargarLista.addEventListener(
       );
 
 
-      // FILAS
+      // FILAS DEL PDF
 
       const filasPDF =
         resultadosActuales.map(
           representante => {
 
             const papelitos =
-              obtenerPapelitos(
-                representante
-              );
+              papelitosController
+                .obtenerPapelitos(
+                  representante
+                );
 
 
-            let estadoPapelitos =
+            let estado =
               "Pendiente";
 
 
             if (
               papelitos &&
-              papelitos.confirmado ===
-                true
+              papelitos.confirmado === true
             ) {
 
-              estadoPapelitos =
+              estado =
                 "Confirmado";
 
             }
 
             else if (
               papelitos &&
-              papelitos.cancelado ===
-                true
+              papelitos.cancelado === true
             ) {
 
-              estadoPapelitos =
+              estado =
                 "Cancelado";
 
             }
 
 
             return [
-              representante.id ||
-                "",
 
-              representante.nombre ||
-                "",
+              representante.id || "",
+
+              representante.nombre || "",
 
               representante.instagram
-                ? `@${representante.instagram.replace(
-                    /^@/,
-                    ""
-                  )}`
+                ? `@${representante.instagram.replace(/^@/, "")}`
                 : "",
 
-              representante.fecha ||
-                "",
+              representante.fecha || "",
 
-              representante.zona ||
-                "",
+              representante.zona || "",
 
-              estadoPapelitos
+              estado
+
             ];
 
           }
@@ -2327,6 +1545,7 @@ descargarLista.addEventListener(
 
 
       pdf.autoTable({
+
         startY:
           61,
 
@@ -2346,6 +1565,7 @@ descargarLista.addEventListener(
           "grid",
 
         margin: {
+
           left:
             14,
 
@@ -2354,9 +1574,11 @@ descargarLista.addEventListener(
 
           bottom:
             16
+
         },
 
         styles: {
+
           font:
             "helvetica",
 
@@ -2380,9 +1602,11 @@ descargarLista.addEventListener(
 
           valign:
             "middle"
+
         },
 
         headStyles: {
+
           fillColor:
             [231, 43, 145],
 
@@ -2397,50 +1621,51 @@ descargarLista.addEventListener(
 
           valign:
             "middle"
+
         },
 
         alternateRowStyles: {
+
           fillColor:
             [255, 249, 252]
+
         },
 
         columnStyles: {
+
           0: {
-            cellWidth:
-              28
+            cellWidth: 28
           },
 
           1: {
-            cellWidth:
-              55
+            cellWidth: 55
           },
 
           2: {
-            cellWidth:
-              48
+            cellWidth: 48
           },
 
           3: {
-            cellWidth:
-              30
+            cellWidth: 30
           },
 
           4: {
-            cellWidth:
-              48
+            cellWidth: 48
           },
 
           5: {
-            cellWidth:
-              30
+            cellWidth: 30
           }
+
         },
 
         didDrawPage:
           function () {
 
             const altoPagina =
-              pdf.internal.pageSize.getHeight();
+              pdf.internal.pageSize
+                .getHeight();
+
 
             const paginaActual =
               pdf.internal
@@ -2454,9 +1679,11 @@ descargarLista.addEventListener(
               145
             );
 
+
             pdf.setLineWidth(
               0.2
             );
+
 
             pdf.line(
               14,
@@ -2471,9 +1698,11 @@ descargarLista.addEventListener(
               "normal"
             );
 
+
             pdf.setFontSize(
               7
             );
+
 
             pdf.setTextColor(
               111,
@@ -2488,6 +1717,7 @@ descargarLista.addEventListener(
               altoPagina - 7
             );
 
+
             pdf.text(
               `Página ${paginaActual}`,
               anchoPagina - 14,
@@ -2499,15 +1729,15 @@ descargarLista.addEventListener(
             );
 
           }
+
       });
 
 
       // NOMBRE DEL ARCHIVO
 
-      const partesNombre =
-        [
-          "Representantes"
-        ];
+      const partesNombre = [
+        "Representantes"
+      ];
 
 
       if (
@@ -2555,10 +1785,7 @@ descargarLista.addEventListener(
 
 
       const nombreArchivo =
-        partesNombre.join(
-          "_"
-        ) +
-        ".pdf";
+        `${partesNombre.join("_")}.pdf`;
 
 
       pdf.save(
@@ -2580,6 +1807,7 @@ descargarLista.addEventListener(
         "Error generando PDF:",
         error
       );
+
 
       mostrarToast(
         error?.message ||
@@ -2603,25 +1831,36 @@ descargarLista.addEventListener(
 
 
 // ========================================
-// EVENTOS DE FILTROS
+// CERRAR SESIÓN
 // ========================================
 
-buscarButton.addEventListener(
+logoutButton.addEventListener(
   "click",
-  aplicarFiltros
-);
+  async () => {
+
+    try {
+
+      await signOut(
+        auth
+      );
 
 
-busqueda.addEventListener(
-  "keydown",
-  event => {
+      window.location.href =
+        "./";
 
-    if (
-      event.key ===
-      "Enter"
-    ) {
+    }
 
-      aplicarFiltros();
+    catch (error) {
+
+      console.error(
+        "Error cerrando sesión:",
+        error
+      );
+
+
+      mostrarToast(
+        "No se pudo cerrar la sesión"
+      );
 
     }
 
@@ -2629,34 +1868,32 @@ busqueda.addEventListener(
 );
 
 
-filtroFecha.addEventListener(
-  "change",
-  aplicarFiltros
-);
+// ========================================
+// VERIFICAR SESIÓN
+// ========================================
+
+onAuthStateChanged(
+  auth,
+  async user => {
+
+    if (!user) {
+
+      window.location.href =
+        "./";
+
+      return;
+
+    }
 
 
-filtroZona.addEventListener(
-  "change",
-  aplicarFiltros
-);
+    cargando.style.display =
+      "none";
+
+    contenido.style.display =
+      "block";
 
 
-limpiarFiltros.addEventListener(
-  "click",
-  () => {
-
-    busqueda.value =
-      "";
-
-    filtroFecha.value =
-      "";
-
-    filtroZona.value =
-      "";
-
-    mostrarResultados(
-      representantes
-    );
+    await cargarRepresentantes();
 
   }
 );
