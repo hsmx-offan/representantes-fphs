@@ -333,12 +333,17 @@ input {
    ========================================= */
 
 .preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
 }
 
 .preview-encabezado {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto 15px;
   text-align: left;
-  margin-bottom: 15px;
 }
 
 .gafete-wrapper {
