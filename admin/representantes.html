@@ -237,14 +237,12 @@
     </button>
 
     <button
-      type="button"
-      id="descargarLista"
-      class="boton-secundario"
-      disabled
-      title="Próximamente"
-    >
-      📄 Descargar lista
-    </button>
+  type="button"
+  id="descargarLista"
+  class="boton-secundario"
+>
+  📄 Descargar PDF
+</button>
 
   </div>
 
@@ -534,10 +532,19 @@
   ></div>
 
 <script src="menu.js"></script>
-  <script
-    type="module"
-    src="representantes.js"
-  ></script>
+
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/4.2.1/jspdf.umd.min.js"
+></script>
+
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/5.0.8/jspdf.plugin.autotable.min.js"
+></script>
+
+<script
+  type="module"
+  src="representantes.js"
+></script>
 
 </body>
 </html>
