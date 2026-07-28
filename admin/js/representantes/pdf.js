@@ -801,17 +801,26 @@ export function crearPdfController({
 
   function iniciarPDF() {
 
-    if (!botonDescargar) {
-      return;
-    }
+  if (!botonDescargar) {
 
-
-    botonDescargar.addEventListener(
-      "click",
-      generarPDF
+    console.error(
+      'No se encontró el botón con id="descargarLista".'
     );
 
+    return;
+
   }
+
+  botonDescargar.disabled = false;
+  botonDescargar.removeAttribute("disabled");
+  botonDescargar.style.pointerEvents = "auto";
+
+  botonDescargar.addEventListener(
+    "click",
+    generarPDF
+  );
+
+}
 
 
   return {
