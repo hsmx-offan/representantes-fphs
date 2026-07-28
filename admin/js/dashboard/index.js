@@ -8,6 +8,10 @@ import {
 } from "../shared/firebase.js";
 
 import {
+  crearTemaController
+} from "../shared/tema.js";
+
+import {
   cargarRepresentantes
 } from "./sheet.js";
 
@@ -43,82 +47,45 @@ const themeToggle =
   document.getElementById("themeToggle");
 
 const totalRepresentantes =
-  document.getElementById("totalRepresentantes");
-
-const papelitosConfirmados =
-  document.getElementById("papelitosConfirmados");
-
-const gafetesEnviados =
-  document.getElementById("gafetesEnviados");
-
-const totalProblemas =
-  document.getElementById("totalProblemas");
-
-
-// ========================================
-// TEMA
-// ========================================
-
-function aplicarTema(tema) {
-
-  document.documentElement.setAttribute(
-    "data-theme",
-    tema
+  document.getElementById(
+    "totalRepresentantes"
   );
 
-  themeToggle.textContent =
-    tema === "dark"
-      ? "☀️"
-      : "🌙";
+const papelitosConfirmados =
+  document.getElementById(
+    "papelitosConfirmados"
+  );
 
-}
+const gafetesEnviados =
+  document.getElementById(
+    "gafetesEnviados"
+  );
 
-const temaGuardado =
-  localStorage.getItem("temaAdmin")
-  || "dark";
-
-aplicarTema(
-  temaGuardado
-);
-
-themeToggle.addEventListener(
-  "click",
-  () => {
-
-    const actual =
-      document.documentElement.getAttribute(
-        "data-theme"
-      );
-
-    const nuevo =
-      actual === "dark"
-        ? "light"
-        : "dark";
-
-    aplicarTema(
-      nuevo
-    );
-
-    localStorage.setItem(
-      "temaAdmin",
-      nuevo
-    );
-
-  }
-);
+const totalProblemas =
+  document.getElementById(
+    "totalProblemas"
+  );
 
 
 // ========================================
-// DASHBOARD
+// TEMA COMPARTIDO
 // ========================================
 
-async function cargarDashboard(user) {
+const temaController =
+  crearTemaController({
+    botonTema: themeToggle
+  });
 
-  nombreAdmin.textContent =
-    await cargarPerfilAdmin(user);
+temaController.iniciarTema();
 
-  const representantes =
-    await cargarRepresentantes();
+
+// ========================================
+// MOSTRAR ESTADÍSTICAS DEL SHEET
+// ========================================
+
+function mostrarEstadisticasSheet(
+  representantes
+) {
 
   totalRepresentantes.textContent =
     obtenerTotalRepresentantes(
@@ -135,6 +102,33 @@ async function cargarDashboard(user) {
       representantes
     );
 
+}
+
+
+// ========================================
+// MOSTRAR ERROR DEL SHEET
+// ========================================
+
+function mostrarErrorSheet() {
+
+  totalRepresentantes.textContent =
+    "—";
+
+  papelitosConfirmados.textContent =
+    "—";
+
+  totalProblemas.textContent =
+    "—";
+
+}
+
+
+// ========================================
+// CARGAR GAFETES
+// ========================================
+
+async function cargarEstadisticaGafetes() {
+
   try {
 
     gafetesEnviados.textContent =
@@ -144,7 +138,10 @@ async function cargarDashboard(user) {
 
   catch (error) {
 
-    console.error(error);
+    console.error(
+      "Error contando gafetes enviados:",
+      error
+    );
 
     gafetesEnviados.textContent =
       "—";
@@ -155,7 +152,57 @@ async function cargarDashboard(user) {
 
 
 // ========================================
-// SESIÓN
+// CARGAR DASHBOARD
+// ========================================
+
+async function cargarDashboard(user) {
+
+  const nombre =
+    await cargarPerfilAdmin(
+      user
+    );
+
+  nombreAdmin.textContent =
+    nombre;
+
+  try {
+
+    /*
+      El Sheet se descarga una sola vez.
+
+      De ahí se calculan:
+      - representantes
+      - papelitos
+      - problemas
+    */
+
+    const representantes =
+      await cargarRepresentantes();
+
+    mostrarEstadisticasSheet(
+      representantes
+    );
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "Error cargando datos del Sheet:",
+      error
+    );
+
+    mostrarErrorSheet();
+
+  }
+
+  await cargarEstadisticaGafetes();
+
+}
+
+
+// ========================================
+// VERIFICAR SESIÓN
 // ========================================
 
 onAuthStateChanged(
@@ -181,7 +228,10 @@ onAuthStateChanged(
 
     catch (error) {
 
-      console.error(error);
+      console.error(
+        "Error cargando dashboard:",
+        error
+      );
 
     }
 
@@ -203,10 +253,25 @@ logoutButton.addEventListener(
   "click",
   async () => {
 
-    await signOut(auth);
+    try {
 
-    window.location.href =
-      "./";
+      await signOut(
+        auth
+      );
+
+      window.location.href =
+        "./";
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "Error cerrando sesión:",
+        error
+      );
+
+    }
 
   }
 );
