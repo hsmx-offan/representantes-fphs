@@ -1,24 +1,41 @@
-export const REPRESENTANTE_URL =
+const REPRESENTANTE_URL =
   "https://hsmx-offan.github.io/representantes-fphs/representante.html?id=";
 
-export function generarQR(qrContainer, idRepresentante) {
+export function generarQR(
+  qrContainer,
+  idRepresentante
+) {
 
-  qrContainer.innerHTML = "";
+  const urlRepresentante =
+    REPRESENTANTE_URL +
+    encodeURIComponent(
+      idRepresentante
+    );
 
-  new QRCode(qrContainer, {
+  qrContainer.innerHTML =
+    "";
 
-    text:
-      REPRESENTANTE_URL +
-      encodeURIComponent(idRepresentante),
+  new QRCode(
+    qrContainer,
+    {
+      text:
+        urlRepresentante,
 
-    width: 260,
-    height: 260,
+      width:
+        260,
 
-    colorDark: "#ffffff",
-    colorLight: "#000000",
+      height:
+        260,
 
-    correctLevel: QRCode.CorrectLevel.H
+      colorDark:
+        "#ffffff",
 
-  });
+      colorLight:
+        "#000000",
+
+      correctLevel:
+        QRCode.CorrectLevel.H
+    }
+  );
 
 }
