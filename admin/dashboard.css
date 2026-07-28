@@ -800,3 +800,12 @@ a.acceso:hover {
   }
 
 }
+.tarjeta-enlace {
+  color: inherit;
+  text-decoration: none;
+}
+
+.tarjeta-enlace:hover {
+  transform: translateY(-3px);
+  border-color: var(--rosa-principal);
+}
