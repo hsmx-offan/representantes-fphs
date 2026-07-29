@@ -619,7 +619,13 @@ async function cargarMateriales() {
       )
         ? respuesta
         : [];
+llenarFiltroCategorias({
+  selector:
+    elementosMateriales.filtroCategoria,
 
+  materiales:
+    estado.materiales
+});
 
     renderizarVistaActual();
 
