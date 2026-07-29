@@ -131,9 +131,9 @@ const formularioMaterial =
     "formularioMaterial"
   );
 
-const filaMaterial =
+const idMaterial =
   document.getElementById(
-    "filaMaterial"
+    "idMaterial"
   );
 
 const nombreMaterial =
@@ -264,8 +264,8 @@ function limpiarFormulario() {
 
   formularioMaterial.reset();
 
-  filaMaterial.value =
-    "";
+  idMaterial.value =
+  "";
 
 }
 
@@ -305,8 +305,8 @@ function abrirModalEdicion(
   material
 ) {
 
-  filaMaterial.value =
-    material.fila;
+  idMaterial.value =
+  material.id;
 
   nombreMaterial.value =
     material.nombre || "";
@@ -437,72 +437,67 @@ formularioMaterial.addEventListener(
     evento.preventDefault();
 
 
-    const fila =
-      Number(
-        filaMaterial.value
-      );
+    const id =
+  idMaterial.value.trim();
 
 
     const material = {
 
-      nombre:
-        nombreMaterial.value.trim(),
+  id,
 
-      categoria:
-        categoriaMaterial.value,
+  nombre:
+    nombreMaterial.value.trim(),
 
-      tipo:
-        tipoMaterial.value,
+  categoria:
+    categoriaMaterial.value,
 
-      descripcion:
-        descripcionMaterial.value.trim(),
+  tipo:
+    tipoMaterial.value,
 
-      url:
-        urlMaterial.value.trim(),
+  descripcion:
+    descripcionMaterial.value.trim(),
 
-      vistaPrevia:
-        vistaPreviaMaterial.value.trim()
+  url:
+    urlMaterial.value.trim(),
 
-    };
+  vistaPrevia:
+    vistaPreviaMaterial.value.trim()
 
+};
 
     guardarMaterial.disabled =
       true;
 
     guardarMaterial.textContent =
-      fila
-        ? "Guardando cambios..."
-        : "Guardando...";
-
+  id
+    ? "Guardando cambios..."
+    : "Guardando...";
 
     try {
 
-      if (fila) {
+     if (id) {
 
-        await editarMaterial({
-          fila,
-          ...material
-        });
+  await editarMaterial(
+    material
+  );
 
+  mostrarToast(
+    "Material actualizado"
+  );
 
-        mostrarToast(
-          "Material actualizado"
-        );
+}
 
-      }
+else {
 
-      else {
+  await agregarMaterial(
+    material
+  );
 
-        await agregarMaterial(
-          material
-        );
+  mostrarToast(
+    "Material agregado"
+  );
 
-
-        mostrarToast(
-          "Material agregado"
-        );
-
-      }
+}
 
 
       cerrarModal();
@@ -531,9 +526,9 @@ formularioMaterial.addEventListener(
         false;
 
       guardarMaterial.textContent =
-        fila
-          ? "Guardar cambios"
-          : "Guardar material";
+  id
+    ? "Guardar cambios"
+    : "Guardar material";
 
     }
 
@@ -566,9 +561,9 @@ listaMateriales.addEventListener(
 
 
     const confirmar =
-      window.confirm(
-        `¿Eliminar "${material.nombre}"?`
-      );
+  window.confirm(
+    `¿Eliminar "${material.nombre}" (${material.id})?`
+  );
 
 
     if (!confirmar) {
@@ -581,8 +576,8 @@ listaMateriales.addEventListener(
     try {
 
       await eliminarMaterial(
-        material.fila
-      );
+  material.id
+);
 
 
       mostrarToast(
