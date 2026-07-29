@@ -25,7 +25,10 @@ import {
 import {
   renderizarMateriales
 } from "./render.js";
-
+import {
+  filtrarMateriales,
+  llenarFiltroCategorias
+} from "./filtros.js";
 
 // ========================================
 // ELEMENTOS GENERALES
@@ -92,7 +95,21 @@ const elementosMateriales = {
   contador:
     document.getElementById(
       "contadorResultados"
-    )
+    ),
+  buscador:
+  document.getElementById(
+    "buscarMaterial"
+  ),
+
+filtroCategoria:
+  document.getElementById(
+    "filtroCategoria"
+  ),
+
+botonLimpiar:
+  document.getElementById(
+    "limpiarFiltros"
+  ),
 };
 
 
@@ -191,6 +208,8 @@ const camposMaterial = {
 
 const estado = {
   materiales: [],
+  busqueda: "",
+  categoria: "",
   cargando: false,
   guardando: false,
   eliminando: false
@@ -343,9 +362,22 @@ function mostrarEstadoError() {
 
 function renderizarVistaActual() {
 
+  const materialesFiltrados =
+    filtrarMateriales({
+      materiales:
+        estado.materiales,
+
+      busqueda:
+        estado.busqueda,
+
+      categoria:
+        estado.categoria
+    });
+
+
   renderizarMateriales({
     materiales:
-      estado.materiales,
+      materialesFiltrados,
 
     listaMateriales:
       elementosMateriales.lista,
