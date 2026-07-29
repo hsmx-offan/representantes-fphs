@@ -295,12 +295,19 @@ onAuthStateChanged(
     try {
 
       const nombreAdmin =
-        await cargarPerfilAdmin(user);
+  await cargarPerfilAdmin(user);
 
-      controlEstadoGafete
-        .establecerNombreAdmin(
-          nombreAdmin
-        );
+controlEstadoGafete
+  .establecerNombreAdmin(
+    nombreAdmin
+  );
+
+if (nombreAdminElemento) {
+
+  nombreAdminElemento.textContent =
+    nombreAdmin;
+
+}
 
 
       // ==================================
