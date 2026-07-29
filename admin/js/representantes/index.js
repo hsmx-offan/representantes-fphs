@@ -56,7 +56,9 @@ import {
 import {
   crearPdfController
 } from "./pdf.js";
-
+import {
+  cargarPerfilAdmin
+} from "../dashboard/perfil.js";
 
 // ========================================
 // CONFIGURACIÓN
@@ -83,6 +85,8 @@ const elementos = {
   logoutButton:
     document.getElementById("logoutButton"),
 
+  nombreAdmin:
+  document.getElementById("nombreAdmin"),
   themeToggle:
     document.getElementById("themeToggle"),
 
