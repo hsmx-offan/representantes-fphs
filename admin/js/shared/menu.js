@@ -44,7 +44,7 @@ const opcionesMenu = [
   {
     nombre: "Material",
     archivo: "materiales.html",
-    disponible: false
+    disponible: true
   },
 
   {
