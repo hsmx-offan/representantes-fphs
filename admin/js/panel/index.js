@@ -40,6 +40,9 @@ const cargando =
 const contenido =
   document.getElementById("contenido");
 
+nombreAdmin:
+  document.getElementById("nombreAdmin"),
+    
 const logoutButton =
   document.getElementById("logoutButton");
 
