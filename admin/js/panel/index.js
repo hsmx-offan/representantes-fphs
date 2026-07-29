@@ -115,6 +115,34 @@ crearTemaController({
 
 
 // ========================================
+// MOSTRAR INTERFAZ
+// ========================================
+
+function mostrarInterfaz() {
+
+  sessionStorage.setItem(
+    "accesoAdmin",
+    "1"
+  );
+
+  if (cargando) {
+
+    cargando.style.display =
+      "none";
+
+  }
+
+  if (contenido) {
+
+    contenido.style.display =
+      "block";
+
+  }
+
+}
+
+
+// ========================================
 // CONTROL DEL ESTADO DEL GAFETE
 // ========================================
 
@@ -166,8 +194,10 @@ inicializarDescarga({
 buscarButton.addEventListener(
   "click",
   () => {
+
     buscadorRepresentante
       .buscarRepresentante();
+
   }
 );
 
@@ -201,6 +231,10 @@ logoutButton.addEventListener(
 
     try {
 
+      sessionStorage.removeItem(
+        "accesoAdmin"
+      );
+
       await signOut(auth);
 
       window.location.href =
@@ -231,12 +265,26 @@ onAuthStateChanged(
 
     if (!user) {
 
+      sessionStorage.removeItem(
+        "accesoAdmin"
+      );
+
       window.location.href =
         "./";
 
       return;
 
     }
+
+    /*
+      Mostramos el panel inmediatamente
+      después de confirmar la sesión.
+
+      El perfil y la búsqueda automática
+      pueden seguir cargando después.
+    */
+
+    mostrarInterfaz();
 
 
     try {
@@ -248,13 +296,6 @@ onAuthStateChanged(
         .establecerNombreAdmin(
           nombreAdmin
         );
-
-
-      cargando.style.display =
-        "none";
-
-      contenido.style.display =
-        "block";
 
 
       // ==================================
@@ -291,8 +332,8 @@ onAuthStateChanged(
         error
       );
 
-      cargando.textContent =
-        "No se pudo cargar el panel.";
+      estado.textContent =
+        "No se pudo cargar completamente el panel.";
 
     }
 
