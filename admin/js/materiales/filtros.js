@@ -7,7 +7,7 @@ function normalizarTexto(
 ) {
 
   return String(
-    texto || ""
+    texto ?? ""
   )
     .normalize(
       "NFD"
@@ -23,17 +23,45 @@ function normalizarTexto(
 
 
 // ========================================
+// OBTENER TÉRMINOS DE BÚSQUEDA
+// ========================================
+
+function obtenerTerminosBusqueda(
+  busqueda
+) {
+
+  return normalizarTexto(
+    busqueda
+  )
+    .split(
+      /\s+/
+    )
+    .filter(
+      Boolean
+    );
+
+}
+
+
+// ========================================
 // FILTRAR MATERIALES
 // ========================================
 
 export function filtrarMateriales({
-  materiales,
-  busqueda,
-  categoria
+  materiales = [],
+  busqueda = "",
+  categoria = ""
 }) {
 
-  const textoBusqueda =
-    normalizarTexto(
+  const listaMateriales =
+    Array.isArray(
+      materiales
+    )
+      ? materiales
+      : [];
+
+  const terminosBusqueda =
+    obtenerTerminosBusqueda(
       busqueda
     );
 
@@ -43,27 +71,41 @@ export function filtrarMateriales({
     );
 
 
-  return materiales.filter(
+  return listaMateriales.filter(
     material => {
+
+      const categoriaMaterial =
+        normalizarTexto(
+          material?.categoria
+        );
+
 
       const coincideCategoria =
         !categoriaSeleccionada ||
         categoriaSeleccionada ===
           "todas" ||
-        normalizarTexto(
-          material.categoria
-        ) ===
+        categoriaMaterial ===
           categoriaSeleccionada;
+
+
+      if (
+        !coincideCategoria
+      ) {
+
+        return false;
+
+      }
 
 
       const contenidoMaterial =
         normalizarTexto(
           [
-            material.id,
-            material.nombre,
-            material.categoria,
-            material.tipo,
-            material.descripcion
+            material?.id,
+            material?.nombre,
+            material?.categoria,
+            material?.tipo,
+            material?.descripcion,
+            material?.url
           ].join(
             " "
           )
@@ -71,16 +113,15 @@ export function filtrarMateriales({
 
 
       const coincideBusqueda =
-        !textoBusqueda ||
-        contenidoMaterial.includes(
-          textoBusqueda
+        terminosBusqueda.every(
+          termino =>
+            contenidoMaterial.includes(
+              termino
+            )
         );
 
 
-      return (
-        coincideCategoria &&
-        coincideBusqueda
-      );
+      return coincideBusqueda;
 
     }
   );
@@ -93,27 +134,65 @@ export function filtrarMateriales({
 // ========================================
 
 export function obtenerCategorias(
-  materiales
+  materiales = []
 ) {
 
-  const categorias =
-    materiales
-      .map(
-        material =>
-          String(
-            material.categoria || ""
-          ).trim()
-      )
-      .filter(
-        categoria =>
-          categoria !== ""
+  const listaMateriales =
+    Array.isArray(
+      materiales
+    )
+      ? materiales
+      : [];
+
+
+  const categoriasUnicas =
+    new Map();
+
+
+  for (
+    const material
+    of listaMateriales
+  ) {
+
+    const categoriaOriginal =
+      String(
+        material?.categoria ?? ""
+      ).trim();
+
+
+    if (
+      !categoriaOriginal
+    ) {
+
+      continue;
+
+    }
+
+
+    const claveCategoria =
+      normalizarTexto(
+        categoriaOriginal
       );
 
 
+    if (
+      !categoriasUnicas.has(
+        claveCategoria
+      )
+    ) {
+
+      categoriasUnicas.set(
+        claveCategoria,
+        categoriaOriginal
+      );
+
+    }
+
+  }
+
+
   return [
-    ...new Set(
-      categorias
-    )
+    ...categoriasUnicas.values()
   ].sort(
     (a, b) =>
       a.localeCompare(
@@ -135,12 +214,22 @@ export function obtenerCategorias(
 
 export function llenarFiltroCategorias({
   selector,
-  materiales
+  materiales = []
 }) {
 
-  const valorActual =
-    selector.value;
+  if (
+    !selector
+  ) {
 
+    return;
+
+  }
+
+
+  const valorActual =
+    normalizarTexto(
+      selector.value
+    );
 
   const categorias =
     obtenerCategorias(
@@ -148,12 +237,24 @@ export function llenarFiltroCategorias({
     );
 
 
-  selector.innerHTML =
-    `
-      <option value="">
-        Todas las categorías
-      </option>
-    `;
+  selector.replaceChildren();
+
+
+  const opcionTodas =
+    document.createElement(
+      "option"
+    );
+
+  opcionTodas.value =
+    "";
+
+  opcionTodas.textContent =
+    "Todas las categorías";
+
+
+  selector.appendChild(
+    opcionTodas
+  );
 
 
   for (
@@ -172,6 +273,7 @@ export function llenarFiltroCategorias({
     opcion.textContent =
       categoria;
 
+
     selector.appendChild(
       opcion
     );
@@ -179,15 +281,17 @@ export function llenarFiltroCategorias({
   }
 
 
-  const existeValorActual =
-    categorias.includes(
-      valorActual
+  const categoriaCoincidente =
+    categorias.find(
+      categoria =>
+        normalizarTexto(
+          categoria
+        ) ===
+          valorActual
     );
 
 
   selector.value =
-    existeValorActual
-      ? valorActual
-      : "";
+    categoriaCoincidente || "";
 
 }
