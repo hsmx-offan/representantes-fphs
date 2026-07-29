@@ -14,9 +14,7 @@ import {
 import {
   cargarPerfilAdmin
 } from "../dashboard/perfil.js";
-import {
-  cargarPerfilAdmin
-} from "../dashboard/perfil.js";
+
 import {
   crearControlEstadoGafete
 } from "./estado.js";
@@ -42,7 +40,7 @@ const contenido =
 
 const nombreAdmin =
   document.getElementById("nombreAdmin");
-    
+
 const logoutButton =
   document.getElementById("logoutButton");
 
@@ -284,9 +282,6 @@ onAuthStateChanged(
     /*
       Mostramos el panel inmediatamente
       después de confirmar la sesión.
-
-      El perfil y la búsqueda automática
-      pueden seguir cargando después.
     */
 
     mostrarInterfaz();
@@ -294,20 +289,20 @@ onAuthStateChanged(
 
     try {
 
-      const nombreAdmin =
-  await cargarPerfilAdmin(user);
+      const nombre =
+        await cargarPerfilAdmin(user);
 
-controlEstadoGafete
-  .establecerNombreAdmin(
-    nombreAdmin
-  );
+      controlEstadoGafete
+        .establecerNombreAdmin(
+          nombre
+        );
 
-if (nombreAdminElemento) {
+      if (nombreAdmin) {
 
-  nombreAdminElemento.textContent =
-    nombreAdmin;
+        nombreAdmin.textContent =
+          nombre;
 
-}
+      }
 
 
       // ==================================
@@ -344,8 +339,12 @@ if (nombreAdminElemento) {
         error
       );
 
-      estado.textContent =
-        "No se pudo cargar completamente el panel.";
+      if (estado) {
+
+        estado.textContent =
+          "No se pudo cargar completamente el panel.";
+
+      }
 
     }
 
