@@ -167,15 +167,6 @@ async function cargarDashboard(user) {
 
   try {
 
-    /*
-      El Sheet se descarga una sola vez.
-
-      De ahí se calculan:
-      - representantes
-      - papelitos
-      - problemas
-    */
-
     const representantes =
       await cargarRepresentantes();
 
@@ -202,14 +193,41 @@ async function cargarDashboard(user) {
 
 
 // ========================================
+// MOSTRAR INTERFAZ
+// ========================================
+
+function mostrarInterfaz() {
+
+  sessionStorage.setItem(
+    "accesoAdmin",
+    "1"
+  );
+
+  if (cargando) {
+    cargando.remove();
+  }
+
+  if (contenido) {
+    contenido.style.display =
+      "block";
+  }
+
+}
+
+
+// ========================================
 // VERIFICAR SESIÓN
 // ========================================
 
 onAuthStateChanged(
   auth,
-  async (user) => {
+  async user => {
 
     if (!user) {
+
+      sessionStorage.removeItem(
+        "accesoAdmin"
+      );
 
       window.location.href =
         "./";
@@ -217,6 +235,16 @@ onAuthStateChanged(
       return;
 
     }
+
+    /*
+      Mostramos la interfaz inmediatamente
+      después de confirmar la sesión.
+
+      Los datos pueden seguir cargando
+      sin ocultar toda la página.
+    */
+
+    mostrarInterfaz();
 
     try {
 
@@ -235,8 +263,6 @@ onAuthStateChanged(
 
     }
 
-    cargando.remove();
-
   }
 );
 
@@ -250,6 +276,10 @@ logoutButton.addEventListener(
   async () => {
 
     try {
+
+      sessionStorage.removeItem(
+        "accesoAdmin"
+      );
 
       await signOut(
         auth
