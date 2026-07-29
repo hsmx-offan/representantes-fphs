@@ -476,3 +476,10 @@ select {
   }
 
 }
+html.acceso-admin-recordado #cargando {
+  display: none;
+}
+
+html.acceso-admin-recordado #contenido {
+  display: block !important;
+}
