@@ -809,3 +809,10 @@ a.acceso:hover {
   transform: translateY(-3px);
   border-color: var(--rosa-principal);
 }
+html.acceso-admin-recordado #cargando {
+  display: none;
+}
+
+html.acceso-admin-recordado #contenido {
+  display: block !important;
+}
