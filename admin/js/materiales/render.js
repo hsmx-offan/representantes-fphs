@@ -2,14 +2,89 @@
 // ESCAPAR TEXTO
 // ========================================
 
-function escaparHTML(texto) {
+function escaparHTML(
+  texto
+) {
 
-  return String(texto || "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+  return String(
+    texto || ""
+  )
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
+}
+
+
+// ========================================
+// CREAR VISTA PREVIA
+// ========================================
+
+function crearVistaPrevia(
+  material
+) {
+
+  if (
+    !material.vistaPrevia
+  ) {
+
+    return `
+      <div class="material-preview-vacia">
+        <span>
+          ${escaparHTML(
+            material.tipo || "Material"
+          )}
+        </span>
+      </div>
+    `;
+
+  }
+
+
+  return `
+    <div class="material-preview-contenedor">
+
+      <img
+        class="material-preview"
+        src="${escaparHTML(
+          material.vistaPrevia
+        )}"
+        alt="Vista previa de ${escaparHTML(
+          material.nombre
+        )}"
+        loading="lazy"
+      >
+
+      <div
+        class="material-preview-vacia"
+        hidden
+      >
+        <span>
+          ${escaparHTML(
+            material.tipo || "Material"
+          )}
+        </span>
+      </div>
+
+    </div>
+  `;
 
 }
 
@@ -27,52 +102,58 @@ function crearTarjetaMaterial(
       "article"
     );
 
+
   tarjeta.className =
     "material-card";
 
+  tarjeta.dataset.id =
+    material.id || "";
 
-  const vistaPrevia =
-    material.vistaPrevia
-      ? `
-        <img
-          class="material-preview"
-          src="${escaparHTML(material.vistaPrevia)}"
-          alt=""
-          loading="lazy"
-        >
-      `
-      : "";
+  tarjeta.dataset.categoria =
+    material.categoria || "";
 
 
   tarjeta.innerHTML = `
 
-    ${vistaPrevia}
+    ${crearVistaPrevia(
+      material
+    )}
 
     <div class="material-header">
 
-  <span class="material-badge">
-    ${escaparHTML(material.tipo)}
-  </span>
+      <span class="material-badge">
+        ${escaparHTML(
+          material.tipo
+        )}
+      </span>
 
-  <span class="material-categoria">
-    ${escaparHTML(material.categoria)}
-  </span>
+      <span class="material-categoria">
+        ${escaparHTML(
+          material.categoria
+        )}
+      </span>
 
-  <span class="material-id">
-    ${escaparHTML(material.id)}
-  </span>
-
-</div>
+    </div>
 
     <div class="material-body">
 
+      <span class="material-id">
+        ${escaparHTML(
+          material.id
+        )}
+      </span>
+
       <h3>
-        ${escaparHTML(material.nombre)}
+        ${escaparHTML(
+          material.nombre
+        )}
       </h3>
 
       <p>
         ${
-          escaparHTML(material.descripcion) ||
+          escaparHTML(
+            material.descripcion
+          ) ||
           "Sin descripción."
         }
       </p>
@@ -83,7 +164,9 @@ function crearTarjetaMaterial(
 
       <a
         class="boton-principal"
-        href="${escaparHTML(material.url)}"
+        href="${escaparHTML(
+          material.url
+        )}"
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -109,6 +192,44 @@ function crearTarjetaMaterial(
   `;
 
 
+  const imagen =
+    tarjeta.querySelector(
+      ".material-preview"
+    );
+
+
+  if (imagen) {
+
+    imagen.addEventListener(
+      "error",
+      () => {
+
+        imagen.hidden =
+          true;
+
+
+        const reemplazo =
+          tarjeta.querySelector(
+            ".material-preview-vacia"
+          );
+
+
+        if (reemplazo) {
+
+          reemplazo.hidden =
+            false;
+
+        }
+
+      },
+      {
+        once: true
+      }
+    );
+
+  }
+
+
   tarjeta
     .querySelector(
       ".editar-material"
@@ -122,7 +243,8 @@ function crearTarjetaMaterial(
             "editarMaterial",
             {
               bubbles: true,
-              detail: material
+              detail:
+                material
             }
           )
         );
@@ -144,7 +266,8 @@ function crearTarjetaMaterial(
             "eliminarMaterial",
             {
               bubbles: true,
-              detail: material
+              detail:
+                material
             }
           )
         );
@@ -154,6 +277,69 @@ function crearTarjetaMaterial(
 
 
   return tarjeta;
+
+}
+
+
+// ========================================
+// ORDENAR MATERIALES
+// ========================================
+
+export function ordenarMateriales(
+  materiales
+) {
+
+  return [
+    ...materiales
+  ].sort(
+    (a, b) => {
+
+      const categoriaA =
+        String(
+          a.categoria || ""
+        );
+
+      const categoriaB =
+        String(
+          b.categoria || ""
+        );
+
+
+      const compararCategoria =
+        categoriaA.localeCompare(
+          categoriaB,
+          "es",
+          {
+            sensitivity:
+              "base"
+          }
+        );
+
+
+      if (
+        compararCategoria !== 0
+      ) {
+
+        return compararCategoria;
+
+      }
+
+
+      return String(
+        a.nombre || ""
+      ).localeCompare(
+        String(
+          b.nombre || ""
+        ),
+        "es",
+        {
+          sensitivity:
+            "base"
+        }
+      );
+
+    }
+  );
 
 }
 
@@ -173,8 +359,14 @@ export function renderizarMateriales({
     "";
 
 
+  const materialesOrdenados =
+    ordenarMateriales(
+      materiales
+    );
+
+
   const cantidad =
-    materiales.length;
+    materialesOrdenados.length;
 
 
   contadorResultados.textContent =
@@ -183,7 +375,9 @@ export function renderizarMateriales({
       : `${cantidad} materiales`;
 
 
-  if (cantidad === 0) {
+  if (
+    cantidad === 0
+  ) {
 
     listaMateriales.style.display =
       "none";
@@ -209,7 +403,7 @@ export function renderizarMateriales({
 
   for (
     const material
-    of materiales
+    of materialesOrdenados
   ) {
 
     fragmento.appendChild(
