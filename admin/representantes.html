@@ -20,6 +20,15 @@
     window.location.replace("mantenimiento.html");
   }
 </script>
+  <script>
+  if (
+    sessionStorage.getItem("accesoAdmin") === "1"
+  ) {
+    document.documentElement.classList.add(
+      "acceso-admin-recordado"
+    );
+  }
+</script>
   <meta charset="UTF-8">
 
   <meta
