@@ -39,7 +39,15 @@
     }
   </script>
 
-
+<script>
+  if (
+    sessionStorage.getItem("accesoAdmin") === "1"
+  ) {
+    document.documentElement.classList.add(
+      "acceso-admin-recordado"
+    );
+  }
+</script>
   <!-- =====================================
        CONFIGURACIÓN
        ===================================== -->
