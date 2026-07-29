@@ -14,7 +14,9 @@ import {
 import {
   cargarPerfilAdmin
 } from "../dashboard/perfil.js";
-
+import {
+  cargarPerfilAdmin
+} from "../dashboard/perfil.js";
 import {
   crearControlEstadoGafete
 } from "./estado.js";
