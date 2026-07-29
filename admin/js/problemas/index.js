@@ -27,6 +27,9 @@ import {
   iniciarFiltros
 } from "./filtros.js";
 
+import {
+  cargarPerfilAdmin
+} from "../dashboard/perfil.js";
 
 // ========================================
 // ELEMENTOS
