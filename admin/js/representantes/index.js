@@ -207,6 +207,34 @@ const {
 
 
 // ========================================
+// MOSTRAR INTERFAZ
+// ========================================
+
+function mostrarInterfaz() {
+
+  sessionStorage.setItem(
+    "accesoAdmin",
+    "1"
+  );
+
+  if (elementos.cargando) {
+
+    elementos.cargando.style.display =
+      "none";
+
+  }
+
+  if (elementos.contenido) {
+
+    elementos.contenido.style.display =
+      "block";
+
+  }
+
+}
+
+
+// ========================================
 // CONSULTAR GAFETE
 // ========================================
 
@@ -765,6 +793,10 @@ elementos.logoutButton
 
       try {
 
+        sessionStorage.removeItem(
+          "accesoAdmin"
+        );
+
         await signOut(auth);
 
         window.location.href =
@@ -799,6 +831,10 @@ onAuthStateChanged(
 
     if (!usuario) {
 
+      sessionStorage.removeItem(
+        "accesoAdmin"
+      );
+
       window.location.href =
         "./";
 
@@ -806,11 +842,15 @@ onAuthStateChanged(
 
     }
 
-    elementos.cargando.style.display =
-      "none";
+    /*
+      La interfaz aparece inmediatamente
+      después de confirmar la sesión.
 
-    elementos.contenido.style.display =
-      "block";
+      La lista de representantes sigue
+      cargando dentro de la página.
+    */
+
+    mostrarInterfaz();
 
     await cargarRepresentantes();
 
