@@ -1114,7 +1114,40 @@ function registrarEventos() {
     manejarTeclado
   );
 
+if (
+  elementosMateriales.buscador
+) {
 
+  elementosMateriales.buscador.addEventListener(
+    "input",
+    aplicarBusqueda
+  );
+
+}
+
+
+if (
+  elementosMateriales.filtroCategoria
+) {
+
+  elementosMateriales.filtroCategoria.addEventListener(
+    "change",
+    aplicarCategoria
+  );
+
+}
+
+
+if (
+  elementosMateriales.botonLimpiar
+) {
+
+  elementosMateriales.botonLimpiar.addEventListener(
+    "click",
+    limpiarFiltros
+  );
+
+}
   elementosGenerales.logoutButton.addEventListener(
     "click",
     cerrarSesion
