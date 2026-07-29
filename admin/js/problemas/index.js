@@ -256,7 +256,28 @@ onAuthStateChanged(
     */
 
     mostrarInterfaz();
+try {
 
+  const nombre =
+    await cargarPerfilAdmin(user);
+
+  if (nombreAdmin) {
+
+    nombreAdmin.textContent =
+      nombre;
+
+  }
+
+}
+
+catch (error) {
+
+  console.error(
+    "Error cargando perfil:",
+    error
+  );
+
+}
     await cargarDatos();
 
   }
