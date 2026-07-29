@@ -8,7 +8,7 @@ import {
 // ========================================
 
 const API_URL =
-  "PEGA_AQUÍ_TU_MISMA_URL_DEL_APPS_SCRIPT";
+  "https://script.google.com/macros/s/AKfycbz1nbly2DHBiw5NiVW0s0MiQYX-s2hUQEbpcR_mGCHcL2JIwV1I53nZCwjvCrO8SzNC7g/exec";
 
 
 // ========================================
