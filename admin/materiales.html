@@ -284,7 +284,207 @@
     </div>
 
   </div>
+<div
+  id="modalMaterial"
+  class="modal"
+  hidden
+>
 
+  <div
+    id="fondoModalMaterial"
+    class="modal-fondo"
+  ></div>
+
+  <section
+    class="modal-contenido"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="tituloFormularioMaterial"
+  >
+
+    <div class="modal-encabezado">
+
+      <h2 id="tituloFormularioMaterial">
+        Agregar material
+      </h2>
+
+      <button
+        type="button"
+        id="cerrarFormularioMaterial"
+        class="boton-cerrar"
+        aria-label="Cerrar formulario"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <form id="formularioMaterial">
+
+      <input
+        type="hidden"
+        id="filaMaterial"
+      >
+
+      <div class="campo">
+
+        <label for="nombreMaterial">
+          Nombre
+        </label>
+
+        <input
+          type="text"
+          id="nombreMaterial"
+          required
+        >
+
+      </div>
+
+      <div class="campo">
+
+        <label for="categoriaMaterial">
+          Categoría
+        </label>
+
+        <select
+          id="categoriaMaterial"
+          required
+        >
+
+          <option value="">
+            Selecciona una categoría
+          </option>
+
+          <option value="guias">
+            Guías
+          </option>
+
+          <option value="videos">
+            Videos
+          </option>
+
+          <option value="recursos">
+            Recursos gráficos
+          </option>
+
+          <option value="enlaces">
+            Enlaces
+          </option>
+
+        </select>
+
+      </div>
+
+      <div class="campo">
+
+        <label for="tipoMaterial">
+          Tipo
+        </label>
+
+        <select
+          id="tipoMaterial"
+          required
+        >
+
+          <option value="">
+            Selecciona un tipo
+          </option>
+
+          <option value="PDF">
+            PDF
+          </option>
+
+          <option value="VIDEO">
+            Video
+          </option>
+
+          <option value="CANVA">
+            Canva
+          </option>
+
+          <option value="DRIVE">
+            Drive
+          </option>
+
+          <option value="ENLACE">
+            Enlace
+          </option>
+
+          <option value="IMAGEN">
+            Imagen
+          </option>
+
+        </select>
+
+      </div>
+
+      <div class="campo">
+
+        <label for="descripcionMaterial">
+          Descripción
+        </label>
+
+        <textarea
+          id="descripcionMaterial"
+          rows="4"
+        ></textarea>
+
+      </div>
+
+      <div class="campo">
+
+        <label for="urlMaterial">
+          URL del material
+        </label>
+
+        <input
+          type="url"
+          id="urlMaterial"
+          placeholder="https://..."
+          required
+        >
+
+      </div>
+
+      <div class="campo">
+
+        <label for="vistaPreviaMaterial">
+          URL de vista previa
+        </label>
+
+        <input
+          type="url"
+          id="vistaPreviaMaterial"
+          placeholder="https://..."
+        >
+
+      </div>
+
+      <div class="acciones-formulario">
+
+        <button
+          type="button"
+          id="cancelarFormularioMaterial"
+          class="boton-secundario"
+        >
+          Cancelar
+        </button>
+
+        <button
+          type="submit"
+          id="guardarMaterial"
+          class="boton-principal"
+        >
+          Guardar material
+        </button>
+
+      </div>
+
+    </form>
+
+  </section>
+
+</div>
   <div
     id="toast"
     class="toast"
