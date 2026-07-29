@@ -86,6 +86,34 @@ crearTemaController({
 
 
 // ========================================
+// MOSTRAR INTERFAZ
+// ========================================
+
+function mostrarInterfaz() {
+
+  sessionStorage.setItem(
+    "accesoAdmin",
+    "1"
+  );
+
+  if (cargando) {
+
+    cargando.style.display =
+      "none";
+
+  }
+
+  if (contenido) {
+
+    contenido.style.display =
+      "block";
+
+  }
+
+}
+
+
+// ========================================
 // MOSTRAR RESULTADOS
 // ========================================
 
@@ -202,6 +230,10 @@ onAuthStateChanged(
 
     if (!user) {
 
+      sessionStorage.removeItem(
+        "accesoAdmin"
+      );
+
       window.location.href =
         "./";
 
@@ -209,11 +241,15 @@ onAuthStateChanged(
 
     }
 
-    cargando.style.display =
-      "none";
+    /*
+      La interfaz aparece inmediatamente
+      al confirmar que existe sesión.
 
-    contenido.style.display =
-      "block";
+      El análisis de registros continúa
+      dentro de la página.
+    */
+
+    mostrarInterfaz();
 
     await cargarDatos();
 
@@ -230,6 +266,10 @@ logoutButton.addEventListener(
   async () => {
 
     try {
+
+      sessionStorage.removeItem(
+        "accesoAdmin"
+      );
 
       await signOut(auth);
 
