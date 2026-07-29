@@ -855,7 +855,30 @@ onAuthStateChanged(
     */
 
     mostrarInterfaz();
+try {
 
+  const nombre =
+    await cargarPerfilAdmin(
+      usuario
+    );
+
+  if (elementos.nombreAdmin) {
+
+    elementos.nombreAdmin.textContent =
+      nombre;
+
+  }
+
+}
+
+catch (error) {
+
+  console.error(
+    "Error cargando perfil:",
+    error
+  );
+
+}
     await cargarRepresentantes();
 
   }
