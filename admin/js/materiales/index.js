@@ -21,43 +21,66 @@ import {
 // ========================================
 
 const cargando =
-  document.getElementById("cargando");
+  document.getElementById(
+    "cargando"
+  );
 
 const contenido =
-  document.getElementById("contenido");
+  document.getElementById(
+    "contenido"
+  );
 
 const nombreAdmin =
-  document.getElementById("nombreAdmin");
-
-const themeToggle =
-  document.getElementById("themeToggle");
+  document.getElementById(
+    "nombreAdmin"
+  );
 
 const logoutButton =
-  document.getElementById("logoutButton");
+  document.getElementById(
+    "logoutButton"
+  );
+
+const themeToggle =
+  document.getElementById(
+    "themeToggle"
+  );
 
 const cargandoMateriales =
-  document.getElementById("cargandoMateriales");
+  document.getElementById(
+    "cargandoMateriales"
+  );
 
 const listaMateriales =
-  document.getElementById("listaMateriales");
+  document.getElementById(
+    "listaMateriales"
+  );
 
 const sinResultados =
-  document.getElementById("sinResultados");
+  document.getElementById(
+    "sinResultados"
+  );
 
 const errorMateriales =
-  document.getElementById("errorMateriales");
+  document.getElementById(
+    "errorMateriales"
+  );
 
 const contadorResultados =
-  document.getElementById("contadorResultados");
+  document.getElementById(
+    "contadorResultados"
+  );
 
 
 // ========================================
 // TEMA COMPARTIDO
 // ========================================
 
-crearTemaController({
-  botonTema: themeToggle
-}).iniciarTema();
+const temaController =
+  crearTemaController({
+    botonTema: themeToggle
+  });
+
+temaController.iniciarTema();
 
 
 // ========================================
@@ -72,36 +95,41 @@ function mostrarInterfaz() {
   );
 
   if (cargando) {
-    cargando.style.display = "none";
+    cargando.remove();
   }
 
   if (contenido) {
-    contenido.style.display = "block";
+    contenido.style.display =
+      "block";
   }
 
 }
 
 
 // ========================================
-// ESTADO INICIAL DE MATERIALES
+// ESTADO INICIAL
 // ========================================
 
 function mostrarEstadoInicial() {
 
   if (cargandoMateriales) {
-    cargandoMateriales.style.display = "block";
+    cargandoMateriales.style.display =
+      "block";
   }
 
   if (listaMateriales) {
-    listaMateriales.style.display = "none";
+    listaMateriales.style.display =
+      "none";
   }
 
   if (sinResultados) {
-    sinResultados.style.display = "none";
+    sinResultados.style.display =
+      "none";
   }
 
   if (errorMateriales) {
-    errorMateriales.style.display = "none";
+    errorMateriales.style.display =
+      "none";
   }
 
   if (contadorResultados) {
@@ -113,12 +141,44 @@ function mostrarEstadoInicial() {
 
 
 // ========================================
-// AUTENTICACIÓN
+// CARGAR PÁGINA
+// ========================================
+
+async function cargarPaginaMateriales(
+  user
+) {
+
+  const nombre =
+    await cargarPerfilAdmin(
+      user
+    );
+
+  if (nombreAdmin) {
+    nombreAdmin.textContent =
+      nombre;
+  }
+
+  mostrarEstadoInicial();
+
+  /*
+    Después conectaremos aquí:
+
+    - carga de materiales;
+    - tarjetas;
+    - buscador;
+    - filtros.
+  */
+
+}
+
+
+// ========================================
+// VERIFICAR SESIÓN
 // ========================================
 
 onAuthStateChanged(
   auth,
-  async (user) => {
+  async user => {
 
     if (!user) {
 
@@ -126,48 +186,51 @@ onAuthStateChanged(
         "accesoAdmin"
       );
 
-      window.location.replace(
-        "../login.html"
-      );
+      window.location.href =
+        "./";
 
       return;
 
     }
 
     mostrarInterfaz();
-    mostrarEstadoInicial();
 
     try {
 
-      const nombre =
-        await cargarPerfilAdmin(user);
-
-      if (nombreAdmin) {
-        nombreAdmin.textContent = nombre;
-      }
+      await cargarPaginaMateriales(
+        user
+      );
 
     }
 
     catch (error) {
 
       console.error(
-        "Error cargando el perfil:",
+        "Error cargando Materiales:",
         error
       );
 
       if (nombreAdmin) {
-        nombreAdmin.textContent = "Admin";
+        nombreAdmin.textContent =
+          "Admin";
+      }
+
+      if (cargandoMateriales) {
+        cargandoMateriales.style.display =
+          "none";
+      }
+
+      if (errorMateriales) {
+        errorMateriales.style.display =
+          "block";
+      }
+
+      if (contadorResultados) {
+        contadorResultados.textContent =
+          "No disponible";
       }
 
     }
-
-    /*
-      Después conectaremos aquí:
-
-      1. La carga de materiales desde Google Sheets.
-      2. El render de las tarjetas.
-      3. Los filtros y el buscador.
-    */
 
   }
 );
@@ -189,11 +252,12 @@ if (logoutButton) {
           "accesoAdmin"
         );
 
-        await signOut(auth);
-
-        window.location.replace(
-          "../login.html"
+        await signOut(
+          auth
         );
+
+        window.location.href =
+          "./";
 
       }
 
