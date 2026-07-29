@@ -4,11 +4,11 @@ import {
 
 
 // ========================================
-// CONFIGURACIÓN
+// URL DEL APPS SCRIPT
 // ========================================
 
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbz1nbly2DHBiw5NiVW0s0MiQYX-s2hUQEbpcR_mGCHcL2JIwV1I53nZCwjvCrO8SzNC7g/exec";
+  "PEGA_AQUÍ_TU_MISMA_URL_DEL_APPS_SCRIPT";
 
 
 // ========================================
@@ -19,11 +19,11 @@ async function peticionMateriales(
   datos
 ) {
 
-  const user =
+  const usuario =
     auth.currentUser;
 
 
-  if (!user) {
+  if (!usuario) {
 
     throw new Error(
       "No hay una sesión activa."
@@ -33,15 +33,14 @@ async function peticionMateriales(
 
 
   const idToken =
-    await user.getIdToken();
+    await usuario.getIdToken();
 
 
   const respuesta =
     await fetch(
       API_URL,
       {
-        method:
-          "POST",
+        method: "POST",
 
         headers: {
           "Content-Type":
@@ -74,7 +73,7 @@ async function peticionMateriales(
 
     throw new Error(
       resultado.error ||
-      "Ocurrió un error con los materiales."
+      "Ocurrió un error inesperado."
     );
 
   }
@@ -86,7 +85,7 @@ async function peticionMateriales(
 
 
 // ========================================
-// LISTAR
+// LISTAR MATERIALES
 // ========================================
 
 export async function listarMateriales() {
@@ -98,17 +97,16 @@ export async function listarMateriales() {
     });
 
 
-  return Array.isArray(
-    resultado.materiales
-  )
-    ? resultado.materiales
-    : [];
+  return (
+    resultado.materiales ||
+    []
+  );
 
 }
 
 
 // ========================================
-// AGREGAR
+// AGREGAR MATERIAL
 // ========================================
 
 export async function agregarMaterial(
@@ -117,10 +115,28 @@ export async function agregarMaterial(
 
   const resultado =
     await peticionMateriales({
+
       accion:
         "agregar_material",
 
-      ...material
+      nombre:
+        material.nombre,
+
+      categoria:
+        material.categoria,
+
+      tipo:
+        material.tipo,
+
+      descripcion:
+        material.descripcion,
+
+      url:
+        material.url,
+
+      vistaPrevia:
+        material.vistaPrevia
+
     });
 
 
@@ -130,7 +146,7 @@ export async function agregarMaterial(
 
 
 // ========================================
-// EDITAR
+// EDITAR MATERIAL
 // ========================================
 
 export async function editarMaterial(
@@ -139,10 +155,31 @@ export async function editarMaterial(
 
   const resultado =
     await peticionMateriales({
+
       accion:
         "editar_material",
 
-      ...material
+      id:
+        material.id,
+
+      nombre:
+        material.nombre,
+
+      categoria:
+        material.categoria,
+
+      tipo:
+        material.tipo,
+
+      descripcion:
+        material.descripcion,
+
+      url:
+        material.url,
+
+      vistaPrevia:
+        material.vistaPrevia
+
     });
 
 
@@ -152,19 +189,25 @@ export async function editarMaterial(
 
 
 // ========================================
-// ELIMINAR
+// ELIMINAR MATERIAL
 // ========================================
 
 export async function eliminarMaterial(
-  fila
+  id
 ) {
 
-  await peticionMateriales({
-    accion:
-      "eliminar_material",
+  const resultado =
+    await peticionMateriales({
 
-    fila:
-      fila
-  });
+      accion:
+        "eliminar_material",
+
+      id:
+        id
+
+    });
+
+
+  return resultado;
 
 }
