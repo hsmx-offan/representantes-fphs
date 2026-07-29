@@ -15,9 +15,20 @@ import {
   cargarPerfilAdmin
 } from "../dashboard/perfil.js";
 
+import {
+  listarMateriales,
+  agregarMaterial,
+  editarMaterial,
+  eliminarMaterial
+} from "./api.js";
+
+import {
+  renderizarMateriales
+} from "./render.js";
+
 
 // ========================================
-// ELEMENTOS
+// ELEMENTOS GENERALES
 // ========================================
 
 const cargando =
@@ -35,24 +46,34 @@ const nombreAdmin =
     "nombreAdmin"
   );
 
+const themeToggle =
+  document.getElementById(
+    "themeToggle"
+  );
+
 const logoutButton =
   document.getElementById(
     "logoutButton"
   );
 
-const themeToggle =
+const toast =
   document.getElementById(
-    "themeToggle"
+    "toast"
   );
+
+
+// ========================================
+// ELEMENTOS DE MATERIALES
+// ========================================
 
 const cargandoMateriales =
   document.getElementById(
     "cargandoMateriales"
   );
 
-const listaMateriales =
+const errorMateriales =
   document.getElementById(
-    "listaMateriales"
+    "errorMateriales"
   );
 
 const sinResultados =
@@ -60,9 +81,9 @@ const sinResultados =
     "sinResultados"
   );
 
-const errorMateriales =
+const listaMateriales =
   document.getElementById(
-    "errorMateriales"
+    "listaMateriales"
   );
 
 const contadorResultados =
@@ -72,19 +93,107 @@ const contadorResultados =
 
 
 // ========================================
-// TEMA COMPARTIDO
+// ELEMENTOS DEL MODAL
+// ========================================
+
+const modalMaterial =
+  document.getElementById(
+    "modalMaterial"
+  );
+
+const abrirFormularioMaterial =
+  document.getElementById(
+    "abrirFormularioMaterial"
+  );
+
+const cerrarFormularioMaterial =
+  document.getElementById(
+    "cerrarFormularioMaterial"
+  );
+
+const cancelarFormularioMaterial =
+  document.getElementById(
+    "cancelarFormularioMaterial"
+  );
+
+const fondoModalMaterial =
+  document.getElementById(
+    "fondoModalMaterial"
+  );
+
+const tituloFormularioMaterial =
+  document.getElementById(
+    "tituloFormularioMaterial"
+  );
+
+const formularioMaterial =
+  document.getElementById(
+    "formularioMaterial"
+  );
+
+const filaMaterial =
+  document.getElementById(
+    "filaMaterial"
+  );
+
+const nombreMaterial =
+  document.getElementById(
+    "nombreMaterial"
+  );
+
+const categoriaMaterial =
+  document.getElementById(
+    "categoriaMaterial"
+  );
+
+const tipoMaterial =
+  document.getElementById(
+    "tipoMaterial"
+  );
+
+const descripcionMaterial =
+  document.getElementById(
+    "descripcionMaterial"
+  );
+
+const urlMaterial =
+  document.getElementById(
+    "urlMaterial"
+  );
+
+const vistaPreviaMaterial =
+  document.getElementById(
+    "vistaPreviaMaterial"
+  );
+
+const guardarMaterial =
+  document.getElementById(
+    "guardarMaterial"
+  );
+
+
+// ========================================
+// ESTADO
+// ========================================
+
+let materiales = [];
+
+
+// ========================================
+// TEMA
 // ========================================
 
 const temaController =
   crearTemaController({
-    botonTema: themeToggle
+    botonTema:
+      themeToggle
   });
 
 temaController.iniciarTema();
 
 
 // ========================================
-// MOSTRAR INTERFAZ
+// INTERFAZ
 // ========================================
 
 function mostrarInterfaz() {
@@ -94,86 +203,458 @@ function mostrarInterfaz() {
     "1"
   );
 
+
   if (cargando) {
+
     cargando.remove();
+
   }
 
-  if (contenido) {
-    contenido.style.display =
-      "block";
-  }
+
+  contenido.style.display =
+    "block";
 
 }
 
 
 // ========================================
-// ESTADO INICIAL
+// TOAST
 // ========================================
 
-function mostrarEstadoInicial() {
-
-  if (cargandoMateriales) {
-    cargandoMateriales.style.display =
-      "block";
-  }
-
-  if (listaMateriales) {
-    listaMateriales.style.display =
-      "none";
-  }
-
-  if (sinResultados) {
-    sinResultados.style.display =
-      "none";
-  }
-
-  if (errorMateriales) {
-    errorMateriales.style.display =
-      "none";
-  }
-
-  if (contadorResultados) {
-    contadorResultados.textContent =
-      "Cargando materiales...";
-  }
-
-}
+let temporizadorToast = null;
 
 
-// ========================================
-// CARGAR PÁGINA
-// ========================================
-
-async function cargarPaginaMateriales(
-  user
+function mostrarToast(
+  mensaje
 ) {
 
-  const nombre =
-    await cargarPerfilAdmin(
-      user
+  clearTimeout(
+    temporizadorToast
+  );
+
+
+  toast.textContent =
+    mensaje;
+
+  toast.classList.add(
+    "visible"
+  );
+
+
+  temporizadorToast =
+    setTimeout(
+      () => {
+
+        toast.classList.remove(
+          "visible"
+        );
+
+      },
+      2800
     );
-
-  if (nombreAdmin) {
-    nombreAdmin.textContent =
-      nombre;
-  }
-
-  mostrarEstadoInicial();
-
-  /*
-    Después conectaremos aquí:
-
-    - carga de materiales;
-    - tarjetas;
-    - buscador;
-    - filtros.
-  */
 
 }
 
 
 // ========================================
-// VERIFICAR SESIÓN
+// MODAL
+// ========================================
+
+function limpiarFormulario() {
+
+  formularioMaterial.reset();
+
+  filaMaterial.value =
+    "";
+
+}
+
+
+function abrirModalNuevo() {
+
+  limpiarFormulario();
+
+
+  tituloFormularioMaterial.textContent =
+    "Agregar material";
+
+  guardarMaterial.textContent =
+    "Guardar material";
+
+  modalMaterial.hidden =
+    false;
+
+  document.body.classList.add(
+    "modal-abierto"
+  );
+
+
+  setTimeout(
+    () => {
+
+      nombreMaterial.focus();
+
+    },
+    50
+  );
+
+}
+
+
+function abrirModalEdicion(
+  material
+) {
+
+  filaMaterial.value =
+    material.fila;
+
+  nombreMaterial.value =
+    material.nombre || "";
+
+  categoriaMaterial.value =
+    material.categoria || "";
+
+  tipoMaterial.value =
+    material.tipo || "";
+
+  descripcionMaterial.value =
+    material.descripcion || "";
+
+  urlMaterial.value =
+    material.url || "";
+
+  vistaPreviaMaterial.value =
+    material.vistaPrevia || "";
+
+
+  tituloFormularioMaterial.textContent =
+    "Editar material";
+
+  guardarMaterial.textContent =
+    "Guardar cambios";
+
+  modalMaterial.hidden =
+    false;
+
+  document.body.classList.add(
+    "modal-abierto"
+  );
+
+
+  setTimeout(
+    () => {
+
+      nombreMaterial.focus();
+
+    },
+    50
+  );
+
+}
+
+
+function cerrarModal() {
+
+  modalMaterial.hidden =
+    true;
+
+  document.body.classList.remove(
+    "modal-abierto"
+  );
+
+  limpiarFormulario();
+
+}
+
+
+// ========================================
+// CARGAR MATERIALES
+// ========================================
+
+async function cargarMateriales() {
+
+  cargandoMateriales.style.display =
+    "flex";
+
+  errorMateriales.style.display =
+    "none";
+
+  sinResultados.style.display =
+    "none";
+
+  listaMateriales.style.display =
+    "none";
+
+
+  try {
+
+    materiales =
+      await listarMateriales();
+
+
+    renderizarMateriales({
+      materiales,
+      listaMateriales,
+      sinResultados,
+      contadorResultados
+    });
+
+  }
+
+  catch (error) {
+
+    console.error(
+      error
+    );
+
+
+    errorMateriales.style.display =
+      "flex";
+
+    contadorResultados.textContent =
+      "0 materiales";
+
+  }
+
+  finally {
+
+    cargandoMateriales.style.display =
+      "none";
+
+  }
+
+}
+
+
+// ========================================
+// GUARDAR MATERIAL
+// ========================================
+
+formularioMaterial.addEventListener(
+  "submit",
+  async evento => {
+
+    evento.preventDefault();
+
+
+    const fila =
+      Number(
+        filaMaterial.value
+      );
+
+
+    const material = {
+
+      nombre:
+        nombreMaterial.value.trim(),
+
+      categoria:
+        categoriaMaterial.value,
+
+      tipo:
+        tipoMaterial.value,
+
+      descripcion:
+        descripcionMaterial.value.trim(),
+
+      url:
+        urlMaterial.value.trim(),
+
+      vistaPrevia:
+        vistaPreviaMaterial.value.trim()
+
+    };
+
+
+    guardarMaterial.disabled =
+      true;
+
+    guardarMaterial.textContent =
+      fila
+        ? "Guardando cambios..."
+        : "Guardando...";
+
+
+    try {
+
+      if (fila) {
+
+        await editarMaterial({
+          fila,
+          ...material
+        });
+
+
+        mostrarToast(
+          "Material actualizado"
+        );
+
+      }
+
+      else {
+
+        await agregarMaterial(
+          material
+        );
+
+
+        mostrarToast(
+          "Material agregado"
+        );
+
+      }
+
+
+      cerrarModal();
+
+      await cargarMateriales();
+
+    }
+
+    catch (error) {
+
+      console.error(
+        error
+      );
+
+
+      mostrarToast(
+        error.message ||
+        "No se pudo guardar el material"
+      );
+
+    }
+
+    finally {
+
+      guardarMaterial.disabled =
+        false;
+
+      guardarMaterial.textContent =
+        fila
+          ? "Guardar cambios"
+          : "Guardar material";
+
+    }
+
+  }
+);
+
+
+// ========================================
+// EDITAR Y ELIMINAR
+// ========================================
+
+listaMateriales.addEventListener(
+  "editarMaterial",
+  evento => {
+
+    abrirModalEdicion(
+      evento.detail
+    );
+
+  }
+);
+
+
+listaMateriales.addEventListener(
+  "eliminarMaterial",
+  async evento => {
+
+    const material =
+      evento.detail;
+
+
+    const confirmar =
+      window.confirm(
+        `¿Eliminar "${material.nombre}"?`
+      );
+
+
+    if (!confirmar) {
+
+      return;
+
+    }
+
+
+    try {
+
+      await eliminarMaterial(
+        material.fila
+      );
+
+
+      mostrarToast(
+        "Material eliminado"
+      );
+
+      await cargarMateriales();
+
+    }
+
+    catch (error) {
+
+      console.error(
+        error
+      );
+
+
+      mostrarToast(
+        error.message ||
+        "No se pudo eliminar el material"
+      );
+
+    }
+
+  }
+);
+
+
+// ========================================
+// EVENTOS DEL MODAL
+// ========================================
+
+abrirFormularioMaterial.addEventListener(
+  "click",
+  abrirModalNuevo
+);
+
+cerrarFormularioMaterial.addEventListener(
+  "click",
+  cerrarModal
+);
+
+cancelarFormularioMaterial.addEventListener(
+  "click",
+  cerrarModal
+);
+
+fondoModalMaterial.addEventListener(
+  "click",
+  cerrarModal
+);
+
+
+document.addEventListener(
+  "keydown",
+  evento => {
+
+    if (
+      evento.key === "Escape" &&
+      !modalMaterial.hidden
+    ) {
+
+      cerrarModal();
+
+    }
+
+  }
+);
+
+
+// ========================================
+// AUTENTICACIÓN
 // ========================================
 
 onAuthStateChanged(
@@ -193,44 +674,25 @@ onAuthStateChanged(
 
     }
 
+
     mostrarInterfaz();
 
-    try {
 
-      await cargarPaginaMateriales(
+    const nombre =
+      await cargarPerfilAdmin(
         user
       );
 
-    }
 
-    catch (error) {
+    if (nombreAdmin) {
 
-      console.error(
-        "Error cargando Materiales:",
-        error
-      );
-
-      if (nombreAdmin) {
-        nombreAdmin.textContent =
-          "Admin";
-      }
-
-      if (cargandoMateriales) {
-        cargandoMateriales.style.display =
-          "none";
-      }
-
-      if (errorMateriales) {
-        errorMateriales.style.display =
-          "block";
-      }
-
-      if (contadorResultados) {
-        contadorResultados.textContent =
-          "No disponible";
-      }
+      nombreAdmin.textContent =
+        nombre;
 
     }
+
+
+    await cargarMateriales();
 
   }
 );
@@ -240,37 +702,36 @@ onAuthStateChanged(
 // CERRAR SESIÓN
 // ========================================
 
-if (logoutButton) {
+logoutButton.addEventListener(
+  "click",
+  async () => {
 
-  logoutButton.addEventListener(
-    "click",
-    async () => {
+    try {
 
-      try {
+      sessionStorage.removeItem(
+        "accesoAdmin"
+      );
 
-        sessionStorage.removeItem(
-          "accesoAdmin"
-        );
+      await signOut(
+        auth
+      );
 
-        await signOut(
-          auth
-        );
-
-        window.location.href =
-          "./";
-
-      }
-
-      catch (error) {
-
-        console.error(
-          "Error cerrando sesión:",
-          error
-        );
-
-      }
+      window.location.href =
+        "./";
 
     }
-  );
 
-}
+    catch (error) {
+
+      console.error(
+        error
+      );
+
+      mostrarToast(
+        "No se pudo cerrar la sesión"
+      );
+
+    }
+
+  }
+);
