@@ -50,15 +50,19 @@ function crearTarjetaMaterial(
 
     <div class="material-header">
 
-      <span class="material-badge">
-        ${escaparHTML(material.tipo)}
-      </span>
+  <span class="material-badge">
+    ${escaparHTML(material.tipo)}
+  </span>
 
-      <span class="material-categoria">
-        ${escaparHTML(material.categoria)}
-      </span>
+  <span class="material-categoria">
+    ${escaparHTML(material.categoria)}
+  </span>
 
-    </div>
+  <span class="material-id">
+    ${escaparHTML(material.id)}
+  </span>
+
+</div>
 
     <div class="material-body">
 
