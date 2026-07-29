@@ -1001,7 +1001,66 @@ async function cerrarSesion() {
 
 }
 
+// ========================================
+// FILTROS
+// ========================================
 
+function aplicarBusqueda(
+  evento
+) {
+
+  estado.busqueda =
+    evento.target.value;
+
+  renderizarVistaActual();
+
+}
+
+
+function aplicarCategoria(
+  evento
+) {
+
+  estado.categoria =
+    evento.target.value;
+
+  renderizarVistaActual();
+
+}
+
+
+function limpiarFiltros() {
+
+  estado.busqueda =
+    "";
+
+  estado.categoria =
+    "";
+
+
+  if (
+    elementosMateriales.buscador
+  ) {
+
+    elementosMateriales.buscador.value =
+      "";
+
+  }
+
+
+  if (
+    elementosMateriales.filtroCategoria
+  ) {
+
+    elementosMateriales.filtroCategoria.value =
+      "";
+
+  }
+
+
+  renderizarVistaActual();
+
+}
 // ========================================
 // REGISTRAR EVENTOS
 // ========================================
