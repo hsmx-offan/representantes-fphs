@@ -1,13 +1,27 @@
 import {
   auth
 } from "../shared/firebase.js";
-const API_URL =
-  "AQUI_VA_LA_MISMA_URL_DE_TU_APPS_SCRIPT";
 
-async function peticion(datos) {
+
+// ========================================
+// CONFIGURACIÓN
+// ========================================
+
+const API_URL =
+  "PEGA_AQUI_LA_URL_DEL_APPS_SCRIPT";
+
+
+// ========================================
+// PETICIÓN GENERAL
+// ========================================
+
+async function peticionMateriales(
+  datos
+) {
 
   const user =
     auth.currentUser;
+
 
   if (!user) {
 
@@ -17,14 +31,17 @@ async function peticion(datos) {
 
   }
 
+
   const idToken =
     await user.getIdToken();
+
 
   const respuesta =
     await fetch(
       API_URL,
       {
-        method: "POST",
+        method:
+          "POST",
 
         headers: {
           "Content-Type":
@@ -39,57 +56,115 @@ async function peticion(datos) {
       }
     );
 
+
+  if (!respuesta.ok) {
+
+    throw new Error(
+      "No se pudo conectar con el servidor."
+    );
+
+  }
+
+
   const resultado =
     await respuesta.json();
+
 
   if (!resultado.ok) {
 
     throw new Error(
       resultado.error ||
-      "Ocurrió un error."
+      "Ocurrió un error con los materiales."
     );
 
   }
+
 
   return resultado;
 
 }
 
+
+// ========================================
+// LISTAR
+// ========================================
+
 export async function listarMateriales() {
 
-  return peticion({
-    accion:
-      "listar_materiales"
-  });
+  const resultado =
+    await peticionMateriales({
+      accion:
+        "listar_materiales"
+    });
+
+
+  return Array.isArray(
+    resultado.materiales
+  )
+    ? resultado.materiales
+    : [];
 
 }
 
-export async function agregarMaterial(material) {
 
-  return peticion({
-    accion:
-      "agregar_material",
-    ...material
-  });
+// ========================================
+// AGREGAR
+// ========================================
+
+export async function agregarMaterial(
+  material
+) {
+
+  const resultado =
+    await peticionMateriales({
+      accion:
+        "agregar_material",
+
+      ...material
+    });
+
+
+  return resultado.material;
 
 }
 
-export async function editarMaterial(material) {
 
-  return peticion({
-    accion:
-      "editar_material",
-    ...material
-  });
+// ========================================
+// EDITAR
+// ========================================
+
+export async function editarMaterial(
+  material
+) {
+
+  const resultado =
+    await peticionMateriales({
+      accion:
+        "editar_material",
+
+      ...material
+    });
+
+
+  return resultado.material;
 
 }
 
-export async function eliminarMaterial(fila) {
 
-  return peticion({
+// ========================================
+// ELIMINAR
+// ========================================
+
+export async function eliminarMaterial(
+  fila
+) {
+
+  await peticionMateriales({
     accion:
       "eliminar_material",
-    fila
+
+    fila:
+      fila
   });
 
 }
