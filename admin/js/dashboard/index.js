@@ -235,11 +235,7 @@ onAuthStateChanged(
 
     }
 
-    cargando.style.display =
-      "none";
-
-    contenido.style.display =
-      "block";
+    cargando.remove();
 
   }
 );
