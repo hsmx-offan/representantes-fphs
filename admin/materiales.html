@@ -1,1 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
 
+<head>
+
+  <script>
+    if (
+      sessionStorage.getItem("accesoAdmin") === "1"
+    ) {
+      document.documentElement.classList.add(
+        "acceso-admin-recordado"
+      );
+    }
+  </script>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Materiales | HSMX OFFAN
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="css/materiales.css"
+  >
+
+</head>
+
+<body>
+
+  <div id="cargando">
+    Verificando acceso...
+  </div>
+
+  <div
+    id="contenido"
+    style="display: none;"
+  >
+
+    <div class="app">
+
+      <header class="topbar">
+
+        <div class="encabezado-texto">
+
+          <p class="eyebrow">
+            HARRY STYLES MÉXICO OFFAN
+          </p>
+
+          <h1>
+            Materiales
+          </h1>
+
+          <p class="saludo-admin">
+            Hola,
+            <strong id="nombreAdmin">
+              Administrador
+            </strong>
+          </p>
+
+          <p class="subtitulo">
+            Biblioteca oficial de recursos del Fan Project 2026
+          </p>
+
+        </div>
+
+        <div class="acciones-topbar">
+
+          <button
+            type="button"
+            id="themeToggle"
+            class="theme-toggle"
+            aria-label="Cambiar tema"
+            title="Cambiar tema"
+          >
+            ☀️
+          </button>
+
+          <button
+            type="button"
+            id="logoutButton"
+            class="logout"
+          >
+            Cerrar sesión
+          </button>
+
+        </div>
+
+      </header>
+
+      <div id="menuAdmin"></div>
+
+      <main>
+
+        <section class="bloque">
+
+          <div class="titulo-bloque">
+
+            <div>
+
+              <p class="etiqueta-seccion">
+                BIBLIOTECA
+              </p>
+
+              <h2>
+                Buscar materiales
+              </h2>
+
+              <p class="descripcion-seccion">
+                Encuentra guías, videos, recursos gráficos y enlaces importantes.
+              </p>
+
+            </div>
+
+          </div>
+
+          <div class="buscador-materiales">
+
+            <div class="campo campo-busqueda">
+
+              <label for="busquedaMaterial">
+                Buscar
+              </label>
+
+              <input
+                type="search"
+                id="busquedaMaterial"
+                placeholder="Ej. Coming Up Roses, Aperture o logos"
+                autocomplete="off"
+              >
+
+            </div>
+
+            <div class="campo campo-categoria">
+
+              <label for="filtroCategoria">
+                Categoría
+              </label>
+
+              <select id="filtroCategoria">
+
+                <option value="">
+                  Todas
+                </option>
+
+                <option value="guias">
+                  Guías
+                </option>
+
+                <option value="videos">
+                  Videos
+                </option>
+
+                <option value="recursos">
+                  Recursos gráficos
+                </option>
+
+                <option value="enlaces">
+                  Enlaces
+                </option>
+
+              </select>
+
+            </div>
+
+            <button
+              type="button"
+              id="buscarMaterial"
+              class="boton-principal"
+            >
+              Buscar
+            </button>
+
+          </div>
+
+          <div class="acciones-filtros">
+
+            <button
+              type="button"
+              id="limpiarFiltros"
+              class="boton-secundario"
+            >
+              Limpiar filtros
+            </button>
+
+            <p id="contadorResultados">
+              0 materiales
+            </p>
+
+          </div>
+
+        </section>
+
+        <section class="bloque">
+
+          <div class="titulo-resultados">
+
+            <div>
+
+              <p class="etiqueta-seccion">
+                MATERIALES
+              </p>
+
+              <h2>
+                Recursos disponibles
+              </h2>
+
+            </div>
+
+          </div>
+
+          <div
+            id="cargandoMateriales"
+            class="estado-vacio"
+          >
+
+            <strong>
+              Cargando materiales...
+            </strong>
+
+          </div>
+
+          <div
+            id="sinResultados"
+            class="estado-vacio"
+            style="display: none;"
+          >
+
+            <span class="estado-icono">
+              🔎
+            </span>
+
+            <strong>
+              No encontramos materiales
+            </strong>
+
+            <p>
+              Prueba con otra búsqueda o cambia la categoría.
+            </p>
+
+          </div>
+
+          <div
+            id="errorMateriales"
+            class="estado-vacio"
+            style="display: none;"
+          >
+
+            <span class="estado-icono">
+              ⚠️
+            </span>
+
+            <strong>
+              No se pudieron cargar los materiales
+            </strong>
+
+            <p>
+              Intenta recargar la página.
+            </p>
+
+          </div>
+
+          <div
+            id="listaMateriales"
+            class="grid-materiales"
+            style="display: none;"
+          ></div>
+
+        </section>
+
+      </main>
+
+    </div>
+
+  </div>
+
+  <div
+    id="toast"
+    class="toast"
+    aria-live="polite"
+  ></div>
+
+  <script
+    type="module"
+    src="js/shared/menu.js"
+  ></script>
+
+  <script
+    type="module"
+    src="js/materiales/index.js"
+  ></script>
+
+</body>
+
+</html>
