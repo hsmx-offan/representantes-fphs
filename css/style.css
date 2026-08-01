@@ -2166,9 +2166,9 @@ body.guia-page {
     }
 
 }
-/* =========================================
+/* =========================================================
    RECUERDOS
-   ========================================= */
+   ========================================================= */
 
 .acciones-recuerdos{
 
@@ -2180,33 +2180,38 @@ body.guia-page {
 
     gap:18px;
 
-    margin-top:40px;
+    margin-top:45px;
 
 }
 
 .boton-recuerdo{
 
-    min-width:280px;
+    min-width:300px;
 
     padding:16px 28px;
 
-    border-radius:999px;
+    border-radius:40px;
 
     text-decoration:none;
 
     text-align:center;
 
-    font-weight:bold;
+    font-size:15px;
 
-    transition:.25s;
+    font-weight:700;
+
+    transition:
+        background .25s,
+        color .25s,
+        transform .25s;
 
 }
 
 .boton-recuerdo.principal{
 
-    background:var(--rosa-principal);
+    background:var(--pink);
 
-    color:white;
+    color:var(--white);
 
 }
 
@@ -2214,7 +2219,7 @@ body.guia-page {
 
     transform:translateY(-3px);
 
-    background:var(--rosa-brillante);
+    background:#ff3f83;
 
 }
 
@@ -2222,30 +2227,30 @@ body.guia-page {
 
     background:transparent;
 
-    color:var(--rosa-principal);
+    color:var(--pink);
 
-    border:2px solid var(--rosa-principal);
+    border:2px solid var(--pink);
 
 }
 
 .boton-recuerdo.secundario:hover{
 
-    background:var(--rosa-principal);
+    background:var(--pink);
 
-    color:white;
+    color:var(--white);
 
 }
 
 .separador-recuerdos{
 
-    color:var(--texto-secundario);
+    color:var(--rose-soft);
 
-    font-size:14px;
+    font-size:13px;
 
-    font-weight:bold;
-
-    text-transform:uppercase;
+    font-weight:700;
 
     letter-spacing:2px;
+
+    text-transform:uppercase;
 
 }
