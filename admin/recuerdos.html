@@ -1,1 +1,501 @@
+<!DOCTYPE html>
+<html lang="es">
 
+<head>
+
+<script>
+const mantenimientoActivo = false;
+
+const params =
+    new URLSearchParams(window.location.search);
+
+if (params.has("dev")) {
+    localStorage.setItem("devMode","1");
+}
+
+const modoDesarrollo =
+    localStorage.getItem("devMode")==="1";
+
+if(
+    mantenimientoActivo &&
+    !modoDesarrollo
+){
+    window.location.replace("mantenimiento.html");
+}
+</script>
+
+<script>
+
+if(
+    sessionStorage.getItem("accesoAdmin")==="1"
+){
+    document.documentElement.classList.add(
+        "acceso-admin-recordado"
+    );
+}
+
+</script>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+
+Recuerdos | HSMX OFFAN
+
+</title>
+
+<link
+    rel="stylesheet"
+    href="css/recuerdos.css"
+>
+
+</head>
+
+<body>
+
+<div id="cargando">
+
+Verificando acceso...
+
+</div>
+
+
+
+<div
+    id="contenido"
+    style="display:none;"
+>
+
+<div class="app">
+
+
+<header class="topbar">
+
+<div>
+
+<p class="eyebrow">
+
+HARRY STYLES MÉXICO OFFAN
+
+</p>
+
+<h1>
+
+Recuerdos
+
+</h1>
+
+<p class="subtitulo">
+
+Moderación de fotografías y recuerdos del Fan Project 2026.
+
+</p>
+
+<p class="saludo-admin">
+
+Hola,
+
+<strong id="nombreAdmin">
+
+Admin
+
+</strong>
+
+</p>
+
+</div>
+
+
+<div class="acciones-topbar">
+
+<button
+    id="themeToggle"
+    class="theme-toggle"
+>
+
+☀️
+
+</button>
+
+
+<button
+    id="logoutButton"
+    class="logout"
+>
+
+Cerrar sesión
+
+</button>
+
+</div>
+
+</header>
+
+
+
+<div id="menuAdmin"></div>
+
+
+
+<main>
+
+
+
+<section class="bloque">
+
+<div class="titulo-bloque">
+
+<div>
+
+<p class="etiqueta-seccion">
+
+RESUMEN
+
+</p>
+
+<h2>
+
+Estado de los recuerdos
+
+</h2>
+
+<p>
+
+Gestiona todas las fotografías compartidas por la comunidad.
+
+</p>
+
+</div>
+
+</div>
+
+
+
+<div class="estadisticas-grid">
+
+<div class="estadistica-card">
+
+<span>
+
+Pendientes
+
+</span>
+
+<strong id="totalPendientes">
+
+0
+
+</strong>
+
+</div>
+
+
+
+<div class="estadistica-card">
+
+<span>
+
+Aprobados
+
+</span>
+
+<strong id="totalAprobados">
+
+0
+
+</strong>
+
+</div>
+
+
+
+<div class="estadistica-card">
+
+<span>
+
+Destacados
+
+</span>
+
+<strong id="totalDestacados">
+
+0
+
+</strong>
+
+</div>
+
+
+
+<div class="estadistica-card">
+
+<span>
+
+Rechazados
+
+</span>
+
+<strong id="totalRechazados">
+
+0
+
+</strong>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+
+<section class="bloque">
+
+<div class="titulo-bloque">
+
+<div>
+
+<p class="etiqueta-seccion">
+
+FILTROS
+
+</p>
+
+<h2>
+
+Buscar recuerdos
+
+</h2>
+
+<p>
+
+Encuentra publicaciones por nombre, Instagram o fecha.
+
+</p>
+
+</div>
+
+</div>
+
+
+
+<div class="buscador">
+
+<div class="campo campo-busqueda">
+
+<label>
+
+Buscar
+
+</label>
+
+<input
+    id="busqueda"
+    type="search"
+    placeholder="Nombre o Instagram"
+>
+
+</div>
+
+
+
+<div class="campo">
+
+<label>
+
+Estado
+
+</label>
+
+<select id="filtroEstado">
+
+<option value="">
+
+Todos
+
+</option>
+
+<option value="pendiente">
+
+Pendientes
+
+</option>
+
+<option value="aprobado">
+
+Aprobados
+
+</option>
+
+<option value="rechazado">
+
+Rechazados
+
+</option>
+
+<option value="destacado">
+
+Destacados
+
+</option>
+
+</select>
+
+</div>
+
+
+
+<div class="campo">
+
+<label>
+
+Concierto
+
+</label>
+
+<select id="filtroFecha">
+
+<option value="">
+
+Todas
+
+</option>
+
+<option value="2026-07-31">
+
+31 JUL
+
+</option>
+
+<option value="2026-08-01">
+
+1 AGO
+
+</option>
+
+<option value="2026-08-04">
+
+4 AGO
+
+</option>
+
+<option value="2026-08-07">
+
+7 AGO
+
+</option>
+
+<option value="2026-08-08">
+
+8 AGO
+
+</option>
+
+<option value="2026-08-10">
+
+10 AGO
+
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+
+
+<section class="bloque">
+
+<div class="titulo-bloque">
+
+<div>
+
+<p class="etiqueta-seccion">
+
+PUBLICACIONES
+
+</p>
+
+<h2>
+
+Recuerdos enviados
+
+</h2>
+
+</div>
+
+</div>
+
+
+
+<div
+    id="gridRecuerdos"
+    class="grid-recuerdos"
+>
+
+</div>
+
+
+
+<div
+    id="estadoVacio"
+    class="estado-vacio"
+>
+
+<span class="estado-icono">
+
+📷
+
+</span>
+
+<strong>
+
+Todavía no hay recuerdos.
+
+</strong>
+
+<p>
+
+Las publicaciones aparecerán aquí cuando los usuarios comiencen a compartirlas.
+
+</p>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+</div>
+
+<div
+    id="toast"
+    class="toast"
+></div>
+
+<script
+    type="module"
+    src="js/shared/menu.js"
+></script>
+
+<script
+    type="module"
+    src="js/recuerdos/index.js"
+></script>
+
+</body>
+
+</html>
