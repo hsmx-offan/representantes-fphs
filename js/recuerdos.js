@@ -72,3 +72,63 @@ async function cargarRecuerdos() {
   }
 
 }
+function crearTarjeta(
+  recuerdo
+){
+
+    const foto =
+
+        Array.isArray(
+            recuerdo.fotos
+        )
+
+        &&
+
+        recuerdo.fotos.length
+
+        ?
+
+        recuerdo.fotos[0].url
+
+        :
+
+        "";
+
+    const card =
+        document.createElement(
+            "article"
+        );
+
+    card.className =
+        "recuerdo";
+
+    card.innerHTML =
+
+`
+<img
+src="${foto}"
+loading="lazy"
+>
+
+<div class="recuerdo-info">
+
+<h3>
+
+${recuerdo.nombre}
+
+</h3>
+
+<p>
+
+${recuerdo.mensaje || ""}
+
+</p>
+
+</div>
+`;
+
+    grid.appendChild(
+        card
+    );
+
+}
