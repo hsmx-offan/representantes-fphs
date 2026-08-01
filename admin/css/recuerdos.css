@@ -1,79 +1,107 @@
-/* =========================================================
+/* =========================================
    RECUERDOS — PANEL ADMIN
-   ========================================================= */
+   BASE VISUAL DEL DASHBOARD
+   ========================================= */
+
+
+/* =========================================
+   PALETA HSMX OFFAN
+   ========================================= */
+
+:root {
+  --negro-azulado: #0D1117;
+  --negro-morado: #17131B;
+
+  --rosa-principal: #E72B91;
+  --rosa-brillante: #FF5BB5;
+  --rosa-claro: #FFD8EB;
+
+  --blanco-rosado: #FFF9FC;
+  --gris-lila: #D6CBD2;
+
+  --success: #147D55;
+  --warning: #A76800;
+  --danger: #B4233D;
+}
+
+
+/* =========================================
+   TEMA CLARO
+   ========================================= */
+
+:root[data-theme="light"] {
+  --fondo: #FFF9FC;
+  --superficie: #FFFFFF;
+  --superficie-secundaria: #FFF4F9;
+
+  --texto: #17131B;
+  --texto-secundario: #6F6570;
+
+  --borde: #D6CBD2;
+
+  --acento: #E72B91;
+  --acento-hover: #FF5BB5;
+
+  --sombra:
+    0 8px 25px rgba(23, 19, 27, 0.08);
+}
+
+
+/* =========================================
+   TEMA OSCURO
+   ========================================= */
+
+:root[data-theme="dark"] {
+  --fondo: #0D1117;
+  --superficie: #17131B;
+  --superficie-secundaria: #211B25;
+
+  --texto: #FFF9FC;
+  --texto-secundario: #D6CBD2;
+
+  --borde: #322A35;
+
+  --acento: #E72B91;
+  --acento-hover: #FF5BB5;
+
+  --sombra:
+    0 10px 30px rgba(0, 0, 0, 0.28);
+}
+
+
+/* =========================================
+   GENERAL
+   ========================================= */
 
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
-
-:root {
-  --bg: #f7f2f4;
-  --panel: #ffffff;
-  --panel-soft: #fff8fa;
-
-  --text: #171219;
-  --text-soft: #745f69;
-
-  --pink: #ed1e62;
-  --pink-soft: #f6a8c0;
-  --wine: #54152f;
-
-  --border: rgba(84, 21, 47, 0.13);
-  --shadow:
-    0 16px 45px rgba(84, 21, 47, 0.08);
-
-  --success: #147d55;
-  --warning: #a76800;
-  --danger: #b4233d;
-}
-
-
-/* =========================================================
-   TEMA OSCURO
-   ========================================================= */
-
-html[data-theme="dark"] {
-  --bg: #100b1d;
-  --panel: #171219;
-  --panel-soft: #211720;
-
-  --text: #fff9fa;
-  --text-soft: #f6a8c0;
-
-  --border: rgba(246, 168, 192, 0.18);
-  --shadow:
-    0 18px 50px rgba(0, 0, 0, 0.25);
-}
-
-
-/* =========================================================
-   BASE
-   ========================================================= */
 
 html {
   min-width: 0;
-  background: var(--bg);
+  background: var(--fondo);
 }
 
 body {
   min-width: 0;
   min-height: 100vh;
 
+  margin: 0;
   overflow-x: hidden;
 
   font-family:
     Arial,
-    Helvetica,
     sans-serif;
 
-  background: var(--bg);
-  color: var(--text);
+  background:
+    var(--fondo);
+
+  color:
+    var(--texto);
 
   transition:
-    background 0.2s ease,
-    color 0.2s ease;
+    background 0.25s ease,
+    color 0.25s ease;
 }
 
 button,
@@ -83,14 +111,16 @@ textarea {
   font: inherit;
 }
 
-button {
-  cursor: pointer;
+button,
+a {
+  -webkit-tap-highlight-color:
+    transparent;
 }
 
 
-/* =========================================================
+/* =========================================
    CARGA
-   ========================================================= */
+   ========================================= */
 
 #cargando {
   min-height: 100vh;
@@ -99,30 +129,43 @@ button {
   align-items: center;
   justify-content: center;
 
-  color: var(--text-soft);
+  padding:
+    80px 20px;
 
+  color:
+    var(--texto-secundario);
+
+  text-align: center;
   font-weight: 700;
 }
 
-.acceso-admin-recordado #cargando {
+html.acceso-admin-recordado #cargando {
   display: none;
 }
 
+html.acceso-admin-recordado #contenido {
+  display: block !important;
+}
 
-/* =========================================================
+
+/* =========================================
    CONTENEDOR PRINCIPAL
-   ========================================================= */
+   ========================================= */
 
 .app {
-  width: min(
-    1400px,
-    calc(100% - 40px)
-  );
+  width:
+    min(
+      1200px,
+      calc(100% - 40px)
+    );
 
   min-width: 0;
 
-  margin: 0 auto;
-  padding: 36px 0 80px;
+  margin:
+    0 auto;
+
+  padding:
+    35px 0 60px;
 }
 
 main,
@@ -133,17 +176,24 @@ main,
 }
 
 
-/* =========================================================
-   TOPBAR
-   ========================================================= */
+/* =========================================
+   ENCABEZADO
+   ========================================= */
 
 .topbar {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
 
-  gap: 24px;
-  margin-bottom: 26px;
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+  gap:
+    25px;
+
+  margin-bottom:
+    25px;
 }
 
 .topbar > div:first-child {
@@ -152,735 +202,1201 @@ main,
 
 .eyebrow,
 .etiqueta-seccion {
-  margin-bottom: 9px;
+  margin:
+    0 0 6px;
 
-  color: var(--pink);
+  font-size:
+    12px;
 
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1.8px;
+  font-weight:
+    800;
+
+  letter-spacing:
+    1.5px;
+
+  color:
+    var(--rosa-principal);
 }
 
 .topbar h1 {
-  margin-bottom: 9px;
+  margin:
+    0;
 
-  font-family:
-    Georgia,
-    "Times New Roman",
-    serif;
+  color:
+    var(--texto);
 
   font-size:
-    clamp(
-      38px,
-      5vw,
-      62px
-    );
+    32px;
 
-  font-weight: 400;
-  line-height: 1;
+  font-family:
+    Arial,
+    sans-serif;
+
+  font-weight:
+    800;
+
+  line-height:
+    1.1;
 }
 
 .subtitulo {
-  max-width: 700px;
+  max-width:
+    700px;
 
-  color: var(--text-soft);
+  margin:
+    8px 0 0;
 
-  line-height: 1.6;
+  color:
+    var(--texto-secundario);
+
+  line-height:
+    1.55;
 }
 
 .saludo-admin {
-  margin-top: 14px;
+  margin:
+    12px 0 0;
 
-  color: var(--text-soft);
+  color:
+    var(--texto-secundario);
 
-  font-size: 14px;
+  font-size:
+    14px;
 }
 
 .saludo-admin strong {
-  color: var(--pink);
+  color:
+    var(--rosa-principal);
 }
 
-.acciones-topbar {
-  flex: 0 0 auto;
 
-  display: flex;
-  align-items: center;
-  gap: 10px;
+/* =========================================
+   ACCIONES SUPERIORES
+   ========================================= */
+
+.acciones-topbar {
+  flex-shrink:
+    0;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    10px;
 }
 
 .theme-toggle,
 .logout {
-  width: auto;
-  margin: 0;
+  margin:
+    0;
 
-  border: none;
+  border:
+    none;
+
+  border-radius:
+    10px;
+
+  cursor:
+    pointer;
+
+  font-weight:
+    bold;
 
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
+    0.2s ease;
 }
 
 .theme-toggle {
-  flex: 0 0 auto;
+  flex-shrink:
+    0;
 
-  width: 44px;
-  height: 44px;
-  padding: 0;
+  width:
+    46px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height:
+    46px;
 
-  border: 1px solid var(--border);
-  border-radius: 50%;
+  display:
+    flex;
 
-  background: var(--panel);
-  color: var(--text);
+  justify-content:
+    center;
 
-  box-shadow: var(--shadow);
+  align-items:
+    center;
+
+  padding:
+    0;
+
+  background:
+    var(--superficie);
+
+  color:
+    var(--texto);
+
+  border:
+    1px solid var(--borde);
+
+  font-size:
+    20px;
+
+  box-shadow:
+    var(--sombra);
 }
 
 .theme-toggle:hover {
-  transform: translateY(-2px);
+  transform:
+    translateY(-1px);
+
+  border-color:
+    var(--rosa-principal);
 }
 
 .logout {
-  min-height: 44px;
-  padding: 0 17px;
+  min-height:
+    46px;
 
-  border-radius: 14px;
+  padding:
+    13px 18px;
 
-  background: var(--text);
-  color: var(--panel);
+  background:
+    var(--rosa-principal);
 
-  font-weight: 700;
-  white-space: nowrap;
+  color:
+    #FFF9FC;
+
+  white-space:
+    nowrap;
 }
 
 .logout:hover {
-  transform: translateY(-2px);
+  background:
+    var(--rosa-brillante);
+
+  transform:
+    translateY(-1px);
 }
 
 
-/* =========================================================
-   MENÚ ADMINISTRATIVO
-   ========================================================= */
+/* =========================================
+   MENÚ COMPARTIDO
+   ========================================= */
 
 #menuAdmin {
-  width: 100%;
-  min-width: 0;
+  width:
+    100%;
 
-  margin-bottom: 26px;
+  min-width:
+    0;
+
+  margin-bottom:
+    35px;
 }
 
 /*
-  Estas reglas cubren las estructuras más comunes
-  que puede generar menu.js.
+  El archivo menu.js genera normalmente
+  las clases .menu y .menu-item.
 */
 
+.menu,
 #menuAdmin nav,
 #menuAdmin .menu-admin,
 #menuAdmin .admin-menu,
 #menuAdmin > div {
-  width: 100%;
-  min-width: 0;
+  width:
+    100%;
 
-  display: flex;
-  align-items: center;
-  gap: 7px;
+  min-width:
+    0;
 
-  padding: 8px;
+  display:
+    flex;
 
-  overflow-x: auto;
-  overflow-y: hidden;
+  align-items:
+    center;
 
-  border: 1px solid var(--border);
-  border-radius: 18px;
+  gap:
+    8px;
 
-  background: var(--panel);
+  padding:
+    8px;
 
-  box-shadow: var(--shadow);
+  background:
+    var(--superficie);
 
-  scrollbar-width: thin;
-  scrollbar-color:
-    var(--pink-soft)
-    transparent;
+  border:
+    1px solid var(--borde);
+
+  border-radius:
+    14px;
+
+  box-shadow:
+    var(--sombra);
+
+  overflow-x:
+    auto;
+
+  overflow-y:
+    hidden;
 }
 
-#menuAdmin nav::-webkit-scrollbar,
-#menuAdmin .menu-admin::-webkit-scrollbar,
-#menuAdmin .admin-menu::-webkit-scrollbar,
-#menuAdmin > div::-webkit-scrollbar {
-  height: 5px;
-}
-
-#menuAdmin nav::-webkit-scrollbar-thumb,
-#menuAdmin .menu-admin::-webkit-scrollbar-thumb,
-#menuAdmin .admin-menu::-webkit-scrollbar-thumb,
-#menuAdmin > div::-webkit-scrollbar-thumb {
-  border-radius: 20px;
-  background: var(--pink-soft);
-}
-
+.menu-item,
 #menuAdmin a {
-  flex: 0 0 auto;
+  flex-shrink:
+    0;
 
-  padding: 11px 15px;
+  padding:
+    11px 15px;
 
-  border-radius: 12px;
+  border-radius:
+    9px;
 
-  color: var(--text-soft);
+  color:
+    var(--texto-secundario);
 
-  font-size: 12px;
-  font-weight: 700;
+  text-decoration:
+    none;
 
-  text-decoration: none;
-  white-space: nowrap;
+  font-size:
+    14px;
+
+  font-weight:
+    bold;
+
+  white-space:
+    nowrap;
 
   transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease;
+    0.2s ease;
 }
 
+.menu-item:hover,
 #menuAdmin a:hover {
-  background: var(--panel-soft);
-  color: var(--pink);
+  background:
+    var(--superficie-secundaria);
 
-  transform: translateY(-1px);
+  color:
+    var(--texto);
 }
 
-/*
-  Se contemplan varios nombres posibles
-  para el enlace activo.
-*/
-
+.menu-item.activo,
 #menuAdmin a.activo,
 #menuAdmin a.active,
 #menuAdmin a.menu-activo,
 #menuAdmin a[aria-current="page"] {
-  background: var(--pink);
-  color: #ffffff;
+  background:
+    var(--rosa-principal);
+
+  color:
+    #FFF9FC;
+}
+
+.menu-item.deshabilitado,
+#menuAdmin a.deshabilitado {
+  opacity:
+    0.38;
+
+  cursor:
+    default;
+
+  pointer-events:
+    none;
 }
 
 
-/* =========================================================
-   CONTENIDO
-   ========================================================= */
+/* =========================================
+   SCROLL DEL MENÚ
+   ========================================= */
+
+.menu::-webkit-scrollbar,
+#menuAdmin nav::-webkit-scrollbar,
+#menuAdmin .menu-admin::-webkit-scrollbar,
+#menuAdmin .admin-menu::-webkit-scrollbar,
+#menuAdmin > div::-webkit-scrollbar {
+  height:
+    6px;
+}
+
+.menu::-webkit-scrollbar-thumb,
+#menuAdmin nav::-webkit-scrollbar-thumb,
+#menuAdmin .menu-admin::-webkit-scrollbar-thumb,
+#menuAdmin .admin-menu::-webkit-scrollbar-thumb,
+#menuAdmin > div::-webkit-scrollbar-thumb {
+  background:
+    var(--rosa-principal);
+
+  border-radius:
+    20px;
+}
+
+
+/* =========================================
+   CONTENIDO PRINCIPAL
+   ========================================= */
 
 main {
-  display: grid;
-  gap: 22px;
+  display:
+    grid;
+
+  gap:
+    25px;
 }
 
+
+/* =========================================
+   BLOQUES
+   ========================================= */
+
 .bloque {
-  width: 100%;
-  min-width: 0;
+  width:
+    100%;
 
-  padding: 28px;
+  min-width:
+    0;
 
-  overflow: hidden;
+  padding:
+    25px;
 
-  border: 1px solid var(--border);
-  border-radius: 24px;
+  background:
+    var(--superficie);
 
-  background: var(--panel);
+  border:
+    1px solid var(--borde);
 
-  box-shadow: var(--shadow);
+  border-radius:
+    18px;
+
+  box-shadow:
+    var(--sombra);
 }
 
 .titulo-bloque {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  display:
+    flex;
 
-  gap: 20px;
-  margin-bottom: 24px;
+  justify-content:
+    space-between;
+
+  align-items:
+    flex-end;
+
+  gap:
+    20px;
+
+  margin-bottom:
+    18px;
 }
 
 .titulo-bloque > div {
-  min-width: 0;
+  min-width:
+    0;
 }
 
 .titulo-bloque h2 {
-  margin-bottom: 7px;
+  margin:
+    0;
+
+  color:
+    var(--texto);
 
   font-family:
-    Georgia,
-    "Times New Roman",
-    serif;
+    Arial,
+    sans-serif;
 
-  font-size: 30px;
-  font-weight: 400;
+  font-size:
+    24px;
+
+  font-weight:
+    800;
 }
 
 .titulo-bloque p:not(
   .etiqueta-seccion
 ) {
-  color: var(--text-soft);
+  margin:
+    6px 0 0;
 
-  line-height: 1.55;
+  color:
+    var(--texto-secundario);
+
+  font-size:
+    14px;
+
+  line-height:
+    1.5;
 }
 
 
-/* =========================================================
+/* =========================================
    ESTADÍSTICAS
-   ========================================================= */
+   ========================================= */
 
 .estadisticas-grid {
-  width: 100%;
+  width:
+    100%;
 
-  display: grid;
+  display:
+    grid;
 
   grid-template-columns:
-    repeat(
-      auto-fit,
-      minmax(210px, 1fr)
-    );
+    repeat(4, minmax(0, 1fr));
 
-  gap: 14px;
+  gap:
+    16px;
 }
 
 .estadistica-card {
-  min-width: 0;
-  min-height: 130px;
+  position:
+    relative;
 
-  padding: 22px;
+  min-width:
+    0;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  min-height:
+    125px;
 
-  border: 1px solid var(--border);
-  border-radius: 19px;
+  overflow:
+    hidden;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  justify-content:
+    space-between;
+
+  padding:
+    22px;
 
   background:
-    linear-gradient(
-      145deg,
-      var(--panel-soft),
-      var(--panel)
-    );
+    var(--superficie);
+
+  border:
+    1px solid var(--borde);
+
+  border-radius:
+    16px;
+
+  box-shadow:
+    var(--sombra);
+
+  transition:
+    0.2s ease;
+}
+
+.estadistica-card::before {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  top:
+    0;
+
+  left:
+    0;
+
+  width:
+    100%;
+
+  height:
+    4px;
+
+  background:
+    var(--rosa-principal);
+}
+
+.estadistica-card:hover {
+  transform:
+    translateY(-2px);
+
+  border-color:
+    var(--rosa-principal);
 }
 
 .estadistica-card span {
-  color: var(--text-soft);
+  margin-top:
+    4px;
 
-  font-size: 12px;
-  font-weight: 800;
+  color:
+    var(--texto-secundario);
 
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
+  font-size:
+    14px;
+
+  font-weight:
+    bold;
+
+  letter-spacing:
+    0;
+
+  text-transform:
+    none;
 }
 
 .estadistica-card strong {
-  color: var(--pink);
+  margin-top:
+    15px;
+
+  color:
+    var(--texto);
 
   font-family:
-    Georgia,
-    "Times New Roman",
-    serif;
+    Arial,
+    sans-serif;
 
-  font-size: 42px;
-  font-weight: 400;
-  line-height: 1;
+  font-size:
+    34px;
+
+  font-weight:
+    800;
+
+  line-height:
+    1;
 }
 
 
-/* =========================================================
+/* =========================================
    FILTROS
-   ========================================================= */
+   ========================================= */
 
 .buscador {
-  width: 100%;
-  min-width: 0;
+  width:
+    100%;
 
-  display: grid;
+  min-width:
+    0;
+
+  display:
+    grid;
 
   grid-template-columns:
     minmax(220px, 1.6fr)
     minmax(170px, 0.8fr)
     minmax(170px, 0.8fr);
 
-  gap: 14px;
-  align-items: end;
+  gap:
+    14px;
+
+  align-items:
+    end;
 }
 
 .campo {
-  min-width: 0;
+  min-width:
+    0;
 
-  display: grid;
-  gap: 8px;
+  display:
+    grid;
+
+  gap:
+    8px;
 }
 
 .campo label {
-  color: var(--text);
+  color:
+    var(--texto);
 
-  font-size: 13px;
-  font-weight: 700;
+  font-size:
+    13px;
+
+  font-weight:
+    bold;
 }
 
 .campo input,
 .campo select {
-  width: 100%;
-  min-width: 0;
-  min-height: 48px;
+  width:
+    100%;
 
-  padding: 0 15px;
+  min-width:
+    0;
 
-  border: 1px solid var(--border);
-  border-radius: 14px;
+  min-height:
+    46px;
 
-  background: var(--panel-soft);
-  color: var(--text);
+  padding:
+    0 14px;
 
-  outline: none;
+  border:
+    1px solid var(--borde);
+
+  border-radius:
+    10px;
+
+  background:
+    var(--fondo);
+
+  color:
+    var(--texto);
+
+  outline:
+    none;
 
   transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    0.2s ease;
 }
 
 .campo input::placeholder {
-  color: var(--text-soft);
+  color:
+    var(--texto-secundario);
 
-  opacity: 0.7;
+  opacity:
+    0.7;
 }
 
 .campo input:focus,
 .campo select:focus {
-  border-color: var(--pink);
+  border-color:
+    var(--rosa-principal);
 
   box-shadow:
-    0 0 0 4px
-    rgba(237, 30, 98, 0.11);
+    0 0 0 3px rgba(231, 43, 145, 0.12);
 }
 
 
-/* =========================================================
+/* =========================================
    GRID DE RECUERDOS
-   ========================================================= */
+   ========================================= */
 
 .grid-recuerdos {
-  width: 100%;
+  width:
+    100%;
 
-  display: grid;
+  display:
+    grid;
 
   grid-template-columns:
-    repeat(
-      3,
-      minmax(0, 1fr)
-    );
+    repeat(3, minmax(0, 1fr));
 
-  gap: 18px;
+  gap:
+    18px;
 }
 
+
+/* =========================================
+   TARJETA DE RECUERDO
+   ========================================= */
+
 .recuerdo-card {
-  min-width: 0;
-  overflow: hidden;
+  min-width:
+    0;
 
-  display: flex;
-  flex-direction: column;
+  overflow:
+    hidden;
 
-  border: 1px solid var(--border);
-  border-radius: 21px;
+  display:
+    flex;
 
-  background: var(--panel-soft);
+  flex-direction:
+    column;
+
+  background:
+    var(--superficie);
+
+  border:
+    1px solid var(--borde);
+
+  border-radius:
+    16px;
+
+  box-shadow:
+    var(--sombra);
 
   transition:
-    transform 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    0.2s ease;
 }
 
 .recuerdo-card:hover {
-  transform: translateY(-3px);
+  transform:
+    translateY(-2px);
 
   border-color:
-    rgba(237, 30, 98, 0.4);
-
-  box-shadow: var(--shadow);
+    var(--rosa-principal);
 }
 
+
+/* =========================================
+   IMAGEN
+   ========================================= */
+
 .recuerdo-imagen {
-  position: relative;
+  position:
+    relative;
 
-  width: 100%;
-  aspect-ratio: 4 / 3;
+  width:
+    100%;
 
-  overflow: hidden;
+  aspect-ratio:
+    4 / 3;
 
-  background: #ded6da;
+  overflow:
+    hidden;
+
+  background:
+    var(--superficie-secundaria);
 }
 
 .recuerdo-imagen img {
-  display: block;
+  display:
+    block;
 
-  width: 100%;
-  height: 100%;
+  width:
+    100%;
 
-  object-fit: cover;
+  height:
+    100%;
+
+  object-fit:
+    cover;
 }
 
 .recuerdo-sin-imagen {
-  width: 100%;
-  height: 100%;
+  width:
+    100%;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height:
+    100%;
 
-  font-size: 42px;
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  color:
+    var(--texto-secundario);
+
+  font-size:
+    42px;
 }
 
 .recuerdo-cantidad-fotos {
-  position: absolute;
-  right: 12px;
-  bottom: 12px;
+  position:
+    absolute;
 
-  padding: 7px 10px;
+  right:
+    12px;
 
-  border-radius: 30px;
+  bottom:
+    12px;
+
+  padding:
+    7px 10px;
+
+  border-radius:
+    20px;
 
   background:
-    rgba(16, 11, 29, 0.78);
+    rgba(13, 17, 23, 0.82);
 
-  color: #ffffff;
+  color:
+    #FFF9FC;
 
-  font-size: 11px;
-  font-weight: 800;
+  font-size:
+    11px;
+
+  font-weight:
+    bold;
 }
 
+
+/* =========================================
+   CONTENIDO DE TARJETA
+   ========================================= */
+
 .recuerdo-contenido {
-  min-width: 0;
-  flex: 1;
+  min-width:
+    0;
 
-  padding: 20px;
+  flex:
+    1;
 
-  display: flex;
-  flex-direction: column;
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  padding:
+    20px;
 }
 
 .recuerdo-encabezado {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  display:
+    flex;
 
-  gap: 14px;
-  margin-bottom: 14px;
+  justify-content:
+    space-between;
+
+  align-items:
+    flex-start;
+
+  gap:
+    12px;
+
+  margin-bottom:
+    14px;
 }
 
 .recuerdo-encabezado > div {
-  min-width: 0;
+  min-width:
+    0;
 }
 
 .recuerdo-nombre {
-  overflow-wrap: anywhere;
+  margin:
+    0;
 
-  font-size: 17px;
-  font-weight: 800;
+  color:
+    var(--texto);
+
+  font-size:
+    16px;
+
+  font-weight:
+    800;
+
+  overflow-wrap:
+    anywhere;
 }
 
 .recuerdo-instagram {
-  margin-top: 4px;
+  margin:
+    4px 0 0;
 
-  overflow-wrap: anywhere;
+  color:
+    var(--rosa-principal);
 
-  color: var(--pink);
+  font-size:
+    12px;
 
-  font-size: 12px;
+  overflow-wrap:
+    anywhere;
 }
 
+
+/* =========================================
+   ESTADOS
+   ========================================= */
+
 .recuerdo-estado {
-  flex: 0 0 auto;
+  flex-shrink:
+    0;
 
-  padding: 7px 10px;
+  padding:
+    7px 10px;
 
-  border-radius: 30px;
+  border-radius:
+    20px;
 
-  font-size: 10px;
-  font-weight: 800;
+  font-size:
+    10px;
 
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
-  white-space: nowrap;
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.5px;
+
+  text-transform:
+    uppercase;
+
+  white-space:
+    nowrap;
 }
 
 .recuerdo-estado.pendiente {
   background:
     rgba(167, 104, 0, 0.12);
 
-  color: var(--warning);
+  color:
+    var(--warning);
 }
 
 .recuerdo-estado.aprobado {
   background:
     rgba(20, 125, 85, 0.12);
 
-  color: var(--success);
+  color:
+    var(--success);
 }
 
 .recuerdo-estado.rechazado {
   background:
     rgba(180, 35, 61, 0.12);
 
-  color: var(--danger);
+  color:
+    var(--danger);
 }
 
+
+/* =========================================
+   TEXTO Y DATOS
+   ========================================= */
+
 .recuerdo-mensaje {
-  margin-bottom: 16px;
+  margin:
+    0 0 16px;
 
-  overflow-wrap: anywhere;
+  color:
+    var(--texto-secundario);
 
-  color: var(--text-soft);
+  font-size:
+    14px;
 
-  font-size: 14px;
-  line-height: 1.6;
+  line-height:
+    1.55;
 
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
+  overflow-wrap:
+    anywhere;
 
-  overflow: hidden;
+  display:
+    -webkit-box;
+
+  -webkit-box-orient:
+    vertical;
+
+  -webkit-line-clamp:
+    4;
+
+  overflow:
+    hidden;
 }
 
 .recuerdo-datos {
-  margin-top: auto;
-  margin-bottom: 17px;
+  display:
+    grid;
 
-  display: grid;
-  gap: 7px;
+  gap:
+    7px;
 
-  color: var(--text-soft);
+  margin-top:
+    auto;
 
-  font-size: 12px;
+  margin-bottom:
+    17px;
+
+  color:
+    var(--texto-secundario);
+
+  font-size:
+    12px;
 }
 
 .recuerdo-datos p {
-  overflow-wrap: anywhere;
+  margin:
+    0;
+
+  overflow-wrap:
+    anywhere;
 }
 
 .recuerdo-datos strong {
-  color: var(--text);
+  color:
+    var(--texto);
 }
 
+
+/* =========================================
+   ACCIONES DE MODERACIÓN
+   ========================================= */
+
 .recuerdo-acciones {
-  display: grid;
+  display:
+    grid;
 
   grid-template-columns:
-    repeat(
-      2,
-      minmax(0, 1fr)
-    );
+    repeat(2, minmax(0, 1fr));
 
-  gap: 9px;
+  gap:
+    9px;
 }
 
 .recuerdo-acciones button {
-  min-width: 0;
-  min-height: 41px;
+  min-width:
+    0;
 
-  padding: 8px 11px;
+  min-height:
+    41px;
 
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  padding:
+    8px 11px;
 
-  background: var(--panel);
-  color: var(--text);
+  border:
+    1px solid var(--borde);
 
-  font-size: 12px;
-  font-weight: 800;
+  border-radius:
+    10px;
+
+  background:
+    var(--fondo);
+
+  color:
+    var(--texto);
+
+  font-size:
+    12px;
+
+  font-weight:
+    bold;
+
+  cursor:
+    pointer;
 
   transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease,
-    opacity 0.2s ease;
+    0.2s ease;
 }
 
 .recuerdo-acciones button:hover {
-  border-color: var(--pink);
+  transform:
+    translateY(-1px);
+
+  border-color:
+    var(--rosa-principal);
 }
 
 .recuerdo-acciones .aprobar {
-  border-color: var(--pink);
+  border-color:
+    var(--rosa-principal);
 
-  background: var(--pink);
-  color: #ffffff;
+  background:
+    var(--rosa-principal);
+
+  color:
+    #FFF9FC;
+}
+
+.recuerdo-acciones .aprobar:hover {
+  background:
+    var(--rosa-brillante);
 }
 
 .recuerdo-acciones .rechazar:hover {
-  border-color: var(--danger);
+  border-color:
+    var(--danger);
 
-  background: var(--danger);
-  color: #ffffff;
+  background:
+    var(--danger);
+
+  color:
+    #FFF9FC;
 }
 
 .recuerdo-acciones .destacar {
-  grid-column: 1 / -1;
+  grid-column:
+    1 / -1;
 }
 
 .recuerdo-acciones button:disabled {
-  cursor: not-allowed;
+  opacity:
+    0.42;
 
-  opacity: 0.45;
+  cursor:
+    not-allowed;
+
+  transform:
+    none;
 }
 
 .recuerdo-acciones button:disabled:hover {
-  border-color: var(--border);
+  border-color:
+    var(--borde);
 
-  background: var(--panel);
-  color: var(--text);
+  background:
+    var(--fondo);
+
+  color:
+    var(--texto);
 }
 
 
-/* =========================================================
+/* =========================================
    ESTADO VACÍO
-   ========================================================= */
+   ========================================= */
 
 .estado-vacio {
-  min-height: 260px;
+  min-height:
+    260px;
 
-  padding: 35px;
+  padding:
+    35px;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  display:
+    flex;
 
-  text-align: center;
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  text-align:
+    center;
 }
 
 .estado-icono {
-  margin-bottom: 14px;
+  margin-bottom:
+    14px;
 
-  font-size: 42px;
+  font-size:
+    42px;
 }
 
 .estado-vacio strong {
-  margin-bottom: 8px;
+  margin-bottom:
+    8px;
 
-  font-size: 17px;
+  color:
+    var(--texto);
+
+  font-size:
+    17px;
 }
 
 .estado-vacio p {
-  max-width: 520px;
+  max-width:
+    520px;
 
-  color: var(--text-soft);
+  margin:
+    0;
 
-  line-height: 1.6;
+  color:
+    var(--texto-secundario);
+
+  line-height:
+    1.6;
 }
 
 
-/* =========================================================
+/* =========================================
    TOAST
-   ========================================================= */
+   ========================================= */
 
 .toast {
-  position: fixed;
-  right: 22px;
-  bottom: 22px;
-  z-index: 3000;
+  position:
+    fixed;
+
+  right:
+    22px;
+
+  bottom:
+    22px;
+
+  z-index:
+    3000;
 
   max-width:
     min(
@@ -888,185 +1404,223 @@ main {
       calc(100% - 44px)
     );
 
-  padding: 14px 18px;
+  padding:
+    14px 18px;
 
-  border-radius: 14px;
+  border-radius:
+    12px;
 
-  background: var(--text);
-  color: var(--panel);
+  background:
+    var(--texto);
 
-  font-size: 13px;
-  font-weight: 700;
+  color:
+    var(--superficie);
 
-  box-shadow: var(--shadow);
+  font-size:
+    13px;
 
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(12px);
+  font-weight:
+    bold;
+
+  box-shadow:
+    var(--sombra);
+
+  opacity:
+    0;
+
+  visibility:
+    hidden;
+
+  transform:
+    translateY(12px);
 
   transition:
-    opacity 0.2s ease,
-    visibility 0.2s ease,
-    transform 0.2s ease;
+    0.2s ease;
 }
 
 .toast.visible {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+  opacity:
+    1;
+
+  visibility:
+    visible;
+
+  transform:
+    translateY(0);
 }
 
 
-/* =========================================================
+/* =========================================
    TABLET
-   ========================================================= */
+   ========================================= */
 
-@media screen and (max-width: 1050px) {
+@media (max-width: 900px) {
+
+  .estadisticas-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
 
   .grid-recuerdos {
     grid-template-columns:
-      repeat(
-        2,
-        minmax(0, 1fr)
-      );
+      repeat(2, minmax(0, 1fr));
   }
 
   .buscador {
     grid-template-columns:
-      minmax(220px, 1fr)
-      minmax(170px, 1fr);
+      repeat(2, minmax(0, 1fr));
   }
 
   .campo-busqueda {
-    grid-column: 1 / -1;
+    grid-column:
+      1 / -1;
   }
 
 }
 
 
-/* =========================================================
+/* =========================================
    CELULAR
-   ========================================================= */
+   ========================================= */
 
-@media screen and (max-width: 760px) {
+@media (max-width: 600px) {
 
   .app {
     width:
-      min(
-        calc(100% - 28px),
-        1400px
-      );
+      calc(100% - 24px);
 
-    padding-top: 22px;
+    padding-top:
+      20px;
   }
 
   .topbar {
-    flex-direction: column;
+    flex-direction:
+      column;
 
-    gap: 18px;
+    align-items:
+      stretch;
+  }
+
+  .topbar h1 {
+    font-size:
+      27px;
   }
 
   .acciones-topbar {
-    width: 100%;
+    width:
+      100%;
+  }
+
+  .theme-toggle {
+    flex-shrink:
+      0;
   }
 
   .logout {
-    flex: 1;
+    flex:
+      1;
   }
 
+  #menuAdmin {
+    margin-bottom:
+      25px;
+  }
+
+  .menu,
   #menuAdmin nav,
   #menuAdmin .menu-admin,
   #menuAdmin .admin-menu,
   #menuAdmin > div {
-    justify-content: flex-start;
-
-    border-radius: 15px;
-  }
-
-  #menuAdmin a {
-    padding: 10px 13px;
-
-    font-size: 11px;
+    justify-content:
+      flex-start;
   }
 
   .bloque {
-    padding: 21px 17px;
-
-    border-radius: 20px;
+    padding:
+      18px;
   }
 
   .titulo-bloque {
-    margin-bottom: 20px;
+    display:
+      block;
   }
 
   .titulo-bloque h2 {
-    font-size: 27px;
+    font-size:
+      20px;
   }
 
   .buscador {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      1fr;
   }
 
   .campo-busqueda {
-    grid-column: auto;
+    grid-column:
+      auto;
   }
 
   .grid-recuerdos {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      1fr;
+  }
+
+  .estadisticas-grid {
+    grid-template-columns:
+      1fr 1fr;
+
+    gap:
+      10px;
+  }
+
+  .estadistica-card {
+    min-height:
+      105px;
+
+    padding:
+      17px;
+  }
+
+  .estadistica-card strong {
+    font-size:
+      28px;
   }
 
 }
 
 
-/* =========================================================
+/* =========================================
    CELULARES PEQUEÑOS
-   ========================================================= */
+   ========================================= */
 
-@media screen and (max-width: 480px) {
-
-  .topbar h1 {
-    font-size: 44px;
-  }
+@media (max-width: 400px) {
 
   .estadisticas-grid {
     grid-template-columns:
-      repeat(
-        2,
-        minmax(0, 1fr)
-      );
-
-    gap: 10px;
-  }
-
-  .estadistica-card {
-    min-height: 105px;
-
-    padding: 16px;
-  }
-
-  .estadistica-card span {
-    font-size: 10px;
-  }
-
-  .estadistica-card strong {
-    font-size: 34px;
+      1fr;
   }
 
   .recuerdo-encabezado {
-    flex-direction: column;
+    flex-direction:
+      column;
   }
 
   .recuerdo-acciones {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      1fr;
   }
 
   .recuerdo-acciones .destacar {
-    grid-column: auto;
+    grid-column:
+      auto;
   }
 
   .toast {
-    right: 14px;
-    bottom: 14px;
+    right:
+      14px;
+
+    bottom:
+      14px;
 
     max-width:
       calc(100% - 28px);
