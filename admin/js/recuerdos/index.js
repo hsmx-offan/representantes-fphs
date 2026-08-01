@@ -35,6 +35,10 @@ import {
 import {
   cargarModalRecuerdo
 } from "./cargarModal.js";
+import {
+  iniciarModalRecuerdo,
+  abrirModalRecuerdo
+} from "./modal.js";
 
 // ========================================
 // ELEMENTOS DEL HTML
@@ -114,6 +118,8 @@ temaController.iniciarTema();
 // ========================================
 
 await cargarModalRecuerdo();
+
+iniciarModalRecuerdo();
 
 // ========================================
 // TOAST
