@@ -681,3 +681,24 @@ main {
     grid-column: auto;
   }
 }
+.recuerdo-sin-imagen {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 42px;
+}
+
+.recuerdo-acciones button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.recuerdo-acciones button:disabled:hover {
+  border-color: var(--border);
+  background: var(--panel);
+  color: var(--text);
+}
