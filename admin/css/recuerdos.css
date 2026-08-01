@@ -34,7 +34,7 @@
    TEMA OSCURO
    ========================================================= */
 
-html.tema-oscuro {
+html[data-theme="dark"] {
   --bg: #100b1d;
   --panel: #171219;
   --panel-soft: #211720;
