@@ -32,7 +32,9 @@ import {
 import {
   crearTarjetaRecuerdo
 } from "./cards.js";
-
+import {
+  cargarModalRecuerdo
+} from "./cargarModal.js";
 
 // ========================================
 // ELEMENTOS DEL HTML
@@ -107,7 +109,11 @@ const temaController =
   });
 
 temaController.iniciarTema();
+// ========================================
+// CARGAR MODAL
+// ========================================
 
+await cargarModalRecuerdo();
 
 // ========================================
 // TOAST
