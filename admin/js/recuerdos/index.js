@@ -610,24 +610,9 @@ function verRecuerdo(
   recuerdo
 ) {
 
-  const cantidadFotos =
-    Array.isArray(recuerdo.fotos)
-      ? recuerdo.fotos.length
-      : 0;
-
-  mostrarToast(
-    `${recuerdo.nombre || "Recuerdo"} · ${cantidadFotos} ${
-      cantidadFotos === 1
-        ? "fotografía"
-        : "fotografías"
-    }`
+  abrirModalRecuerdo(
+    recuerdo
   );
-
-  /*
-    En el siguiente paso cambiaremos
-    este toast por un modal completo
-    con todas las fotografías.
-  */
 
 }
 
