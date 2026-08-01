@@ -1,1 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
 
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Comparte tu recuerdo | Harry Styles México OFFAN
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css?v=3"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/subir-recuerdo.css?v=1"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body class="pagina-subir-recuerdo">
+
+    <!-- NAVEGACIÓN -->
+    <header class="recuerdo-nav">
+
+        <a
+            href="index.html"
+            class="marca"
+        >
+            HSMX_OFFAN
+        </a>
+
+        <a
+            href="index.html#recuerdos"
+            class="volver-recuerdos"
+        >
+            <i class="fa-solid fa-arrow-left"></i>
+            Volver
+        </a>
+
+    </header>
+
+
+    <main class="recuerdo-contenedor">
+
+        <!-- PORTADA -->
+        <section class="recuerdo-portada">
+
+            <p class="etiqueta">
+                NUESTRA HISTORIA
+            </p>
+
+            <h1>
+                Comparte tu recuerdo
+            </h1>
+
+            <p class="recuerdo-introduccion">
+                Cada fotografía cuenta una parte de esta historia.
+                Comparte los momentos que hicieron inolvidable tu
+                experiencia durante el concierto y el Fan Project.
+            </p>
+
+        </section>
+
+
+        <!-- FORMULARIO -->
+        <section class="recuerdo-formulario-card">
+
+            <form id="formRecuerdo">
+
+                <!-- NOMBRE -->
+                <div class="recuerdo-campo">
+
+                    <label for="nombre">
+                        Nombre o apodo
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nombre"
+                        name="nombre"
+                        maxlength="60"
+                        autocomplete="name"
+                        placeholder="¿Cómo quieres aparecer?"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- INSTAGRAM -->
+                <div class="recuerdo-campo">
+
+                    <label for="instagram">
+                        Instagram
+                        <span>Opcional</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="instagram"
+                        name="instagram"
+                        maxlength="50"
+                        autocomplete="off"
+                        placeholder="@usuario"
+                    >
+
+                </div>
+
+
+                <!-- FECHA -->
+                <div class="recuerdo-campo">
+
+                    <label for="fechaConcierto">
+                        ¿A qué concierto asististe?
+                    </label>
+
+                    <select
+                        id="fechaConcierto"
+                        name="fechaConcierto"
+                        required
+                    >
+                        <option value="">
+                            Selecciona una fecha
+                        </option>
+
+                        <option value="2026-07-31">
+                            31 de julio de 2026
+                        </option>
+
+                        <option value="2026-08-01">
+                            1 de agosto de 2026
+                        </option>
+
+                        <option value="2026-08-04">
+                            4 de agosto de 2026
+                        </option>
+
+                        <option value="2026-08-07">
+                            7 de agosto de 2026
+                        </option>
+
+                        <option value="2026-08-08">
+                            8 de agosto de 2026
+                        </option>
+
+                        <option value="2026-08-10">
+                            10 de agosto de 2026
+                        </option>
+                    </select>
+
+                </div>
+
+
+                <!-- ZONA -->
+                <div class="recuerdo-campo">
+
+                    <label for="zona">
+                        Zona
+                        <span>Opcional</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="zona"
+                        name="zona"
+                        maxlength="60"
+                        autocomplete="off"
+                        placeholder="Ej. General B"
+                    >
+
+                </div>
+
+
+                <!-- MENSAJE -->
+                <div class="recuerdo-campo">
+
+                    <label for="mensaje">
+                        Cuéntanos tu recuerdo
+                    </label>
+
+                    <textarea
+                        id="mensaje"
+                        name="mensaje"
+                        maxlength="500"
+                        placeholder="¿Cuál fue tu momento favorito?"
+                        required
+                    ></textarea>
+
+                    <small id="contadorMensaje">
+                        0 / 500
+                    </small>
+
+                </div>
+
+
+                <!-- FOTOGRAFÍAS -->
+                <div class="recuerdo-campo">
+
+                    <label>
+                        Fotografías
+                    </label>
+
+                    <label
+                        for="fotos"
+                        class="selector-fotografias"
+                    >
+
+                        <i class="fa-regular fa-images"></i>
+
+                        <strong>
+                            Seleccionar fotografías
+                        </strong>
+
+                        <span>
+                            Puedes compartir de 1 a 3 imágenes
+                        </span>
+
+                    </label>
+
+                    <input
+                        type="file"
+                        id="fotos"
+                        name="fotos"
+                        accept="image/jpeg,image/png,image/webp"
+                        multiple
+                        hidden
+                        required
+                    >
+
+                    <div
+                        id="vistaPreviaFotos"
+                        class="vista-previa-fotos"
+                    ></div>
+
+                    <p class="ayuda-fotografias">
+                        Formatos permitidos: JPG, PNG y WEBP.
+                        Máximo 8 MB por fotografía.
+                    </p>
+
+                </div>
+
+
+                <!-- AUTORIZACIÓN -->
+                <div class="recuerdo-autorizacion">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            id="autorizacion"
+                            name="autorizacion"
+                            required
+                        >
+
+                        <span>
+                            Confirmo que tengo permiso para compartir
+                            estas fotografías y autorizo su publicación
+                            en la página de Harry Styles México OFFAN.
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+                <!-- BOTÓN -->
+                <button
+                    type="submit"
+                    id="botonEnviarRecuerdo"
+                    class="boton-enviar-recuerdo"
+                >
+
+                    <span>
+                        Enviar recuerdo
+                    </span>
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </button>
+
+
+                <!-- ESTADO -->
+                <div
+                    id="estadoEnvio"
+                    class="estado-envio"
+                    aria-live="polite"
+                ></div>
+
+            </form>
+
+        </section>
+
+
+        <!-- MENSAJE DE ÉXITO -->
+        <section
+            id="mensajeExito"
+            class="mensaje-exito-recuerdo"
+            hidden
+        >
+
+            <div class="mensaje-exito-corazon">
+                ♡
+            </div>
+
+            <h2>
+                ¡Gracias por compartir tu recuerdo!
+            </h2>
+
+            <p>
+                Tu publicación fue enviada correctamente.
+                Será revisada por una administradora antes
+                de aparecer en Nuestra Historia.
+            </p>
+
+            <a href="index.html#recuerdos">
+                Volver a la página principal
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <script
+        type="module"
+        src="js/subir-recuerdo.js?v=1"
+    ></script>
+
+</body>
+
+</html>
