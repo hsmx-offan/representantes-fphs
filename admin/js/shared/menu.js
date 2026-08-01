@@ -34,7 +34,11 @@ const opcionesMenu = [
     archivo: "problemas.html",
     disponible: true
   },
-
+{
+  nombre: "Recuerdos",
+  archivo: "recuerdos.html",
+  disponible: true
+},
   {
     nombre: "Publicaciones",
     archivo: "publicaciones.html",
