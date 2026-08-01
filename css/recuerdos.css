@@ -1,1 +1,157 @@
+/* =========================================
+   HERO
+   ========================================= */
 
+.hero-recuerdos{
+
+    max-width:900px;
+
+    margin:90px auto 70px;
+
+    padding:0 25px;
+
+    text-align:center;
+
+}
+
+.hero-recuerdos h1{
+
+    margin:15px 0;
+
+    font-size:clamp(2rem,4vw,3.5rem);
+
+}
+
+.hero-recuerdos p{
+
+    max-width:700px;
+
+    margin:auto;
+
+    line-height:1.8;
+
+    color:#666;
+
+}
+
+
+
+/* =========================================
+   GALERÍA
+   ========================================= */
+
+.galeria-recuerdos{
+
+    width:min(1400px,94%);
+
+    margin:auto;
+
+    padding-bottom:80px;
+
+}
+
+
+
+/* =========================================
+   MASONRY
+   ========================================= */
+
+.grid-recuerdos{
+
+    columns:4 280px;
+
+    column-gap:18px;
+
+}
+
+
+
+/* =========================================
+   TARJETA
+   ========================================= */
+
+.recuerdo{
+
+    break-inside:avoid;
+
+    margin-bottom:18px;
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    background:white;
+
+    box-shadow:0 8px 28px rgba(0,0,0,.08);
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.recuerdo:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 18px 45px rgba(0,0,0,.15);
+
+}
+
+.recuerdo img{
+
+    width:100%;
+
+    display:block;
+
+}
+
+.recuerdo-info{
+
+    padding:18px;
+
+}
+
+.recuerdo-info h3{
+
+    margin:0;
+
+    font-size:17px;
+
+}
+
+.recuerdo-info p{
+
+    margin:8px 0 0;
+
+    color:#666;
+
+    font-size:14px;
+
+}
+
+
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media(max-width:700px){
+
+.grid-recuerdos{
+
+columns:2 180px;
+
+}
+
+}
+
+@media(max-width:500px){
+
+.grid-recuerdos{
+
+columns:1;
+
+}
+
+}
