@@ -1,1 +1,262 @@
+/* =========================================
+   MODAL RECUERDO PÚBLICO
+   ========================================= */
 
+.modal-recuerdo-publico{
+
+    position:fixed;
+    inset:0;
+
+    display:none;
+    align-items:center;
+    justify-content:center;
+
+    padding:24px;
+
+    z-index:3000;
+
+}
+
+.modal-recuerdo-publico.abierto{
+
+    display:flex;
+
+}
+
+.modal-recuerdo-publico-fondo{
+
+    position:absolute;
+    inset:0;
+
+    background:rgba(8,8,15,.82);
+
+    backdrop-filter:blur(10px);
+
+}
+
+.modal-recuerdo-publico-contenido{
+
+    position:relative;
+    z-index:2;
+
+    width:min(1150px,100%);
+    max-height:calc(100vh - 50px);
+
+    overflow:hidden;
+
+    border-radius:24px;
+
+    background:var(--bg-soft);
+
+    border:1px solid var(--line);
+
+    box-shadow:
+        0 30px 90px rgba(0,0,0,.45);
+
+}
+
+.modal-recuerdo-publico-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        1.4fr
+        .8fr;
+
+}
+
+.modal-publico-galeria{
+
+    padding:20px;
+
+    background:var(--bg);
+
+}
+
+.modal-publico-imagen-wrapper{
+
+    position:relative;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    width:100%;
+    height:72vh;
+
+    overflow:hidden;
+
+    border-radius:18px;
+
+    background:#090909;
+
+}
+
+.modal-publico-imagen-wrapper img{
+
+    max-width:100%;
+    max-height:100%;
+
+    object-fit:contain;
+
+}
+
+.modal-publico-control{
+
+    position:absolute;
+    top:50%;
+
+    transform:translateY(-50%);
+
+    width:46px;
+    height:46px;
+
+    border:none;
+    border-radius:50%;
+
+    background:rgba(0,0,0,.55);
+
+    color:#fff;
+
+    font-size:30px;
+
+    cursor:pointer;
+
+}
+
+.modal-publico-control:hover{
+
+    background:rgba(0,0,0,.8);
+
+}
+
+.anterior{
+
+    left:15px;
+
+}
+
+.siguiente{
+
+    right:15px;
+
+}
+
+.modal-publico-contador{
+
+    margin-top:12px;
+
+    text-align:center;
+
+    color:var(--rose-soft);
+
+}
+
+.modal-publico-info{
+
+    padding:36px;
+
+    overflow:auto;
+
+}
+
+.modal-publico-instagram{
+
+    color:var(--pink);
+
+}
+
+.modal-publico-mensaje{
+
+    margin:28px 0;
+
+    line-height:1.7;
+
+    white-space:pre-wrap;
+
+}
+
+.modal-publico-datos{
+
+    display:grid;
+
+    gap:18px;
+
+    margin-top:30px;
+
+}
+
+.modal-publico-datos span{
+
+    display:block;
+
+    margin-bottom:4px;
+
+    color:var(--pink);
+
+    font-size:11px;
+
+    text-transform:uppercase;
+
+    letter-spacing:1px;
+
+}
+
+.cerrar-modal-publico{
+
+    position:absolute;
+
+    top:16px;
+    right:16px;
+
+    width:46px;
+    height:46px;
+
+    border-radius:50%;
+
+    border:none;
+
+    background:rgba(0,0,0,.55);
+
+    color:white;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+    z-index:4;
+
+}
+
+.cerrar-modal-publico:hover{
+
+    background:rgba(0,0,0,.8);
+
+}
+
+body.modal-publico-abierto{
+
+    overflow:hidden;
+
+}
+
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media(max-width:900px){
+
+    .modal-recuerdo-publico-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .modal-publico-imagen-wrapper{
+
+        height:55vh;
+
+    }
+
+}
