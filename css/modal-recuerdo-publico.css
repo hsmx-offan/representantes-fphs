@@ -207,25 +207,44 @@
 
     position:absolute;
 
-    top:16px;
-    right:16px;
+    top:22px;
+    right:22px;
 
-    width:46px;
-    height:46px;
+    width:56px;
+    height:56px;
 
-    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:0;
 
     border:none;
+    border-radius:50%;
 
     background:rgba(0,0,0,.55);
 
-    color:white;
+    color:#fff;
 
-    font-size:22px;
+    font-size:38px;
+    font-weight:300;
+    line-height:1;
 
     cursor:pointer;
 
-    z-index:4;
+    z-index:10;
+
+    transition:
+        background .25s,
+        transform .25s;
+
+}
+
+.cerrar-modal-publico:hover{
+
+    background:rgba(231,43,145,.18);
+
+    transform:scale(1.08);
 
 }
 
