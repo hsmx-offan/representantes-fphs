@@ -2,67 +2,69 @@
    MODAL RECUERDO PÚBLICO
    ========================================= */
 
-.modal-recuerdo-publico{
+.modal-recuerdo-publico {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
 
-    position:fixed;
-    inset:0;
+    display: none;
+    align-items: center;
+    justify-content: center;
 
-    display:none;
-    align-items:center;
-    justify-content:center;
-
-    padding:24px;
-
-    z-index:3000;
-
+    padding: 24px;
 }
 
-.modal-recuerdo-publico.abierto{
-
-    display:flex;
-
+.modal-recuerdo-publico.abierto {
+    display: flex;
 }
 
-.modal-recuerdo-publico-fondo{
+.modal-recuerdo-publico-fondo {
+    position: absolute;
+    inset: 0;
 
-    position:absolute;
-    inset:0;
+    background: rgba(8, 8, 15, 0.82);
 
-    background:rgba(8,8,15,.82);
-
-    backdrop-filter:blur(10px);
-
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
-.modal-recuerdo-publico-contenido{
+.modal-recuerdo-publico-contenido {
+    position: relative;
+    z-index: 2;
 
-    position:relative;
-    z-index:2;
+    width: min(1150px, 100%);
+    max-height: calc(100vh - 50px);
 
-    width:min(1150px,100%);
-    max-height:calc(100vh - 50px);
+    overflow: hidden;
 
-    overflow:hidden;
+    border: 1px solid var(--line);
+    border-radius: 24px;
 
-    border-radius:24px;
-
-    background:var(--bg-soft);
-
-    border:1px solid var(--line);
+    background: var(--bg-soft);
 
     box-shadow:
-        0 30px 90px rgba(0,0,0,.45);
-
+        0 30px 90px rgba(0, 0, 0, 0.45);
 }
+
+
+/* =========================================
+   ESTRUCTURA
+   ========================================= */
 
 .modal-recuerdo-publico-grid {
     display: grid;
+
     grid-template-columns:
         minmax(0, 1.4fr)
         minmax(320px, 0.8fr);
 
     align-items: stretch;
 }
+
+
+/* =========================================
+   GALERÍA
+   ========================================= */
 
 .modal-publico-galeria {
     min-width: 0;
@@ -88,250 +90,68 @@
     overflow: hidden;
 
     border-radius: 18px;
+
     background: #090909;
 }
-.modal-publico-imagen-wrapper img{
 
-    max-width:100%;
-    max-height:100%;
+.modal-publico-imagen-wrapper img {
+    display: block;
 
-    object-fit:contain;
+    max-width: 100%;
+    max-height: 100%;
 
-}
-
-.modal-publico-control{
-
-    position:absolute;
-    top:50%;
-
-    transform:translateY(-50%);
-
-    width:46px;
-    height:46px;
-
-    border:none;
-    border-radius:50%;
-
-    background:rgba(0,0,0,.55);
-
-    color:#fff;
-
-    font-size:30px;
-
-    cursor:pointer;
-
-}
-
-.modal-publico-control:hover{
-
-    background:rgba(0,0,0,.8);
-
-}
-
-.anterior{
-
-    left:15px;
-
-}
-
-.siguiente{
-
-    right:15px;
-
-}
-
-.modal-publico-contador{
-
-    margin-top:12px;
-
-    text-align:center;
-
-    color:var(--rose-soft);
-
-}
-
-.modal-publico-info {
-    min-width: 0;
-    padding: 38px 44px 38px 44px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-
-    overflow: auto;
-}
-
-.modal-publico-instagram{
-
-    color:var(--pink);
-
-}
-
-.modal-publico-mensaje{
-
-    margin:28px 0;
-
-    line-height:1.7;
-
-    white-space:pre-wrap;
-
-}
-
-.modal-publico-datos{
-
-    display:grid;
-
-    gap:18px;
-
-    margin-top:30px;
-
-}
-
-.modal-publico-datos span{
-
-    display:block;
-
-    margin-bottom:4px;
-
-    color:var(--pink);
-
-    font-size:11px;
-
-    text-transform:uppercase;
-
-    letter-spacing:1px;
-
-}
-
-.cerrar-modal-publico{
-
-    position:absolute;
-
-    top:20px;
-    right:20px;
-
-    width:54px;
-    height:54px;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    border:none;
-    border-radius:50%;
-
-    background:rgba(0,0,0,.55);
-
-    cursor:pointer;
-
-    z-index:20;
-
-    transition:
-        transform .25s,
-        background .25s;
-
-}
-
-.cerrar-modal-publico:hover{
-
-    transform:scale(1.06);
-
-    background:rgba(231,43,145,.15);
-
-}
-
-.cerrar-modal-publico span{
-
-    position:relative;
-
-    width:26px;
-    height:26px;
-
-}
-
-.cerrar-modal-publico span::before,
-.cerrar-modal-publico span::after{
-
-    content:"";
-
-    position:absolute;
-
-    left:50%;
-    top:50%;
-
-    width:3px;
-    height:28px;
-
-    background:#fff;
-
-    border-radius:20px;
-
-    transform-origin:center;
-
-}
-
-.cerrar-modal-publico span::before{
-
-    transform:
-        translate(-50%,-50%)
-        rotate(45deg);
-
-}
-
-.cerrar-modal-publico span::after{
-
-    transform:
-        translate(-50%,-50%)
-        rotate(-45deg);
-
-}
-
-.cerrar-modal-publico:hover{
-
-    background:rgba(231,43,145,.18);
-
-    transform:scale(1.08);
-
-}
-
-.cerrar-modal-publico:hover{
-
-    background:rgba(0,0,0,.8);
-
-}
-
-body.modal-publico-abierto{
-
-    overflow:hidden;
-
+    object-fit: contain;
 }
 
 
 /* =========================================
-   RESPONSIVE
+   CONTROLES DE FOTOGRAFÍAS
    ========================================= */
 
-@media(max-width:900px){
-
-    .modal-recuerdo-publico-grid{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .modal-publico-imagen-wrapper{
-
-        height:55vh;
-
-    }
-
-}
 .modal-publico-control {
+    position: absolute;
+    top: 50%;
+
+    width: 46px;
+    height: 46px;
+    margin: 0;
+    padding: 0;
+
     display: flex;
     align-items: center;
     justify-content: center;
 
+    transform: translateY(-50%);
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(0, 0, 0, 0.58);
+    color: #ffffff;
+
+    font-size: 30px;
     line-height: 1;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 22px rgba(0, 0, 0, 0.3);
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.modal-publico-control:hover {
+    background: rgba(0, 0, 0, 0.86);
+
+    transform:
+        translateY(-50%)
+        scale(1.05);
+}
+
+.modal-publico-control:disabled {
+    display: none;
 }
 
 .modal-publico-control.anterior {
@@ -344,13 +164,276 @@ body.modal-publico-abierto{
 
 .modal-publico-contador {
     margin: 14px 0 0;
+
+    color: var(--rose-soft);
+
+    text-align: center;
     line-height: 1;
 }
 
+
+/* =========================================
+   INFORMACIÓN
+   ========================================= */
+
+.modal-publico-info {
+    min-width: 0;
+    padding: 38px 44px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    overflow: auto;
+}
+
 .modal-publico-info .etiqueta-seccion {
-    margin-top: 4px;
+    margin: 4px 0 6px;
 }
 
 .modal-publico-info h2 {
     margin: 0;
+
+    color: var(--white);
+
+    font-size: 34px;
+    line-height: 1.08;
+}
+
+.modal-publico-instagram {
+    margin: 6px 0 0;
+
+    color: var(--pink);
+}
+
+.modal-publico-mensaje {
+    margin: 28px 0;
+
+    color: var(--white);
+
+    line-height: 1.7;
+
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.modal-publico-datos {
+    display: grid;
+    gap: 18px;
+
+    margin-top: 30px;
+}
+
+.modal-publico-datos span {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: var(--pink);
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.modal-publico-datos strong {
+    color: var(--white);
+}
+
+
+/* =========================================
+   BOTÓN CERRAR
+   ========================================= */
+
+.cerrar-modal-publico {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 20;
+
+    width: 54px;
+    height: 54px;
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+
+    background: rgba(0, 0, 0, 0.58);
+
+    cursor: pointer;
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.28);
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.cerrar-modal-publico:hover {
+    background: rgba(237, 30, 98, 0.2);
+    border-color: rgba(237, 30, 98, 0.5);
+
+    transform: scale(1.05);
+}
+
+.cerrar-modal-publico span {
+    position: relative;
+
+    display: block;
+
+    width: 24px;
+    height: 24px;
+}
+
+.cerrar-modal-publico span::before,
+.cerrar-modal-publico span::after {
+    content: "";
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    width: 3px;
+    height: 28px;
+
+    border-radius: 20px;
+
+    background: #ffffff;
+
+    transform-origin: center;
+}
+
+.cerrar-modal-publico span::before {
+    transform:
+        translate(-50%, -50%)
+        rotate(45deg);
+}
+
+.cerrar-modal-publico span::after {
+    transform:
+        translate(-50%, -50%)
+        rotate(-45deg);
+}
+
+
+/* =========================================
+   BLOQUEAR SCROLL
+   ========================================= */
+
+body.modal-publico-abierto {
+    overflow: hidden;
+}
+
+
+/* =========================================
+   TABLET
+   ========================================= */
+
+@media screen and (max-width: 900px) {
+
+    .modal-recuerdo-publico {
+        padding: 12px;
+    }
+
+    .modal-recuerdo-publico-contenido {
+        max-height: calc(100vh - 24px);
+
+        overflow-y: auto;
+    }
+
+    .modal-recuerdo-publico-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-publico-imagen-wrapper {
+        height: 55vh;
+    }
+
+    .modal-publico-info {
+        padding: 30px 24px;
+    }
+
+    .cerrar-modal-publico {
+        top: 16px;
+        right: 16px;
+    }
+
+}
+
+
+/* =========================================
+   CELULAR
+   ========================================= */
+
+@media screen and (max-width: 520px) {
+
+    .modal-recuerdo-publico {
+        padding: 8px;
+    }
+
+    .modal-recuerdo-publico-contenido {
+        max-height: calc(100vh - 16px);
+
+        border-radius: 18px;
+    }
+
+    .modal-publico-galeria {
+        padding: 12px;
+    }
+
+    .modal-publico-imagen-wrapper {
+        height: 48vh;
+
+        border-radius: 14px;
+    }
+
+    .modal-publico-control {
+        width: 40px;
+        height: 40px;
+
+        font-size: 26px;
+    }
+
+    .modal-publico-control.anterior {
+        left: 10px;
+    }
+
+    .modal-publico-control.siguiente {
+        right: 10px;
+    }
+
+    .modal-publico-info {
+        padding: 24px 18px;
+    }
+
+    .modal-publico-info h2 {
+        font-size: 28px;
+    }
+
+    .cerrar-modal-publico {
+        top: 12px;
+        right: 12px;
+
+        width: 46px;
+        height: 46px;
+    }
+
+    .cerrar-modal-publico span {
+        width: 21px;
+        height: 21px;
+    }
+
+    .cerrar-modal-publico span::before,
+    .cerrar-modal-publico span::after {
+        height: 24px;
+    }
+
 }
