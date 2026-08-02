@@ -207,36 +207,82 @@
 
     position:absolute;
 
-    top:22px;
-    right:22px;
+    top:20px;
+    right:20px;
 
-    width:56px;
-    height:56px;
+    width:54px;
+    height:54px;
 
     display:flex;
-    align-items:center;
     justify-content:center;
-
-    padding:0;
+    align-items:center;
 
     border:none;
     border-radius:50%;
 
     background:rgba(0,0,0,.55);
 
-    color:#fff;
-
-    font-size:38px;
-    font-weight:300;
-    line-height:1;
-
     cursor:pointer;
 
-    z-index:10;
+    z-index:20;
 
     transition:
-        background .25s,
-        transform .25s;
+        transform .25s,
+        background .25s;
+
+}
+
+.cerrar-modal-publico:hover{
+
+    transform:scale(1.06);
+
+    background:rgba(231,43,145,.15);
+
+}
+
+.cerrar-modal-publico span{
+
+    position:relative;
+
+    width:26px;
+    height:26px;
+
+}
+
+.cerrar-modal-publico span::before,
+.cerrar-modal-publico span::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    width:3px;
+    height:28px;
+
+    background:#fff;
+
+    border-radius:20px;
+
+    transform-origin:center;
+
+}
+
+.cerrar-modal-publico span::before{
+
+    transform:
+        translate(-50%,-50%)
+        rotate(45deg);
+
+}
+
+.cerrar-modal-publico span::after{
+
+    transform:
+        translate(-50%,-50%)
+        rotate(-45deg);
 
 }
 
