@@ -19,7 +19,36 @@ const grid =
     "gridRecuerdos"
   );
 
+async function cargarModalPublico() {
 
+  const contenedor =
+    document.getElementById(
+      "contenedorModalRecuerdoPublico"
+    );
+
+  if (!contenedor) {
+    return;
+  }
+
+  const respuesta =
+    await fetch(
+      "html/modal-recuerdo-publico.html"
+    );
+
+  if (!respuesta.ok) {
+
+    throw new Error(
+      "No se pudo cargar el modal público."
+    );
+
+  }
+
+  contenedor.innerHTML =
+    await respuesta.text();
+
+  iniciarModalRecuerdoPublico();
+
+}
 cargarRecuerdos();
 
 
