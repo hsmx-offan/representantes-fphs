@@ -9,6 +9,10 @@ import {
   where
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
+import {
+  iniciarModalRecuerdoPublico,
+  abrirModalRecuerdoPublico
+} from "./modal-recuerdo-publico.js";
 
 const grid =
   document.getElementById(
