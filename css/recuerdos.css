@@ -2,156 +2,188 @@
    HERO
    ========================================= */
 
-.hero-recuerdos{
+.hero-recuerdos {
+    width: min(900px, calc(100% - 40px));
 
-    max-width:900px;
+    margin: 0 auto;
+    padding: 145px 0 70px;
 
-    margin:90px auto 70px;
-
-    padding:0 25px;
-
-    text-align:center;
-
+    text-align: center;
 }
 
-.hero-recuerdos h1{
+.hero-recuerdos h1 {
+    margin: 15px 0;
 
-    margin:15px 0;
+    color: var(--white);
 
-    font-size:clamp(2rem,4vw,3.5rem);
-
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1.1;
 }
 
-.hero-recuerdos p{
+.hero-recuerdos > p:not(.etiqueta) {
+    max-width: 700px;
+    margin: 0 auto;
 
-    max-width:700px;
+    color: var(--rose-soft);
 
-    margin:auto;
-
-    line-height:1.8;
-
-    color:#666;
-
+    font-size: 17px;
+    line-height: 1.8;
 }
-
 
 
 /* =========================================
    GALERÍA
    ========================================= */
 
-.galeria-recuerdos{
-
-    width:min(1400px,94%);
-
-    margin:auto;
-
-    padding-bottom:80px;
-
+.galeria-recuerdos {
+    width: min(1400px, 94%);
+    margin: 0 auto;
+    padding-bottom: 80px;
 }
-
 
 
 /* =========================================
    MASONRY
    ========================================= */
 
-.grid-recuerdos{
-
-    columns:4 280px;
-
-    column-gap:18px;
-
+.grid-recuerdos {
+    columns: 4 280px;
+    column-gap: 18px;
 }
-
 
 
 /* =========================================
    TARJETA
    ========================================= */
 
-.recuerdo{
+.recuerdo {
+    break-inside: avoid;
 
-    break-inside:avoid;
+    margin-bottom: 18px;
+    overflow: hidden;
 
-    margin-bottom:18px;
+    border-radius: 22px;
 
-    border-radius:22px;
+    background: var(--white);
 
-    overflow:hidden;
+    cursor: pointer;
 
-    background:white;
+    box-shadow:
+        0 8px 28px rgba(0, 0, 0, 0.08);
 
-    box-shadow:0 8px 28px rgba(0,0,0,.08);
-
-    cursor:pointer;
-
-    transition:.25s;
-
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
-.recuerdo:hover{
+.recuerdo:hover {
+    transform: translateY(-4px);
 
-    transform:translateY(-4px);
-
-    box-shadow:0 18px 45px rgba(0,0,0,.15);
-
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.15);
 }
 
-.recuerdo img{
-
-    width:100%;
-
-    display:block;
-
+.recuerdo:focus-visible {
+    outline: 3px solid var(--pink);
+    outline-offset: 4px;
 }
 
-.recuerdo-info{
+.recuerdo img {
+    display: block;
 
-    padding:18px;
-
+    width: 100%;
+    height: auto;
 }
 
-.recuerdo-info h3{
-
-    margin:0;
-
-    font-size:17px;
-
+.recuerdo-info {
+    padding: 18px;
 }
 
-.recuerdo-info p{
+.recuerdo-info h3 {
+    margin: 0;
 
-    margin:8px 0 0;
+    color: var(--text-dark);
 
-    color:#666;
-
-    font-size:14px;
-
+    font-size: 17px;
 }
 
+.recuerdo-info p {
+    margin: 8px 0 0;
+
+    color: #666;
+
+    font-size: 14px;
+    line-height: 1.5;
+}
 
 
 /* =========================================
-   RESPONSIVE
+   ESTADOS DE LA GALERÍA
    ========================================= */
 
-@media(max-width:700px){
+.estado-galeria {
+    width: 100%;
+    padding: 50px 20px;
 
-.grid-recuerdos{
+    color: var(--rose-soft);
 
-columns:2 180px;
+    text-align: center;
+}
+
+.estado-galeria strong {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--white);
+}
+
+
+/* =========================================
+   TABLET
+   ========================================= */
+
+@media screen and (max-width: 700px) {
+
+    .hero-recuerdos {
+        width: calc(100% - 32px);
+        padding: 115px 0 55px;
+    }
+
+    .hero-recuerdos > p:not(.etiqueta) {
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .galeria-recuerdos {
+        width: calc(100% - 28px);
+    }
+
+    .grid-recuerdos {
+        columns: 2 180px;
+        column-gap: 12px;
+    }
+
+    .recuerdo {
+        margin-bottom: 12px;
+        border-radius: 18px;
+    }
 
 }
 
-}
 
-@media(max-width:500px){
+/* =========================================
+   CELULAR
+   ========================================= */
 
-.grid-recuerdos{
+@media screen and (max-width: 500px) {
 
-columns:1;
+    .grid-recuerdos {
+        columns: 1;
+    }
 
-}
+    .recuerdo-info {
+        padding: 16px;
+    }
 
 }
