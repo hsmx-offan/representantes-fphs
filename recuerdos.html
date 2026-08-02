@@ -3,32 +3,36 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<title>
+    <title>
+        Recuerdos | Harry Styles México OFFAN
+    </title>
 
-Recuerdos | Harry Styles México OFFAN
-
-</title>
-
-<link
-    rel="stylesheet"
-    href="css/style.css"
->
-
-<link
-    rel="stylesheet"
-    href="css/recuerdos.css"
->
     <link
-    rel="stylesheet"
-    href="css/modal-recuerdo-publico.css"
->
+        rel="stylesheet"
+        href="css/style.css?v=3"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/recuerdos.css?v=2"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/modal-recuerdo-publico.css?v=2"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
 
 </head>
 
@@ -43,15 +47,26 @@ Recuerdos | Harry Styles México OFFAN
         HSMX_OFFAN
     </a>
 
-    <nav class="nav-links">
+    <button
+        class="menu-toggle"
+        id="menuToggle"
+        type="button"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+    >
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <nav
+        class="nav-links"
+        id="navLinks"
+    >
 
         <a href="index.html">
             Inicio
         </a>
 
-        <a
-            href="subir-recuerdo.html"
-        >
+        <a href="subir-recuerdo.html">
             Compartir recuerdo
         </a>
 
@@ -60,30 +75,23 @@ Recuerdos | Harry Styles México OFFAN
 </header>
 
 
-
 <section class="hero-recuerdos">
 
     <p class="etiqueta">
-
         NUESTRA HISTORIA
-
     </p>
 
     <h1>
-
         Los recuerdos que construimos juntos.
-
     </h1>
 
     <p>
-    Cada fotografía guarda un momento especial
-    vivido durante los conciertos de Harry en México.
-
-    Gracias por formar parte de esta historia. ♡
-</p>
+        Cada fotografía guarda un momento especial
+        vivido durante los conciertos de Harry en México.
+        Gracias por formar parte de esta historia. ♡
+    </p>
 
 </section>
-
 
 
 <section class="galeria-recuerdos">
@@ -91,17 +99,19 @@ Recuerdos | Harry Styles México OFFAN
     <div
         id="gridRecuerdos"
         class="grid-recuerdos"
-    >
-
-    </div>
+    ></div>
 
 </section>
 
 
 <div id="contenedorModalRecuerdoPublico"></div>
+
+
+<script src="js/script.js?v=3"></script>
+
 <script
     type="module"
-    src="js/recuerdos.js"
+    src="js/recuerdos.js?v=3"
 ></script>
 
 </body>
