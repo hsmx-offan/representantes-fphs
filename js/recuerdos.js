@@ -14,10 +14,63 @@ import {
   abrirModalRecuerdoPublico
 } from "./modal-recuerdo-publico.js";
 
+
+// ========================================
+// ELEMENTOS
+// ========================================
+
 const grid =
   document.getElementById(
     "gridRecuerdos"
   );
+
+
+// ========================================
+// INICIO
+// ========================================
+
+iniciarPaginaRecuerdos();
+
+
+async function iniciarPaginaRecuerdos() {
+
+  try {
+
+    await cargarModalPublico();
+
+    await cargarRecuerdos();
+
+  } catch (error) {
+
+    console.error(
+      "Error iniciando la página de recuerdos:",
+      error
+    );
+
+    if (grid) {
+
+      grid.innerHTML = `
+        <div class="estado-galeria">
+          <strong>
+            No pudimos iniciar la galería.
+          </strong>
+
+          <p>
+            Intenta recargar la página.
+          </p>
+        </div>
+      `;
+
+    }
+
+  }
+
+}
+
+
+// ========================================
+// CARGAR HTML DEL MODAL
+// ========================================
 
 async function cargarModalPublico() {
 
@@ -27,7 +80,11 @@ async function cargarModalPublico() {
     );
 
   if (!contenedor) {
-    return;
+
+    throw new Error(
+      "No se encontró el contenedor del modal público."
+    );
+
   }
 
   const respuesta =
@@ -46,20 +103,38 @@ async function cargarModalPublico() {
   contenedor.innerHTML =
     await respuesta.text();
 
-  iniciarModalRecuerdoPublico();
+  const modalIniciado =
+    iniciarModalRecuerdoPublico();
+
+  if (!modalIniciado) {
+
+    throw new Error(
+      "No se pudo inicializar el modal público."
+    );
+
+  }
 
 }
-cargarRecuerdos();
 
+
+// ========================================
+// CARGAR RECUERDOS
+// ========================================
 
 async function cargarRecuerdos() {
 
   if (!grid) return;
 
   grid.innerHTML = `
-    <p class="estado-galeria">
-      Cargando recuerdos...
-    </p>
+    <div class="estado-galeria">
+      <strong>
+        Cargando recuerdos...
+      </strong>
+
+      <p>
+        Estamos reuniendo las fotografías de la comunidad.
+      </p>
+    </div>
   `;
 
   try {
@@ -96,10 +171,12 @@ async function cargarRecuerdos() {
           (a, b) => {
 
             const fechaA =
-              a.fechaEnvio?.toMillis?.() || 0;
+              a.fechaEnvio
+                ?.toMillis?.() || 0;
 
             const fechaB =
-              b.fechaEnvio?.toMillis?.() || 0;
+              b.fechaEnvio
+                ?.toMillis?.() || 0;
 
             return fechaB - fechaA;
 
@@ -123,6 +200,7 @@ async function cargarRecuerdos() {
       `;
 
       return;
+
     }
 
     recuerdos.forEach(
@@ -153,12 +231,18 @@ async function cargarRecuerdos() {
 }
 
 
+// ========================================
+// CREAR TARJETA
+// ========================================
+
 function crearTarjeta(
   recuerdo
 ) {
 
   const fotos =
-    Array.isArray(recuerdo.fotos)
+    Array.isArray(
+      recuerdo.fotos
+    )
       ? recuerdo.fotos
       : [];
 
@@ -166,6 +250,7 @@ function crearTarjeta(
     fotos[0]?.url || "";
 
   if (!foto) return;
+
 
   const tarjeta =
     document.createElement(
@@ -175,19 +260,38 @@ function crearTarjeta(
   tarjeta.className =
     "recuerdo";
 
+  tarjeta.tabIndex = 0;
+
+  tarjeta.setAttribute(
+    "role",
+    "button"
+  );
+
+  tarjeta.setAttribute(
+    "aria-label",
+    `Abrir recuerdo de ${
+      recuerdo.nombre ||
+      "la comunidad"
+    }`
+  );
+
+
   const imagen =
     document.createElement(
       "img"
     );
 
   imagen.src = foto;
-  imagen.loading = "lazy";
+
+  imagen.loading =
+    "lazy";
 
   imagen.alt =
     `Recuerdo compartido por ${
       recuerdo.nombre ||
       "la comunidad"
     }`;
+
 
   const informacion =
     document.createElement(
@@ -196,6 +300,7 @@ function crearTarjeta(
 
   informacion.className =
     "recuerdo-info";
+
 
   const nombre =
     document.createElement(
@@ -206,6 +311,7 @@ function crearTarjeta(
     recuerdo.nombre ||
     "Recuerdo de la comunidad";
 
+
   const mensaje =
     document.createElement(
       "p"
@@ -213,6 +319,7 @@ function crearTarjeta(
 
   mensaje.textContent =
     recuerdo.mensaje || "";
+
 
   informacion.append(
     nombre,
@@ -223,6 +330,40 @@ function crearTarjeta(
     imagen,
     informacion
   );
+
+
+  tarjeta.addEventListener(
+    "click",
+    () => {
+
+      abrirModalRecuerdoPublico(
+        recuerdo
+      );
+
+    }
+  );
+
+
+  tarjeta.addEventListener(
+    "keydown",
+    evento => {
+
+      if (
+        evento.key === "Enter" ||
+        evento.key === " "
+      ) {
+
+        evento.preventDefault();
+
+        abrirModalRecuerdoPublico(
+          recuerdo
+        );
+
+      }
+
+    }
+  );
+
 
   grid.appendChild(
     tarjeta
