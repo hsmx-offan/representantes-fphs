@@ -49,16 +49,19 @@ const tabs =
     document.querySelectorAll(".tab-manager");
 
 
-/*
-   El módulo fechas.js necesita acceder a estos datos.
-   Después lo convertiremos también en módulo.
-*/
+/* =========================================
+   DATOS COMPARTIDOS CON OTROS SCRIPTS
+========================================= */
 
-window.contenidoManager = contenidoManager;
+window.contenidoManager =
+    contenidoManager;
 
-window.obtenerEventoSeleccionadoId = function () {
-    return eventoSeleccionadoId;
-};
+window.obtenerEventoSeleccionadoId =
+    function () {
+
+        return eventoSeleccionadoId;
+
+    };
 
 
 /* =========================================
@@ -71,16 +74,19 @@ async function cargarEventos() {
 
     try {
 
-        const referenciaEventos =
-            collection(db, "eventos");
-
         const snapshot =
-            await getDocs(referenciaEventos);
+            await getDocs(
+                collection(db, "eventos")
+            );
 
-        eventos = snapshot.docs.map((documento) => ({
-            id: documento.id,
-            ...documento.data()
-        }));
+        eventos =
+            snapshot.docs.map((documento) => ({
+
+                id: documento.id,
+
+                ...documento.data()
+
+            }));
 
         eventos.sort((a, b) => {
 
@@ -99,21 +105,25 @@ async function cargarEventos() {
     } catch (error) {
 
         console.error(
-            "Error al cargar los eventos:",
+            "Error al cargar eventos:",
             error
         );
 
         activo.textContent =
-            "No se pudo cargar el evento activo.";
+            "No fue posible cargar el evento activo.";
 
         lista.innerHTML = `
             <div class="sin-registros">
-                <h3>No fue posible cargar las ediciones</h3>
+
+                <h3>
+                    No fue posible cargar las ediciones
+                </h3>
 
                 <p>
-                    Revisa la conexión, las reglas de Firestore
-                    o la consola del navegador.
+                    Revisa la consola del navegador y las
+                    reglas de Firestore.
                 </p>
+
             </div>
         `;
 
@@ -123,7 +133,7 @@ async function cargarEventos() {
 
 
 /* =========================================
-   ESTADO DE CARGA
+   MOSTRAR ESTADO DE CARGA
 ========================================= */
 
 function mostrarCargandoEventos() {
@@ -133,7 +143,11 @@ function mostrarCargandoEventos() {
 
     lista.innerHTML = `
         <div class="sin-registros">
-            <p>Cargando ediciones...</p>
+
+            <p>
+                Cargando ediciones...
+            </p>
+
         </div>
     `;
 
@@ -141,14 +155,15 @@ function mostrarCargandoEventos() {
 
 
 /* =========================================
-   MOSTRAR EVENTOS
+   RENDERIZAR EVENTOS
 ========================================= */
 
 function renderEventos() {
 
     const eventoActivo =
         eventos.find(
-            (evento) => evento.activo === true
+            (evento) =>
+                evento.activo === true
         );
 
     activo.textContent =
@@ -162,11 +177,16 @@ function renderEventos() {
 
         lista.innerHTML = `
             <div class="sin-registros">
-                <h3>No hay ediciones</h3>
+
+                <h3>
+                    No hay ediciones
+                </h3>
 
                 <p>
-                    Crea la primera edición desde Color Manager.
+                    Crea la primera edición desde
+                    Color Manager.
                 </p>
+
             </div>
         `;
 
@@ -179,16 +199,20 @@ function renderEventos() {
         const tarjeta =
             document.createElement("div");
 
-        tarjeta.className = "evento";
+        tarjeta.className =
+            "evento";
+
 
         const informacion =
             document.createElement("div");
+
 
         const nombre =
             document.createElement("strong");
 
         nombre.textContent =
             evento.nombre || evento.id;
+
 
         const estado =
             document.createElement("small");
@@ -198,16 +222,26 @@ function renderEventos() {
                 ? "🟢 Activo"
                 : "⚪ Inactivo";
 
+
         informacion.appendChild(nombre);
         informacion.appendChild(estado);
+
 
         const boton =
             document.createElement("button");
 
-        boton.type = "button";
-        boton.className = "abrirEvento";
-        boton.dataset.id = evento.id;
-        boton.textContent = "Abrir";
+        boton.type =
+            "button";
+
+        boton.className =
+            "abrirEvento";
+
+        boton.dataset.id =
+            evento.id;
+
+        boton.textContent =
+            "Abrir";
+
 
         tarjeta.appendChild(informacion);
         tarjeta.appendChild(boton);
@@ -227,7 +261,8 @@ function abrirEvento(eventoId) {
 
     const evento =
         eventos.find(
-            (item) => item.id === eventoId
+            (item) =>
+                item.id === eventoId
         );
 
     if (!evento) {
@@ -241,13 +276,17 @@ function abrirEvento(eventoId) {
 
     }
 
-    eventoSeleccionadoId = evento.id;
+    eventoSeleccionadoId =
+        evento.id;
 
     tituloEvento.textContent =
         evento.nombre || evento.id;
 
-    colorHome.hidden = true;
-    vistaEvento.hidden = false;
+    colorHome.hidden =
+        true;
+
+    vistaEvento.hidden =
+        false;
 
     mostrarModulo("fechas");
 
@@ -279,6 +318,7 @@ function mostrarModulo(modulo) {
 
     });
 
+
     switch (modulo) {
 
         case "fechas":
@@ -293,15 +333,21 @@ function mostrarModulo(modulo) {
             } else {
 
                 contenidoManager.innerHTML = `
-                    <h3>📅 Fechas</h3>
+                    <div class="sin-registros">
 
-                    <p>
-                        No se pudo cargar el módulo de fechas.
-                    </p>
+                        <h3>
+                            No se pudo cargar Fechas
+                        </h3>
+
+                        <p>
+                            Revisa la ruta del archivo fechas.js.
+                        </p>
+
+                    </div>
                 `;
 
                 console.error(
-                    "La función renderFechas no está disponible."
+                    "renderFechas no está disponible."
                 );
 
             }
@@ -315,12 +361,16 @@ function mostrarModulo(modulo) {
                 <div class="header-modulo">
 
                     <div>
-                        <h3>🪑 Zonas</h3>
+
+                        <h3>
+                            🪑 Zonas
+                        </h3>
 
                         <p>
                             Administra las zonas y secciones
                             de esta edición.
                         </p>
+
                     </div>
 
                     <button
@@ -334,10 +384,12 @@ function mostrarModulo(modulo) {
                 </div>
 
                 <div class="sin-registros">
+
                     <p>
                         El módulo de zonas se conectará
                         a Firestore en el siguiente paso.
                     </p>
+
                 </div>
             `;
 
@@ -350,12 +402,16 @@ function mostrarModulo(modulo) {
                 <div class="header-modulo">
 
                     <div>
-                        <h3>🌈 Fan Projects</h3>
+
+                        <h3>
+                            🌈 Fan Projects
+                        </h3>
 
                         <p>
                             Administra los fan projects
                             de esta edición.
                         </p>
+
                     </div>
 
                     <button
@@ -369,10 +425,12 @@ function mostrarModulo(modulo) {
                 </div>
 
                 <div class="sin-registros">
+
                     <p>
                         El módulo de fan projects se conectará
-                        a Firestore después de las fechas.
+                        después de Fechas y Zonas.
                     </p>
+
                 </div>
             `;
 
@@ -390,7 +448,11 @@ function mostrarModulo(modulo) {
 
             contenidoManager.innerHTML = `
                 <div class="sin-registros">
-                    <p>Módulo no disponible.</p>
+
+                    <p>
+                        Módulo no disponible.
+                    </p>
+
                 </div>
             `;
 
@@ -415,9 +477,12 @@ function mostrarInformacionEvento() {
 
         contenidoManager.innerHTML = `
             <div class="sin-registros">
+
                 <p>
-                    No se encontró la información del evento.
+                    No se encontró la información
+                    del evento.
                 </p>
+
             </div>
         `;
 
@@ -426,7 +491,9 @@ function mostrarInformacionEvento() {
     }
 
     contenidoManager.innerHTML = `
-        <h3>⚙ Información</h3>
+        <h3>
+            ⚙ Información
+        </h3>
 
         <div class="informacion-evento">
 
@@ -466,58 +533,74 @@ function mostrarInformacionEvento() {
 
 
 /* =========================================
-   CLICS GENERALES
+   ABRIR DESDE LA LISTA
 ========================================= */
 
-document.addEventListener("click", (event) => {
+document.addEventListener(
+    "click",
+    (event) => {
 
-    const botonAbrir =
-        event.target.closest(".abrirEvento");
+        const botonAbrir =
+            event.target.closest(
+                ".abrirEvento"
+            );
 
-    if (!botonAbrir) {
-        return;
+        if (!botonAbrir) {
+            return;
+        }
+
+        abrirEvento(
+            botonAbrir.dataset.id
+        );
+
     }
-
-    abrirEvento(
-        botonAbrir.dataset.id
-    );
-
-});
+);
 
 
 /* =========================================
    VOLVER A EVENTOS
 ========================================= */
 
-volverEventos.addEventListener("click", () => {
+volverEventos.addEventListener(
+    "click",
+    () => {
 
-    eventoSeleccionadoId = null;
+        eventoSeleccionadoId =
+            null;
 
-    vistaEvento.hidden = true;
-    colorHome.hidden = false;
+        vistaEvento.hidden =
+            true;
 
-    contenidoManager.innerHTML = "";
+        colorHome.hidden =
+            false;
 
-});
+        contenidoManager.innerHTML =
+            "";
+
+    }
+);
 
 
 /* =========================================
-   CAMBIO DE PESTAÑAS
+   CAMBIAR DE PESTAÑA
 ========================================= */
 
 tabs.forEach((tab) => {
 
-    tab.addEventListener("click", () => {
+    tab.addEventListener(
+        "click",
+        () => {
 
-        if (!eventoSeleccionadoId) {
-            return;
+            if (!eventoSeleccionadoId) {
+                return;
+            }
+
+            mostrarModulo(
+                tab.dataset.tab
+            );
+
         }
-
-        mostrarModulo(
-            tab.dataset.tab
-        );
-
-    });
+    );
 
 });
 
