@@ -1,3 +1,7 @@
+/* =========================================
+   COLOR MANAGER
+========================================= */
+
 const eventosDemo = [
 
     {
@@ -14,23 +18,34 @@ const eventosDemo = [
 
 ];
 
+
+/* =========================================
+   ELEMENTOS
+========================================= */
+
 const lista =
     document.getElementById("listaEventos");
 
 const activo =
     document.getElementById("eventoActivo");
 
-const vistaEvento =
-    document.getElementById("vistaEvento");
-
 const colorHome =
     document.querySelector(".color-home");
+
+const vistaEvento =
+    document.getElementById("vistaEvento");
 
 const tituloEvento =
     document.getElementById("tituloEvento");
 
 const volverEventos =
     document.getElementById("volverEventos");
+
+const contenidoManager =
+    document.getElementById("contenidoManager");
+
+const tabs =
+    document.querySelectorAll(".tab-manager");
 
 
 /* =========================================
@@ -44,17 +59,10 @@ function cargarEventos() {
             evento => evento.activo
         );
 
-    if (eventoActivo) {
-
-        activo.textContent =
-            eventoActivo.nombre;
-
-    } else {
-
-        activo.textContent =
-            "No hay evento activo.";
-
-    }
+    activo.textContent =
+        eventoActivo
+            ? eventoActivo.nombre
+            : "No hay evento activo.";
 
     lista.innerHTML = "";
 
@@ -69,8 +77,6 @@ function cargarEventos() {
                 <strong>
                     ${evento.nombre}
                 </strong>
-
-                <br>
 
                 <small>
                     ${
@@ -99,48 +105,174 @@ function cargarEventos() {
 
 
 /* =========================================
-   ABRIR EVENTO
+   CAMBIAR PESTAÑA
 ========================================= */
 
-document.addEventListener("click", (e) => {
+function mostrarModulo(modulo){
 
-    if (
-        !e.target.classList.contains(
-            "abrirEvento"
-        )
-    ) {
-        return;
-    }
+    tabs.forEach(tab=>{
 
-    const id =
-        e.target.dataset.id;
-
-    const evento =
-        eventosDemo.find(
-            ev => ev.id === id
+        tab.classList.toggle(
+            "activa",
+            tab.dataset.tab===modulo
         );
 
-    if (!evento) return;
+    });
 
-    tituloEvento.textContent =
-        evento.nombre;
+    switch(modulo){
 
-    colorHome.hidden = true;
+        case "fechas":
 
-    vistaEvento.hidden = false;
+            contenidoManager.innerHTML=`
+
+                <h3>
+                    📅 Fechas
+                </h3>
+
+                <p>
+
+                    Aquí aparecerán todas las
+                    fechas del evento.
+
+                </p>
+
+                <button>
+
+                    ＋ Agregar fecha
+
+                </button>
+
+            `;
+
+        break;
+
+
+
+        case "zonas":
+
+            contenidoManager.innerHTML=`
+
+                <h3>
+                    🪑 Zonas
+                </h3>
+
+                <p>
+
+                    Aquí aparecerán todas las
+                    zonas.
+
+                </p>
+
+                <button>
+
+                    ＋ Agregar zona
+
+                </button>
+
+            `;
+
+        break;
+
+
+
+        case "fanprojects":
+
+            contenidoManager.innerHTML=`
+
+                <h3>
+                    🌈 Fan Projects
+                </h3>
+
+                <p>
+
+                    Aquí administrarás todos
+                    los fan projects.
+
+                </p>
+
+                <button>
+
+                    ＋ Nuevo Fan Project
+
+                </button>
+
+            `;
+
+        break;
+
+
+
+        case "informacion":
+
+            contenidoManager.innerHTML=`
+
+                <h3>
+                    ⚙ Información
+                </h3>
+
+                <p>
+
+                    Configuración general
+                    del evento.
+
+                </p>
+
+            `;
+
+        break;
+
+    }
+
+}
+
+
+/* =========================================
+   EVENTOS
+========================================= */
+
+document.addEventListener("click",(e)=>{
+
+    if(e.target.classList.contains("abrirEvento")){
+
+        const evento=
+            eventosDemo.find(
+                ev=>ev.id===e.target.dataset.id
+            );
+
+        if(!evento)return;
+
+        tituloEvento.textContent=
+            evento.nombre;
+
+        colorHome.hidden=true;
+
+        vistaEvento.hidden=false;
+
+        mostrarModulo("fechas");
+
+    }
 
 });
 
 
-/* =========================================
-   VOLVER
-========================================= */
+volverEventos.addEventListener("click",()=>{
 
-volverEventos.addEventListener("click", () => {
+    vistaEvento.hidden=true;
 
-    vistaEvento.hidden = true;
+    colorHome.hidden=false;
 
-    colorHome.hidden = false;
+});
+
+
+tabs.forEach(tab=>{
+
+    tab.addEventListener("click",()=>{
+
+        mostrarModulo(
+            tab.dataset.tab
+        );
+
+    });
 
 });
 
