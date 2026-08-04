@@ -31,6 +31,10 @@ import {
 import {
   renderZonas
 } from "./modulos/color-manager/zonas/index.js";
+import {
+  renderFanProjects
+} from "./modulos/color-manager/fan-projects/index.js";
+
 
 // ========================================
 // ELEMENTOS GENERALES
