@@ -1,11 +1,25 @@
-import { db } from "../../shared/firebase.js";
+/* =========================================
+   COLOR MANAGER
+   CONTROLADOR PRINCIPAL
+========================================= */
+
+import { db } from "./shared/firebase.js";
 
 import {
     collection,
-    getDocs,
-    query,
-    where
+    getDocs
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+
+/* =========================================
+   ESTADO
+========================================= */
+
+let eventos = [];
+
+let eventoSeleccionadoId = null;
+
+
 /* =========================================
    ELEMENTOS
 ========================================= */
@@ -35,15 +49,106 @@ const tabs =
     document.querySelectorAll(".tab-manager");
 
 
+/*
+   El módulo fechas.js necesita acceder a estos datos.
+   Después lo convertiremos también en módulo.
+*/
+
+window.contenidoManager = contenidoManager;
+
+window.obtenerEventoSeleccionadoId = function () {
+    return eventoSeleccionadoId;
+};
+
+
 /* =========================================
-   CARGAR EVENTOS
+   CARGAR EVENTOS DESDE FIRESTORE
 ========================================= */
 
-function cargarEventos() {
+async function cargarEventos() {
+
+    mostrarCargandoEventos();
+
+    try {
+
+        const referenciaEventos =
+            collection(db, "eventos");
+
+        const snapshot =
+            await getDocs(referenciaEventos);
+
+        eventos = snapshot.docs.map((documento) => ({
+            id: documento.id,
+            ...documento.data()
+        }));
+
+        eventos.sort((a, b) => {
+
+            const anioA =
+                Number(a.anio) || 0;
+
+            const anioB =
+                Number(b.anio) || 0;
+
+            return anioB - anioA;
+
+        });
+
+        renderEventos();
+
+    } catch (error) {
+
+        console.error(
+            "Error al cargar los eventos:",
+            error
+        );
+
+        activo.textContent =
+            "No se pudo cargar el evento activo.";
+
+        lista.innerHTML = `
+            <div class="sin-registros">
+                <h3>No fue posible cargar las ediciones</h3>
+
+                <p>
+                    Revisa la conexión, las reglas de Firestore
+                    o la consola del navegador.
+                </p>
+            </div>
+        `;
+
+    }
+
+}
+
+
+/* =========================================
+   ESTADO DE CARGA
+========================================= */
+
+function mostrarCargandoEventos() {
+
+    activo.textContent =
+        "Cargando evento activo...";
+
+    lista.innerHTML = `
+        <div class="sin-registros">
+            <p>Cargando ediciones...</p>
+        </div>
+    `;
+
+}
+
+
+/* =========================================
+   MOSTRAR EVENTOS
+========================================= */
+
+function renderEventos() {
 
     const eventoActivo =
-        eventosDemo.find(
-            evento => evento.activo
+        eventos.find(
+            (evento) => evento.activo === true
         );
 
     activo.textContent =
@@ -53,40 +158,98 @@ function cargarEventos() {
 
     lista.innerHTML = "";
 
-    eventosDemo.forEach(evento => {
+    if (eventos.length === 0) {
 
-        lista.innerHTML += `
+        lista.innerHTML = `
+            <div class="sin-registros">
+                <h3>No hay ediciones</h3>
 
-        <div class="evento">
-
-            <div>
-
-                <strong>
-                    ${evento.nombre}
-                </strong>
-
-                <small>
-                    ${
-                        evento.activo
-                        ? "🟢 Activo"
-                        : "⚪ Inactivo"
-                    }
-                </small>
-
+                <p>
+                    Crea la primera edición desde Color Manager.
+                </p>
             </div>
-
-            <button
-                class="abrirEvento"
-                data-id="${evento.id}"
-            >
-                Abrir
-            </button>
-
-        </div>
-
         `;
 
+        return;
+
+    }
+
+    eventos.forEach((evento) => {
+
+        const tarjeta =
+            document.createElement("div");
+
+        tarjeta.className = "evento";
+
+        const informacion =
+            document.createElement("div");
+
+        const nombre =
+            document.createElement("strong");
+
+        nombre.textContent =
+            evento.nombre || evento.id;
+
+        const estado =
+            document.createElement("small");
+
+        estado.textContent =
+            evento.activo === true
+                ? "🟢 Activo"
+                : "⚪ Inactivo";
+
+        informacion.appendChild(nombre);
+        informacion.appendChild(estado);
+
+        const boton =
+            document.createElement("button");
+
+        boton.type = "button";
+        boton.className = "abrirEvento";
+        boton.dataset.id = evento.id;
+        boton.textContent = "Abrir";
+
+        tarjeta.appendChild(informacion);
+        tarjeta.appendChild(boton);
+
+        lista.appendChild(tarjeta);
+
     });
+
+}
+
+
+/* =========================================
+   ABRIR EVENTO
+========================================= */
+
+function abrirEvento(eventoId) {
+
+    const evento =
+        eventos.find(
+            (item) => item.id === eventoId
+        );
+
+    if (!evento) {
+
+        console.warn(
+            "No se encontró el evento:",
+            eventoId
+        );
+
+        return;
+
+    }
+
+    eventoSeleccionadoId = evento.id;
+
+    tituloEvento.textContent =
+        evento.nombre || evento.id;
+
+    colorHome.hidden = true;
+    vistaEvento.hidden = false;
+
+    mostrarModulo("fechas");
 
 }
 
@@ -95,122 +258,141 @@ function cargarEventos() {
    CAMBIAR PESTAÑA
 ========================================= */
 
-function mostrarModulo(modulo){
+function mostrarModulo(modulo) {
 
-    tabs.forEach(tab=>{
+    tabs.forEach((tab) => {
+
+        const seleccionada =
+            tab.dataset.tab === modulo;
 
         tab.classList.toggle(
             "activa",
-            tab.dataset.tab===modulo
+            seleccionada
+        );
+
+        tab.setAttribute(
+            "aria-selected",
+            seleccionada
+                ? "true"
+                : "false"
         );
 
     });
 
-    switch(modulo){
+    switch (modulo) {
 
         case "fechas":
 
-    renderFechas();
+            if (
+                typeof window.renderFechas ===
+                "function"
+            ) {
 
-break;
+                window.renderFechas();
 
-            contenidoManager.innerHTML=`
+            } else {
 
-                <h3>
-                    📅 Fechas
-                </h3>
+                contenidoManager.innerHTML = `
+                    <h3>📅 Fechas</h3>
 
-                <p>
+                    <p>
+                        No se pudo cargar el módulo de fechas.
+                    </p>
+                `;
 
-                    Aquí aparecerán todas las
-                    fechas del evento.
+                console.error(
+                    "La función renderFechas no está disponible."
+                );
 
-                </p>
+            }
 
-                <button>
-
-                    ＋ Agregar fecha
-
-                </button>
-
-            `;
-
-        break;
-
+            break;
 
 
         case "zonas":
 
-            contenidoManager.innerHTML=`
+            contenidoManager.innerHTML = `
+                <div class="header-modulo">
 
-                <h3>
-                    🪑 Zonas
-                </h3>
+                    <div>
+                        <h3>🪑 Zonas</h3>
 
-                <p>
+                        <p>
+                            Administra las zonas y secciones
+                            de esta edición.
+                        </p>
+                    </div>
 
-                    Aquí aparecerán todas las
-                    zonas.
+                    <button
+                        type="button"
+                        class="btn-principal"
+                        id="btnNuevaZona"
+                    >
+                        ＋ Nueva zona
+                    </button>
 
-                </p>
+                </div>
 
-                <button>
-
-                    ＋ Agregar zona
-
-                </button>
-
+                <div class="sin-registros">
+                    <p>
+                        El módulo de zonas se conectará
+                        a Firestore en el siguiente paso.
+                    </p>
+                </div>
             `;
 
-        break;
-
+            break;
 
 
         case "fanprojects":
 
-            contenidoManager.innerHTML=`
+            contenidoManager.innerHTML = `
+                <div class="header-modulo">
 
-                <h3>
-                    🌈 Fan Projects
-                </h3>
+                    <div>
+                        <h3>🌈 Fan Projects</h3>
 
-                <p>
+                        <p>
+                            Administra los fan projects
+                            de esta edición.
+                        </p>
+                    </div>
 
-                    Aquí administrarás todos
-                    los fan projects.
+                    <button
+                        type="button"
+                        class="btn-principal"
+                        id="btnNuevoFanProject"
+                    >
+                        ＋ Nuevo Fan Project
+                    </button>
 
-                </p>
+                </div>
 
-                <button>
-
-                    ＋ Nuevo Fan Project
-
-                </button>
-
+                <div class="sin-registros">
+                    <p>
+                        El módulo de fan projects se conectará
+                        a Firestore después de las fechas.
+                    </p>
+                </div>
             `;
 
-        break;
-
+            break;
 
 
         case "informacion":
 
-            contenidoManager.innerHTML=`
+            mostrarInformacionEvento();
 
-                <h3>
-                    ⚙ Información
-                </h3>
+            break;
 
-                <p>
 
-                    Configuración general
-                    del evento.
+        default:
 
-                </p>
-
+            contenidoManager.innerHTML = `
+                <div class="sin-registros">
+                    <p>Módulo no disponible.</p>
+                </div>
             `;
-
-        break;
 
     }
 
@@ -218,46 +400,118 @@ break;
 
 
 /* =========================================
-   EVENTOS
+   INFORMACIÓN DEL EVENTO
 ========================================= */
 
-document.addEventListener("click",(e)=>{
+function mostrarInformacionEvento() {
 
-    if(e.target.classList.contains("abrirEvento")){
+    const evento =
+        eventos.find(
+            (item) =>
+                item.id === eventoSeleccionadoId
+        );
 
-        const evento=
-            eventosDemo.find(
-                ev=>ev.id===e.target.dataset.id
-            );
+    if (!evento) {
 
-        if(!evento)return;
+        contenidoManager.innerHTML = `
+            <div class="sin-registros">
+                <p>
+                    No se encontró la información del evento.
+                </p>
+            </div>
+        `;
 
-        tituloEvento.textContent=
-            evento.nombre;
-
-        colorHome.hidden=true;
-
-        vistaEvento.hidden=false;
-
-        mostrarModulo("fechas");
+        return;
 
     }
 
+    contenidoManager.innerHTML = `
+        <h3>⚙ Información</h3>
+
+        <div class="informacion-evento">
+
+            <p>
+                <strong>Nombre:</strong>
+                ${evento.nombre || "Sin nombre"}
+            </p>
+
+            <p>
+                <strong>Año:</strong>
+                ${evento.anio || "Sin definir"}
+            </p>
+
+            <p>
+                <strong>Ciudad:</strong>
+                ${evento.ciudad || "Sin definir"}
+            </p>
+
+            <p>
+                <strong>País:</strong>
+                ${evento.pais || "Sin definir"}
+            </p>
+
+            <p>
+                <strong>Estado:</strong>
+                ${
+                    evento.activo === true
+                        ? "Activo"
+                        : "Inactivo"
+                }
+            </p>
+
+        </div>
+    `;
+
+}
+
+
+/* =========================================
+   CLICS GENERALES
+========================================= */
+
+document.addEventListener("click", (event) => {
+
+    const botonAbrir =
+        event.target.closest(".abrirEvento");
+
+    if (!botonAbrir) {
+        return;
+    }
+
+    abrirEvento(
+        botonAbrir.dataset.id
+    );
+
 });
 
 
-volverEventos.addEventListener("click",()=>{
+/* =========================================
+   VOLVER A EVENTOS
+========================================= */
 
-    vistaEvento.hidden=true;
+volverEventos.addEventListener("click", () => {
 
-    colorHome.hidden=false;
+    eventoSeleccionadoId = null;
+
+    vistaEvento.hidden = true;
+    colorHome.hidden = false;
+
+    contenidoManager.innerHTML = "";
 
 });
 
 
-tabs.forEach(tab=>{
+/* =========================================
+   CAMBIO DE PESTAÑAS
+========================================= */
 
-    tab.addEventListener("click",()=>{
+tabs.forEach((tab) => {
+
+    tab.addEventListener("click", () => {
+
+        if (!eventoSeleccionadoId) {
+            return;
+        }
 
         mostrarModulo(
             tab.dataset.tab
