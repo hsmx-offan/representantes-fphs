@@ -704,7 +704,10 @@ volverSelector.addEventListener(
   "click",
   volverAlSelector
 );
-
+cambiarZona.addEventListener(
+  "click",
+  volverAZona
+);
 
 // ========================================
 // INICIAR APP
