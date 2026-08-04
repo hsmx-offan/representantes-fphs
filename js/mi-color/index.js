@@ -121,6 +121,15 @@ const volverSelector =
     "volverSelector"
   );
 
+const volverSelector =
+  document.getElementById(
+    "volverSelector"
+  );
+
+const cambiarZona =
+  document.getElementById(
+    "cambiarZona"
+  );
 
 // ========================================
 // ESTADO
