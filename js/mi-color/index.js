@@ -642,7 +642,45 @@ function volverAlSelector() {
 
 }
 
+// ========================================
+// VOLVER A ELEGIR ZONA
+// ========================================
 
+function volverAZona() {
+
+  limpiarResultado({
+
+    resultado,
+
+    sinColor,
+
+    contenido
+
+  });
+
+
+  zonaSelect.value =
+    "";
+
+  fanProjectSelect.value =
+    "";
+
+
+  zonaSelect.disabled =
+    false;
+
+  fanProjectSelect.disabled =
+    true;
+
+
+  mostrarPaso(
+    "zona"
+  );
+
+
+  zonaSelect.focus();
+
+}
 // ========================================
 // EVENTOS
 // ========================================
