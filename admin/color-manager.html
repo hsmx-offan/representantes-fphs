@@ -3,64 +3,155 @@
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Color Manager</title>
+    <title>Color Manager</title>
 
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/color-manager.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/color-manager.css">
 
 </head>
 
 <body>
 
-<div id="menuAdmin"></div>
+    <div id="menuAdmin"></div>
 
-<main class="contenido-admin">
+    <main class="contenido-admin">
 
-<header class="encabezado-admin">
+        <header class="encabezado-admin">
 
-<h1>🌈 Color Manager</h1>
+            <h1>🌈 Color Manager</h1>
 
-<p>
-Administra eventos, fan projects, fechas, zonas y colores.
-</p>
+            <p>
+                Administra eventos, fan projects, fechas, zonas y colores.
+            </p>
 
-</header>
+        </header>
 
-<section class="color-home">
+        <!-- =========================
+             VISTA PRINCIPAL
+        ========================== -->
 
-<div class="card-evento-activo">
+        <section class="color-home">
 
-<h2>Evento activo</h2>
+            <div class="card-evento-activo">
 
-<div id="eventoActivo">
+                <h2>Evento activo</h2>
 
-No hay evento activo.
+                <div id="eventoActivo">
 
-</div>
+                    No hay evento activo.
 
-<button id="btnCrearEvento">
-＋ Crear nueva edición
-</button>
+                </div>
 
-</div>
+                <button id="btnCrearEvento">
+                    ＋ Crear nueva edición
+                </button>
 
-<div class="card-eventos">
+            </div>
 
-<h2>Ediciones</h2>
+            <div class="card-eventos">
 
-<div id="listaEventos"></div>
+                <h2>Ediciones</h2>
 
-</div>
+                <div id="listaEventos"></div>
 
-</section>
+            </div>
 
-</main>
+        </section>
 
-<script src="js/menu.js"></script>
-<script src="js/color-manager.js"></script>
+        <!-- =========================
+             VISTA DEL EVENTO
+        ========================== -->
+
+        <section
+            id="vistaEvento"
+            class="vista-evento"
+            hidden
+        >
+
+            <button
+                id="volverEventos"
+                class="btn-volver"
+            >
+                ← Volver
+            </button>
+
+            <h2 id="tituloEvento">
+                Evento
+            </h2>
+
+            <div class="grid-modulos">
+
+                <button
+                    class="modulo-card"
+                    data-modulo="fechas"
+                >
+
+                    <span class="icono-modulo">📅</span>
+
+                    <strong>Fechas</strong>
+
+                    <small>
+                        Administrar las fechas del evento.
+                    </small>
+
+                </button>
+
+                <button
+                    class="modulo-card"
+                    data-modulo="zonas"
+                >
+
+                    <span class="icono-modulo">🪑</span>
+
+                    <strong>Zonas</strong>
+
+                    <small>
+                        Administrar zonas y secciones.
+                    </small>
+
+                </button>
+
+                <button
+                    class="modulo-card"
+                    data-modulo="fanprojects"
+                >
+
+                    <span class="icono-modulo">🌈</span>
+
+                    <strong>Fan Projects</strong>
+
+                    <small>
+                        Crear y editar fan projects.
+                    </small>
+
+                </button>
+
+                <button
+                    class="modulo-card"
+                    data-modulo="configuracion"
+                >
+
+                    <span class="icono-modulo">⚙️</span>
+
+                    <strong>Configuración</strong>
+
+                    <small>
+                        Configuración general del evento.
+                    </small>
+
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="js/menu.js"></script>
+    <script src="js/color-manager.js"></script>
 
 </body>
 
