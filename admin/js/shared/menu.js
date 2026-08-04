@@ -55,7 +55,12 @@ const opcionesMenu = [
     nombre: "Comunicados",
     archivo: "comunicados.html",
     disponible: false
-  }
+  },
+  {
+    nombre: "Color Manager",
+    archivo: "color-manager.html",
+    disponible: true
+}
 
 ];
 
