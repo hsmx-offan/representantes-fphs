@@ -5,462 +5,314 @@
 
 
 // ========================================
-// CREAR CONTROLADOR DEL FORMULARIO
+// ESCAPAR HTML
 // ========================================
 
-export function crearFormularioEventos({
+function escaparHTML(
+  texto
+) {
 
-  elementosModal,
-
-  camposEvento,
-
-  obtenerEventoPorId,
-
-  mostrarToast
-
-}) {
-
-  let guardando =
-    false;
-
-
-  // ======================================
-  // VALIDAR ELEMENTOS
-  // ======================================
-
-  if (
-    !elementosModal ||
-    !camposEvento
-  ) {
-
-    throw new Error(
-      "No se recibieron los elementos del formulario de eventos."
+  return String(
+    texto ?? ""
+  )
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
     );
 
-  }
+}
 
 
-  // ======================================
-  // LIMPIAR FORMULARIO
-  // ======================================
+// ========================================
+// CREAR CONTENIDO DEL FORMULARIO
+// ========================================
 
-  function limpiarFormulario() {
+export function crearFormularioEvento(
+  evento = {}
+) {
 
-    elementosModal.formulario.reset();
+  const anioActual =
+    new Date().getFullYear();
 
 
-    camposEvento.id.value =
-      "";
+  return `
 
-    camposEvento.anio.value =
-      new Date().getFullYear();
+    <div class="campo">
 
-    camposEvento.activo.checked =
-      false;
+      <label for="nombreEventoModulo">
+        Nombre de la edición
+      </label>
 
-  }
+      <input
+        type="text"
+        id="nombreEventoModulo"
+        value="${escaparHTML(
+          evento.nombre || ""
+        )}"
+        placeholder="Together Together Tour México 2026"
+        autocomplete="off"
+        required
+      >
 
+    </div>
 
-  // ======================================
-  // OBTENER DATOS
-  // ======================================
 
-  function obtenerDatos() {
+    <div class="formulario-grid">
 
-    return {
+      <div class="campo">
 
-      id:
-        camposEvento.id.value.trim(),
+        <label for="anioEventoModulo">
+          Año
+        </label>
 
-      nombre:
-        camposEvento.nombre.value.trim(),
+        <input
+          type="number"
+          id="anioEventoModulo"
+          min="2026"
+          max="2100"
+          value="${escaparHTML(
+            evento.anio || anioActual
+          )}"
+          required
+        >
 
-      anio:
-        Number(
-          camposEvento.anio.value
-        ),
+      </div>
 
-      ciudad:
-        camposEvento.ciudad.value.trim(),
 
-      pais:
-        camposEvento.pais.value.trim(),
+      <div class="campo">
 
-      activo:
-        camposEvento.activo.checked
+        <label for="ciudadEventoModulo">
+          Ciudad
+        </label>
 
-    };
+        <input
+          type="text"
+          id="ciudadEventoModulo"
+          value="${escaparHTML(
+            evento.ciudad || ""
+          )}"
+          placeholder="Ciudad de México"
+          autocomplete="off"
+          required
+        >
 
-  }
+      </div>
 
+    </div>
 
-  // ======================================
-  // VALIDAR DATOS
-  // ======================================
 
-  function validarDatos(
-    datos
-  ) {
+    <div class="campo">
 
-    if (
-      !datos.nombre
-    ) {
+      <label for="paisEventoModulo">
+        País
+      </label>
 
-      throw new Error(
-        "Escribe el nombre de la edición."
-      );
+      <input
+        type="text"
+        id="paisEventoModulo"
+        value="${escaparHTML(
+          evento.pais || "México"
+        )}"
+        placeholder="México"
+        autocomplete="off"
+        required
+      >
 
-    }
+    </div>
 
 
-    if (
-      !Number.isInteger(
-        datos.anio
-      ) ||
-      datos.anio < 2026
-    ) {
+    <label class="campo-check">
 
-      throw new Error(
-        "Escribe un año válido."
-      );
+      <input
+        type="checkbox"
+        id="activoEventoModulo"
+        ${
+          evento.activo === true
+            ? "checked"
+            : ""
+        }
+      >
 
-    }
+      <span>
+        Marcar esta edición como activa
+      </span>
 
+    </label>
 
-    if (
-      !datos.ciudad
-    ) {
+  `;
 
-      throw new Error(
-        "Escribe la ciudad del evento."
-      );
+}
 
-    }
 
+// ========================================
+// OBTENER DATOS
+// ========================================
 
-    if (
-      !datos.pais
-    ) {
-
-      throw new Error(
-        "Escribe el país del evento."
-      );
-
-    }
-
-
-    return true;
-
-  }
-
-
-  // ======================================
-  // LLENAR FORMULARIO
-  // ======================================
-
-  function llenarFormulario(
-    evento
-  ) {
-
-    camposEvento.id.value =
-      evento.id || "";
-
-    camposEvento.nombre.value =
-      evento.nombre || "";
-
-    camposEvento.anio.value =
-      evento.anio || "";
-
-    camposEvento.ciudad.value =
-      evento.ciudad || "";
-
-    camposEvento.pais.value =
-      evento.pais || "";
-
-    camposEvento.activo.checked =
-      evento.activo === true;
-
-  }
-
-
-  // ======================================
-  // MOSTRAR MODAL
-  // ======================================
-
-  function mostrarModal() {
-
-    elementosModal.modal.hidden =
-      false;
-
-    document.body.classList.add(
-      "modal-abierto"
-    );
-
-
-    setTimeout(
-      () => {
-
-        camposEvento.nombre.focus();
-
-      },
-      50
-    );
-
-  }
-
-
-  // ======================================
-  // ABRIR NUEVO
-  // ======================================
-
-  function abrirNuevo() {
-
-    if (
-      guardando
-    ) {
-
-      return;
-
-    }
-
-
-    limpiarFormulario();
-
-
-    elementosModal.titulo.textContent =
-      "Crear nueva edición";
-
-    elementosModal.guardar.textContent =
-      "Guardar edición";
-
-
-    mostrarModal();
-
-  }
-
-
-  // ======================================
-  // ABRIR EDICIÓN
-  // ======================================
-
-  function abrirEdicion(
-    eventoId
-  ) {
-
-    if (
-      guardando
-    ) {
-
-      return;
-
-    }
-
-
-    const evento =
-      typeof obtenerEventoPorId ===
-        "function"
-        ? obtenerEventoPorId(
-            eventoId
-          )
-        : null;
-
-
-    if (
-      !evento
-    ) {
-
-      if (
-        typeof mostrarToast ===
-        "function"
-      ) {
-
-        mostrarToast(
-          "No se encontró la edición"
-        );
-
-      }
-
-      return;
-
-    }
-
-
-    limpiarFormulario();
-
-    llenarFormulario(
-      evento
-    );
-
-
-    elementosModal.titulo.textContent =
-      "Editar edición";
-
-    elementosModal.guardar.textContent =
-      "Guardar cambios";
-
-
-    mostrarModal();
-
-  }
-
-
-  // ======================================
-  // CERRAR MODAL
-  // ======================================
-
-  function cerrar() {
-
-    if (
-      guardando
-    ) {
-
-      return;
-
-    }
-
-
-    elementosModal.modal.hidden =
-      true;
-
-    document.body.classList.remove(
-      "modal-abierto"
-    );
-
-    limpiarFormulario();
-
-  }
-
-
-  // ======================================
-  // CAMBIAR ESTADO DE GUARDADO
-  // ======================================
-
-  function establecerGuardando({
-
-    valor,
-
-    esEdicion = false
-
-  }) {
-
-    guardando =
-      valor === true;
-
-
-    elementosModal.guardar.disabled =
-      guardando;
-
-    elementosModal.cerrar.disabled =
-      guardando;
-
-    elementosModal.cancelar.disabled =
-      guardando;
-
-
-    if (
-      guardando
-    ) {
-
-      elementosModal.guardar.textContent =
-        esEdicion
-          ? "Guardando cambios..."
-          : "Creando edición...";
-
-      return;
-
-    }
-
-
-    elementosModal.guardar.textContent =
-      esEdicion
-        ? "Guardar cambios"
-        : "Guardar edición";
-
-  }
-
-
-  // ======================================
-  // CONSULTAR ESTADO
-  // ======================================
-
-  function estaGuardando() {
-
-    return guardando;
-
-  }
-
-
-  // ======================================
-  // EVENTOS DEL MODAL
-  // ======================================
-
-  function manejarEscape(
-    evento
-  ) {
-
-    if (
-      evento.key === "Escape" &&
-      !elementosModal.modal.hidden
-    ) {
-
-      cerrar();
-
-    }
-
-  }
-
-
-  function registrarEventos() {
-
-    elementosModal.cerrar.addEventListener(
-      "click",
-      cerrar
-    );
-
-
-    elementosModal.cancelar.addEventListener(
-      "click",
-      cerrar
-    );
-
-
-    elementosModal.fondo.addEventListener(
-      "click",
-      cerrar
-    );
-
-
-    document.addEventListener(
-      "keydown",
-      manejarEscape
-    );
-
-  }
-
-
-  // ======================================
-  // INICIAR
-  // ======================================
-
-  registrarEventos();
-
+export function obtenerDatosEvento(
+  formulario
+) {
 
   return {
 
-    abrirNuevo,
+    nombre:
+      formulario
+        .querySelector(
+          "#nombreEventoModulo"
+        )
+        .value
+        .trim(),
 
-    abrirEdicion,
+    anio:
+      Number(
+        formulario
+          .querySelector(
+            "#anioEventoModulo"
+          )
+          .value
+      ),
 
-    cerrar,
+    ciudad:
+      formulario
+        .querySelector(
+          "#ciudadEventoModulo"
+        )
+        .value
+        .trim(),
 
-    obtenerDatos,
+    pais:
+      formulario
+        .querySelector(
+          "#paisEventoModulo"
+        )
+        .value
+        .trim(),
 
-    validarDatos,
-
-    establecerGuardando,
-
-    estaGuardando
+    activo:
+      formulario
+        .querySelector(
+          "#activoEventoModulo"
+        )
+        .checked
 
   };
+
+}
+
+
+// ========================================
+// VALIDAR DATOS
+// ========================================
+
+export function validarDatosEvento(
+  datos
+) {
+
+  if (
+    !datos.nombre
+  ) {
+
+    throw new Error(
+      "Escribe el nombre de la edición."
+    );
+
+  }
+
+
+  if (
+    !Number.isInteger(
+      datos.anio
+    ) ||
+    datos.anio < 2026 ||
+    datos.anio > 2100
+  ) {
+
+    throw new Error(
+      "Escribe un año válido."
+    );
+
+  }
+
+
+  if (
+    !datos.ciudad
+  ) {
+
+    throw new Error(
+      "Escribe la ciudad del evento."
+    );
+
+  }
+
+
+  if (
+    !datos.pais
+  ) {
+
+    throw new Error(
+      "Escribe el país del evento."
+    );
+
+  }
+
+
+  return true;
+
+}
+
+
+// ========================================
+// CREAR ID DEL EVENTO
+// ========================================
+
+export function crearIdEvento({
+  nombre,
+  anio
+}) {
+
+  const nombreNormalizado =
+    String(
+      nombre || "evento"
+    )
+      .normalize(
+        "NFD"
+      )
+      .replace(
+        /[\u0300-\u036f]/g,
+        ""
+      )
+      .toLowerCase()
+      .replace(
+        /[^a-z0-9]+/g,
+        "-"
+      )
+      .replace(
+        /^-+|-+$/g,
+        ""
+      )
+      .slice(
+        0,
+        35
+      );
+
+
+  return (
+    `${nombreNormalizado || "evento"}-${anio}`
+  );
 
 }
