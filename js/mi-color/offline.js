@@ -4,10 +4,10 @@
 ======================================== */
 
 const DB_NAME =
-    "mi-color-db";
+    "mi-color-db-final";
 
 const DB_VERSION =
-    2;
+    1;
 
 const STORE =
     "configuracion";
