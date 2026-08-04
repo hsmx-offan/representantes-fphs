@@ -55,40 +55,33 @@
                 </h2>
 
                 <div id="eventoActivo">
-
                     No hay evento activo.
-
                 </div>
 
-                <button id="btnCrearEvento">
-
+                <button
+                    type="button"
+                    id="btnCrearEvento"
+                >
                     ＋ Crear nueva edición
-
                 </button>
 
             </div>
-
 
             <div class="card-eventos">
 
                 <div class="titulo-card">
 
                     <h2>
-
                         Ediciones
-
                     </h2>
 
                 </div>
 
-                <div id="listaEventos">
-
-                </div>
+                <div id="listaEventos"></div>
 
             </div>
 
         </section>
-
 
         <!-- =========================
              VISTA DEL EVENTO
@@ -101,77 +94,72 @@
         >
 
             <button
+                type="button"
                 id="volverEventos"
                 class="btn-volver"
             >
-
                 ← Volver a eventos
-
             </button>
-
 
             <header class="evento-header">
 
                 <h2 id="tituloEvento">
-
                     Evento
-
                 </h2>
 
                 <p>
-
                     Administra toda la configuración
                     de esta edición.
-
                 </p>
 
             </header>
-
 
             <!-- =========================
                  MENÚ DEL EVENTO
             ========================== -->
 
-            <nav class="tabs-manager">
+            <nav
+                class="tabs-manager"
+                aria-label="Configuración del evento"
+            >
 
                 <button
+                    type="button"
                     class="tab-manager activa"
                     data-tab="fechas"
+                    aria-selected="true"
                 >
-
                     📅 Fechas
-
                 </button>
 
                 <button
+                    type="button"
                     class="tab-manager"
                     data-tab="zonas"
+                    aria-selected="false"
                 >
-
                     🪑 Zonas
-
                 </button>
 
                 <button
+                    type="button"
                     class="tab-manager"
                     data-tab="fanprojects"
+                    aria-selected="false"
                 >
-
                     🌈 Fan Projects
-
                 </button>
 
                 <button
+                    type="button"
                     class="tab-manager"
                     data-tab="informacion"
+                    aria-selected="false"
                 >
-
                     ⚙ Información
-
                 </button>
 
             </nav>
-
 
             <!-- =========================
                  CONTENIDO DINÁMICO
@@ -180,34 +168,24 @@
             <section
                 id="contenidoManager"
                 class="contenido-manager"
-            >
-
-                <!--
-                    Aquí el JavaScript cargará:
-
-                    Fechas
-
-                    Zonas
-
-                    Fan Projects
-
-                    Información
-                -->
-
-            </section>
+            ></section>
 
         </section>
 
     </main>
-
 
     <!-- =========================
          JS
     ========================== -->
 
     <script src="js/menu.js"></script>
-<script src="js/modulos/fechas.js"></script>
-    <script src="js/color-manager.js"></script>
+
+    <script src="js/modulos/color-manager/fechas.js"></script>
+
+    <script
+        type="module"
+        src="js/color-manager.js"
+    ></script>
 
 </body>
 
