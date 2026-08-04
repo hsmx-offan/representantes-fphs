@@ -24,10 +24,8 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 import {
-
-    db
-
-} from "../shared/firebase.js";
+  db
+} from "../../admin/js/shared/firebase.js";
 
 
 /* ========================================
