@@ -22,7 +22,6 @@ import {
 
 import {
   iniciarEventos,
-  obtenerEventos,
   editarEventoSeleccionado
 } from "./modulos/color-manager/eventos/index.js";
 
