@@ -21,6 +21,8 @@ const ARCHIVOS_APP = [
 
   `${RUTA_BASE}/js/mi-color/api.js`,
 
+  `${RUTA_BASE}/js/mi-color/offline.js`,
+
   `${RUTA_BASE}/js/mi-color/render.js`,
 
   `${RUTA_BASE}/manifest.webmanifest`,
@@ -34,7 +36,6 @@ const ARCHIVOS_APP = [
   `${RUTA_BASE}/admin/js/modulos/color-manager/shared/colores.js`
 
 ];
-
 
 // ========================================
 // INSTALAR
