@@ -40,6 +40,11 @@ const opcionesMenu = [
   disponible: true
 },
   {
+    nombre: "Color Manager",
+    archivo: "color-manager.html",
+    disponible: true
+  },
+  {
     nombre: "Publicaciones",
     archivo: "publicaciones.html",
     disponible: false
@@ -55,12 +60,7 @@ const opcionesMenu = [
     nombre: "Comunicados",
     archivo: "comunicados.html",
     disponible: false
-  },
-  {
-    nombre: "Color Manager",
-    archivo: "color-manager.html",
-    disponible: true
-}
+  }
 
 ];
 
