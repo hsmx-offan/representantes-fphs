@@ -1,6 +1,6 @@
 import {
   crearCard
-} from "../shared/card.js";
+} from "../shared/cards.js";
 
 import {
   mostrarCargando,
