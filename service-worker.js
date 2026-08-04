@@ -4,7 +4,7 @@
    ======================================== */
 
 const CACHE_NAME =
-  "mi-color-v11";
+  "mi-color-v13";
 
 
 const RUTA_BASE =
