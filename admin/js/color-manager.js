@@ -508,17 +508,19 @@ async function mostrarModulo(
 
       case "zonas":
 
-        mostrarModuloPendiente({
+  await renderZonas({
 
-          titulo:
-            "Módulo de Zonas",
+    eventoId:
+      estado.eventoSeleccionado.id,
 
-          descripcion:
-            "Se conectará después de terminar Fechas."
+    contenedor:
+      elementosVistaEvento.contenidoManager,
 
-        });
+    mostrarToast
 
-        break;
+  });
+
+  break;
 
 
       case "fanprojects":
