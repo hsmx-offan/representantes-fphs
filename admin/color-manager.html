@@ -3,188 +3,470 @@
 
 <head>
 
-    <meta charset="UTF-8">
+  <script>
+    if (
+      sessionStorage.getItem("accesoAdmin") === "1"
+    ) {
+      document.documentElement.classList.add(
+        "acceso-admin-recordado"
+      );
+    }
+  </script>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+  <meta charset="UTF-8">
 
-    <title>Color Manager</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-    <link rel="stylesheet" href="css/color-manager.css">
+  <title>
+    Color Manager | HSMX OFFAN
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="css/color-manager.css"
+  >
 
 </head>
 
 <body>
 
-    <!-- =========================
-         MENÚ ADMIN
-    ========================== -->
+  <div id="cargando">
+    Verificando acceso...
+  </div>
 
-    <div id="menuAdmin"></div>
+  <div
+    id="contenido"
+    style="display: none;"
+  >
 
-    <main class="contenido-admin">
+    <div class="app">
 
-        <!-- =========================
-             ENCABEZADO
-        ========================== -->
+      <header class="topbar">
 
-        <header class="encabezado-admin">
+        <div>
 
-            <h1>🌈 Color Manager</h1>
+          <p class="eyebrow">
+            HARRY STYLES MÉXICO OFFAN
+          </p>
 
-            <p>
-                Administra eventos, fan projects,
-                fechas, zonas y colores.
-            </p>
+          <h1>
+            Color Manager
+          </h1>
 
-        </header>
+          <p class="bienvenida">
+            Hola,
+            <strong id="nombreAdmin">
+              Admin
+            </strong>
+          </p>
 
-        <!-- =========================
-             VISTA PRINCIPAL
-        ========================== -->
+          <p class="subtitulo">
+            Administra eventos, fechas, zonas, fan projects y colores.
+          </p>
 
-        <section class="color-home">
+        </div>
 
-            <div class="card-evento-activo">
+        <div class="acciones-topbar">
 
-                <h2>
-                    Evento activo
-                </h2>
+          <button
+            type="button"
+            id="themeToggle"
+            class="theme-toggle"
+            aria-label="Cambiar tema"
+            title="Cambiar tema"
+          >
+            🌙
+          </button>
 
-                <div id="eventoActivo">
-                    No hay evento activo.
-                </div>
+          <button
+            type="button"
+            id="logoutButton"
+            class="logout"
+          >
+            Cerrar sesión
+          </button>
 
-                <button
-                    type="button"
-                    id="btnCrearEvento"
-                >
-                    ＋ Crear nueva edición
-                </button>
+        </div>
 
-            </div>
+      </header>
 
-            <div class="card-eventos">
+      <div id="menuAdmin"></div>
 
-                <div class="titulo-card">
-
-                    <h2>
-                        Ediciones
-                    </h2>
-
-                </div>
-
-                <div id="listaEventos"></div>
-
-            </div>
-
-        </section>
-
-        <!-- =========================
-             VISTA DEL EVENTO
-        ========================== -->
+      <main>
 
         <section
-            id="vistaEvento"
-            class="vista-evento"
-            hidden
+          id="vistaPrincipal"
+          class="color-home"
         >
 
-            <button
-                type="button"
-                id="volverEventos"
-                class="btn-volver"
-            >
-                ← Volver a eventos
-            </button>
+          <article class="bloque card-evento-activo">
 
-            <header class="evento-header">
+            <div class="titulo-bloque">
 
-                <h2 id="tituloEvento">
-                    Evento
+              <div>
+
+                <p class="etiqueta-seccion">
+                  EVENTO ACTIVO
+                </p>
+
+                <h2>
+                  Edición publicada
                 </h2>
 
                 <p>
-                    Administra toda la configuración
-                    de esta edición.
+                  Esta es la edición que utilizará la herramienta pública Mi Color.
                 </p>
 
-            </header>
+              </div>
 
-            <!-- =========================
-                 MENÚ DEL EVENTO
-            ========================== -->
+            </div>
 
-            <nav
-                class="tabs-manager"
-                aria-label="Configuración del evento"
+            <div
+              id="eventoActivo"
+              class="evento-activo-vacio"
+            >
+              No hay evento activo.
+            </div>
+
+          </article>
+
+          <article class="bloque card-eventos">
+
+            <div class="titulo-bloque encabezado-ediciones">
+
+              <div>
+
+                <p class="etiqueta-seccion">
+                  EDICIONES
+                </p>
+
+                <h2>
+                  Todas las ediciones
+                </h2>
+
+                <p>
+                  Crea y administra las configuraciones de cada evento.
+                </p>
+
+              </div>
+
+              <button
+                type="button"
+                id="btnCrearEvento"
+                class="boton-principal"
+              >
+                ＋ Crear nueva edición
+              </button>
+
+            </div>
+
+            <div
+              id="cargandoEventos"
+              class="estado-vacio"
+            >
+              Cargando ediciones...
+            </div>
+
+            <div
+              id="sinEventos"
+              class="estado-vacio"
+              style="display: none;"
             >
 
-                <button
-                    type="button"
-                    class="tab-manager activa"
-                    data-tab="fechas"
-                    aria-selected="true"
-                >
-                    📅 Fechas
-                </button>
+              <span class="estado-icono">
+                🌈
+              </span>
 
-                <button
-                    type="button"
-                    class="tab-manager"
-                    data-tab="zonas"
-                    aria-selected="false"
-                >
-                    🪑 Zonas
-                </button>
+              <strong>
+                Todavía no hay ediciones
+              </strong>
 
-                <button
-                    type="button"
-                    class="tab-manager"
-                    data-tab="fanprojects"
-                    aria-selected="false"
-                >
-                    🌈 Fan Projects
-                </button>
+              <p>
+                Crea la primera edición para comenzar a configurar Mi Color.
+              </p>
 
-                <button
-                    type="button"
-                    class="tab-manager"
-                    data-tab="informacion"
-                    aria-selected="false"
-                >
-                    ⚙ Información
-                </button>
+            </div>
 
-            </nav>
+            <div
+              id="listaEventos"
+              class="lista-eventos"
+              style="display: none;"
+            ></div>
 
-            <!-- =========================
-                 CONTENIDO DINÁMICO
-            ========================== -->
-
-            <section
-                id="contenidoManager"
-                class="contenido-manager"
-            ></section>
+          </article>
 
         </section>
 
-    </main>
+        <section
+          id="vistaEvento"
+          class="vista-evento"
+          hidden
+        >
 
-    <!-- =========================
-         JS
-    ========================== -->
+          <button
+            type="button"
+            id="volverEventos"
+            class="btn-volver"
+          >
+            ← Volver a ediciones
+          </button>
 
-   <script src="js/shared/menu.js"></script>
+          <section class="bloque evento-configuracion">
 
-    <script src="js/modulos/color-manager/fechas.js"></script>
+            <header class="evento-header">
 
-    <script
-        type="module"
-        src="js/color-manager.js"
-    ></script>
+              <div>
+
+                <p class="etiqueta-seccion">
+                  CONFIGURACIÓN
+                </p>
+
+                <h2 id="tituloEvento">
+                  Evento
+                </h2>
+
+                <p id="descripcionEvento">
+                  Administra toda la configuración de esta edición.
+                </p>
+
+              </div>
+
+              <div class="acciones-evento">
+
+                <button
+                  type="button"
+                  id="editarEventoActual"
+                  class="boton-secundario"
+                >
+                  Editar edición
+                </button>
+
+              </div>
+
+            </header>
+
+            <nav
+              class="tabs-manager"
+              aria-label="Configuración del evento"
+            >
+
+              <button
+                type="button"
+                class="tab-manager activa"
+                data-tab="fechas"
+                aria-selected="true"
+              >
+                📅 Fechas
+              </button>
+
+              <button
+                type="button"
+                class="tab-manager"
+                data-tab="zonas"
+                aria-selected="false"
+              >
+                🪑 Zonas
+              </button>
+
+              <button
+                type="button"
+                class="tab-manager"
+                data-tab="fanprojects"
+                aria-selected="false"
+              >
+                🌈 Fan Projects
+              </button>
+
+              <button
+                type="button"
+                class="tab-manager"
+                data-tab="informacion"
+                aria-selected="false"
+              >
+                ⚙ Información
+              </button>
+
+            </nav>
+
+            <section
+              id="contenidoManager"
+              class="contenido-manager"
+            ></section>
+
+          </section>
+
+        </section>
+
+      </main>
+
+    </div>
+
+  </div>
+
+  <div
+    id="modalEvento"
+    class="modal"
+    hidden
+  >
+
+    <div
+      id="fondoModalEvento"
+      class="modal-fondo"
+    ></div>
+
+    <section
+      class="modal-contenido"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="tituloFormularioEvento"
+    >
+
+      <div class="modal-encabezado">
+
+        <h2 id="tituloFormularioEvento">
+          Crear nueva edición
+        </h2>
+
+        <button
+          type="button"
+          id="cerrarModalEvento"
+          class="boton-cerrar"
+          aria-label="Cerrar formulario"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <form id="formularioEvento">
+
+        <input
+          type="hidden"
+          id="eventoId"
+        >
+
+        <div class="campo">
+
+          <label for="nombreEvento">
+            Nombre de la edición
+          </label>
+
+          <input
+            type="text"
+            id="nombreEvento"
+            placeholder="Together Together Tour México 2026"
+            required
+          >
+
+        </div>
+
+        <div class="formulario-grid">
+
+          <div class="campo">
+
+            <label for="anioEvento">
+              Año
+            </label>
+
+            <input
+              type="number"
+              id="anioEvento"
+              min="2026"
+              max="2100"
+              required
+            >
+
+          </div>
+
+          <div class="campo">
+
+            <label for="ciudadEvento">
+              Ciudad
+            </label>
+
+            <input
+              type="text"
+              id="ciudadEvento"
+              placeholder="Ciudad de México"
+              required
+            >
+
+          </div>
+
+        </div>
+
+        <div class="campo">
+
+          <label for="paisEvento">
+            País
+          </label>
+
+          <input
+            type="text"
+            id="paisEvento"
+            placeholder="México"
+            required
+          >
+
+        </div>
+
+        <label class="campo-check">
+
+          <input
+            type="checkbox"
+            id="eventoActivoFormulario"
+          >
+
+          <span>
+            Marcar esta edición como activa
+          </span>
+
+        </label>
+
+        <div class="acciones-formulario">
+
+          <button
+            type="button"
+            id="cancelarModalEvento"
+            class="boton-secundario"
+          >
+            Cancelar
+          </button>
+
+          <button
+            type="submit"
+            id="guardarEvento"
+            class="boton-principal"
+          >
+            Guardar edición
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+  </div>
+
+  <div
+    id="toast"
+    class="toast"
+    aria-live="polite"
+  ></div>
+
+  <script
+    type="module"
+    src="js/shared/menu.js"
+  ></script>
+
+  <script
+    type="module"
+    src="js/color-manager.js"
+  ></script>
 
 </body>
 
