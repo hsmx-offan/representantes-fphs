@@ -38,6 +38,32 @@ const volverEventos =
 document.getElementById("volverEventos");
 
 function cargarEventos(){
+  document.addEventListener("click",(e)=>{
+
+if(!e.target.classList.contains("abrirEvento"))
+return;
+
+const id=e.target.dataset.id;
+
+const evento=
+eventosDemo.find(ev=>ev.id===id);
+
+tituloEvento.textContent=
+evento.nombre;
+
+colorHome.hidden=true;
+
+vistaEvento.hidden=false;
+
+});
+
+volverEventos.addEventListener("click",()=>{
+
+vistaEvento.hidden=true;
+
+colorHome.hidden=false;
+
+});
 
 const eventoActivo=eventosDemo.find(e=>e.activo);
 
@@ -65,7 +91,10 @@ ${evento.activo?"🟢 Activo":"⚪ Inactivo"}
 
 </div>
 
-<button>
+<button
+class="abrirEvento"
+data-id="${evento.id}"
+>
 
 Abrir
 
