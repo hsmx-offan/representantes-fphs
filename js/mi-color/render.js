@@ -83,6 +83,8 @@ export function mostrarColor({
 
   sinColor,
 
+  contenido,
+
   nombre,
 
   cancionResultado,
@@ -105,8 +107,14 @@ export function mostrarColor({
     resultado.hidden =
       true;
 
+    contenido.hidden =
+      false;
+
     sinColor.hidden =
       false;
+
+    document.body.style.overflow =
+      "";
 
     return;
 
@@ -126,8 +134,14 @@ export function mostrarColor({
     resultado.hidden =
       true;
 
+    contenido.hidden =
+      false;
+
     sinColor.hidden =
       false;
+
+    document.body.style.overflow =
+      "";
 
     return;
 
@@ -135,6 +149,9 @@ export function mostrarColor({
 
 
   sinColor.hidden =
+    true;
+
+  contenido.hidden =
     true;
 
   resultado.hidden =
@@ -160,6 +177,17 @@ export function mostrarColor({
   document.body.style.overflow =
     "hidden";
 
+
+  if (
+    "vibrate" in navigator
+  ) {
+
+    navigator.vibrate(
+      45
+    );
+
+  }
+
 }
 
 
@@ -171,7 +199,9 @@ export function limpiarResultado({
 
   resultado,
 
-  sinColor
+  sinColor,
+
+  contenido
 
 }) {
 
@@ -180,6 +210,17 @@ export function limpiarResultado({
 
   sinColor.hidden =
     true;
+
+
+  if (
+    contenido
+  ) {
+
+    contenido.hidden =
+      false;
+
+  }
+
 
   document.body.style.overflow =
     "";
@@ -191,12 +232,19 @@ export function limpiarResultado({
 // CERRAR PANTALLA DE COLOR
 // ========================================
 
-export function cerrarPantallaColor(
-  resultado
-) {
+export function cerrarPantallaColor({
+
+  resultado,
+
+  contenido
+
+}) {
 
   resultado.hidden =
     true;
+
+  contenido.hidden =
+    false;
 
   document.body.style.overflow =
     "";
