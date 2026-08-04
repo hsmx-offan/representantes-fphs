@@ -100,7 +100,7 @@ async function obtenerRespaldo(
   ) {
 
     console.warn(
-      "No se pudo leer IndexedDB:",
+      `No se pudo leer el respaldo "${clave}":`,
       error
     );
 
@@ -134,7 +134,7 @@ async function guardarRespaldo(
   ) {
 
     console.warn(
-      "No se pudo guardar en IndexedDB:",
+      `No se pudo guardar el respaldo "${clave}":`,
       error
     );
 
@@ -144,13 +144,52 @@ async function guardarRespaldo(
 
 
 // ========================================
+// VALIDAR LISTA
+// ========================================
+
+function esListaValida(
+  lista
+) {
+
+  return (
+    Array.isArray(
+      lista
+    ) &&
+    lista.length > 0
+  );
+
+}
+
+
+// ========================================
+// VALIDAR COLORES
+// ========================================
+
+function hayColores(
+  colores
+) {
+
+  return (
+    colores &&
+    typeof colores === "object" &&
+    Object.keys(
+      colores
+    ).length > 0
+  );
+
+}
+
+
+// ========================================
 // ERROR OFFLINE
 // ========================================
 
-function crearErrorOffline() {
+function crearErrorOffline(
+  recurso
+) {
 
   return new Error(
-    "No fue posible cargar la configuración. Abre la app una vez con internet antes del concierto."
+    `No fue posible cargar ${recurso}. Abre la app una vez con internet antes del concierto.`
   );
 
 }
@@ -161,6 +200,37 @@ function crearErrorOffline() {
 // ========================================
 
 export async function obtenerEventoActivo() {
+
+  /*
+   * Si no hay internet, leemos directamente
+   * el evento guardado sin intentar Firebase.
+   */
+
+  if (
+    navigator.onLine === false
+  ) {
+
+    const eventoGuardado =
+      await obtenerRespaldo(
+        CLAVES.evento
+      );
+
+
+    if (
+      eventoGuardado
+    ) {
+
+      return eventoGuardado;
+
+    }
+
+
+    throw crearErrorOffline(
+      "el evento"
+    );
+
+  }
+
 
   try {
 
@@ -196,7 +266,7 @@ export async function obtenerEventoActivo() {
     ) {
 
       throw new Error(
-        "No existe un evento activo."
+        "Firebase no devolvió un evento activo."
       );
 
     }
@@ -247,7 +317,9 @@ export async function obtenerEventoActivo() {
     }
 
 
-    throw crearErrorOffline();
+    throw crearErrorOffline(
+      "el evento"
+    );
 
   }
 
@@ -266,6 +338,34 @@ export async function listarFechas(
     CLAVES.fechas(
       eventoId
     );
+
+
+  if (
+    navigator.onLine === false
+  ) {
+
+    const fechasGuardadas =
+      await obtenerRespaldo(
+        clave
+      );
+
+
+    if (
+      esListaValida(
+        fechasGuardadas
+      )
+    ) {
+
+      return fechasGuardadas;
+
+    }
+
+
+    throw crearErrorOffline(
+      "las fechas"
+    );
+
+  }
 
 
   try {
@@ -299,6 +399,25 @@ export async function listarFechas(
       );
 
 
+    /*
+     * Nunca guardamos un arreglo vacío,
+     * porque podría reemplazar una copia
+     * offline correcta.
+     */
+
+    if (
+      !esListaValida(
+        fechas
+      )
+    ) {
+
+      throw new Error(
+        "Firebase no devolvió fechas."
+      );
+
+    }
+
+
     await guardarRespaldo(
       clave,
       fechas
@@ -326,7 +445,7 @@ export async function listarFechas(
 
 
     if (
-      Array.isArray(
+      esListaValida(
         fechasGuardadas
       )
     ) {
@@ -336,7 +455,9 @@ export async function listarFechas(
     }
 
 
-    throw crearErrorOffline();
+    throw crearErrorOffline(
+      "las fechas"
+    );
 
   }
 
@@ -355,6 +476,34 @@ export async function listarZonas(
     CLAVES.zonas(
       eventoId
     );
+
+
+  if (
+    navigator.onLine === false
+  ) {
+
+    const zonasGuardadas =
+      await obtenerRespaldo(
+        clave
+      );
+
+
+    if (
+      esListaValida(
+        zonasGuardadas
+      )
+    ) {
+
+      return zonasGuardadas;
+
+    }
+
+
+    throw crearErrorOffline(
+      "las zonas"
+    );
+
+  }
 
 
   try {
@@ -388,6 +537,19 @@ export async function listarZonas(
       );
 
 
+    if (
+      !esListaValida(
+        zonas
+      )
+    ) {
+
+      throw new Error(
+        "Firebase no devolvió zonas."
+      );
+
+    }
+
+
     await guardarRespaldo(
       clave,
       zonas
@@ -415,7 +577,7 @@ export async function listarZonas(
 
 
     if (
-      Array.isArray(
+      esListaValida(
         zonasGuardadas
       )
     ) {
@@ -425,7 +587,9 @@ export async function listarZonas(
     }
 
 
-    throw crearErrorOffline();
+    throw crearErrorOffline(
+      "las zonas"
+    );
 
   }
 
@@ -443,6 +607,13 @@ async function descargarColores({
   fanProjectId
 
 }) {
+
+  const clave =
+    CLAVES.colores(
+      eventoId,
+      fanProjectId
+    );
+
 
   const snapshot =
     await getDocs(
@@ -480,15 +651,27 @@ async function descargarColores({
   }
 
 
+  /*
+   * No reemplazamos una copia válida
+   * con un objeto vacío.
+   */
+
+  if (
+    !hayColores(
+      colores
+    )
+  ) {
+
+    throw new Error(
+      `Firebase no devolvió colores para ${fanProjectId}.`
+    );
+
+  }
+
+
   await guardarRespaldo(
-
-    CLAVES.colores(
-      eventoId,
-      fanProjectId
-    ),
-
+    clave,
     colores
-
   );
 
 
@@ -509,6 +692,34 @@ export async function listarFanProjects(
     CLAVES.fanProjects(
       eventoId
     );
+
+
+  if (
+    navigator.onLine === false
+  ) {
+
+    const fanProjectsGuardados =
+      await obtenerRespaldo(
+        clave
+      );
+
+
+    if (
+      esListaValida(
+        fanProjectsGuardados
+      )
+    ) {
+
+      return fanProjectsGuardados;
+
+    }
+
+
+    throw crearErrorOffline(
+      "las canciones"
+    );
+
+  }
 
 
   try {
@@ -542,6 +753,19 @@ export async function listarFanProjects(
       );
 
 
+    if (
+      !esListaValida(
+        fanProjects
+      )
+    ) {
+
+      throw new Error(
+        "Firebase no devolvió canciones."
+      );
+
+    }
+
+
     await guardarRespaldo(
       clave,
       fanProjects
@@ -549,25 +773,46 @@ export async function listarFanProjects(
 
 
     /*
-     * Descarga anticipadamente todos
-     * los colores para usarlos offline.
+     * Descargamos anticipadamente todos
+     * los colores para el modo offline.
      */
 
-    await Promise.allSettled(
+    const resultados =
+      await Promise.allSettled(
 
-      fanProjects.map(
-        fanProject =>
-          descargarColores({
+        fanProjects.map(
+          fanProject =>
+            descargarColores({
 
-            eventoId,
+              eventoId,
 
-            fanProjectId:
-              fanProject.id
+              fanProjectId:
+                fanProject.id
 
-          })
-      )
+            })
+        )
 
-    );
+      );
+
+
+    for (
+      const resultado
+      of resultados
+    ) {
+
+      if (
+        resultado.status ===
+        "rejected"
+      ) {
+
+        console.warn(
+          "No se pudieron guardar algunos colores:",
+          resultado.reason
+        );
+
+      }
+
+    }
 
 
     return fanProjects;
@@ -591,7 +836,7 @@ export async function listarFanProjects(
 
 
     if (
-      Array.isArray(
+      esListaValida(
         fanProjectsGuardados
       )
     ) {
@@ -601,7 +846,9 @@ export async function listarFanProjects(
     }
 
 
-    throw crearErrorOffline();
+    throw crearErrorOffline(
+      "las canciones"
+    );
 
   }
 
@@ -634,9 +881,9 @@ async function obtenerColorOffline({
 
 
   if (
-    !colores ||
-    typeof colores !==
-      "object"
+    !hayColores(
+      colores
+    )
   ) {
 
     return null;
@@ -663,11 +910,6 @@ export async function obtenerColor({
   zonaId
 
 }) {
-
-  /*
-   * Cuando el navegador confirma que está
-   * offline, no intentamos consultar Firebase.
-   */
 
   if (
     navigator.onLine === false
@@ -732,11 +974,6 @@ export async function obtenerColor({
 
     };
 
-
-    /*
-     * Actualizamos también el conjunto
-     * completo guardado del Fan Project.
-     */
 
     const clave =
       CLAVES.colores(
