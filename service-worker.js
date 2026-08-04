@@ -22,6 +22,7 @@ const ARCHIVOS_APP = [
   `${RUTA_BASE}/js/mi-color/api.js`,
 
   `${RUTA_BASE}/js/mi-color/offline.js`,
+   `${RUTA_BASE}/js/mi-color/configuracion-base.js`,
 
   `${RUTA_BASE}/js/mi-color/render.js`,
 
