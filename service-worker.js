@@ -1,4 +1,4 @@
-const CACHE_NAME = "mi-color-v1";
+const CACHE_NAME = "mi-color-v2";
 
 
 const ARCHIVOS = [
