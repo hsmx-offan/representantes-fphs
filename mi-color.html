@@ -89,7 +89,7 @@
 
 
     <!-- ========================================
-         SELECTORES
+         FLUJO DE SELECCIÓN
          ======================================== -->
 
     <section
@@ -100,7 +100,12 @@
 
       <article class="selector-card">
 
-        <div class="campo">
+        <!-- PASO 1: FECHA -->
+
+        <div
+          id="pasoFecha"
+          class="campo"
+        >
 
           <label for="fechaSelect">
             1. Selecciona tu fecha
@@ -117,8 +122,10 @@
         </div>
 
 
+        <!-- PASO 2: ZONA -->
+
         <div
-          id="campoZona"
+          id="pasoZona"
           class="campo"
           hidden
         >
@@ -141,8 +148,10 @@
         </div>
 
 
+        <!-- PASO 3: CANCIÓN -->
+
         <div
-          id="campoFanProject"
+          id="pasoCancion"
           class="campo"
           hidden
         >
