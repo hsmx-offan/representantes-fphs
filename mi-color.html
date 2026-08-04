@@ -255,6 +255,36 @@ selecciona tu canción y mantén el brillo al máximo.
     src="js/mi-color/index.js"
   ></script>
 
+  <script>
+
+if (
+
+  "serviceWorker"
+
+  in navigator
+
+) {
+
+  window.addEventListener(
+
+    "load",
+
+    () => {
+
+      navigator.serviceWorker.register(
+
+        "/representantes-fphs/service-worker.js"
+
+      );
+
+    }
+
+  );
+
+}
+
+</script>
+
 </body>
 
 </html>
