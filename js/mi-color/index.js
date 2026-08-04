@@ -257,32 +257,22 @@ async function iniciar() {
       await obtenerEventoActivo();
 
 
-    const resultados =
-      await Promise.all([
-
-        listarFechas(
-          evento.id
-        ),
-
-        listarZonas(
-          evento.id
-        ),
-
-        listarFanProjects(
-          evento.id
-        )
-
-      ]);
+   fechas =
+  await listarFechas(
+    evento.id
+  );
 
 
-    fechas =
-      resultados[0];
+zonas =
+  await listarZonas(
+    evento.id
+  );
 
-    zonas =
-      resultados[1];
 
-    fanProjects =
-      resultados[2];
+fanProjects =
+  await listarFanProjects(
+    evento.id
+  );
 
 
     llenarSelect(
