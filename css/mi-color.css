@@ -204,58 +204,147 @@ body{
 
 
 /* ========================================
-   RESULTADO
+   PANTALLA COMPLETA DEL COLOR
 ======================================== */
 
-.resultado-color{
+.pantalla-color{
 
-    margin-top:35px;
+    position:fixed;
 
-    background:white;
+    inset:0;
 
-    border-radius:var(--radio);
+    z-index:9999;
 
-    padding:45px;
+    display:flex;
 
-    text-align:center;
+    align-items:center;
 
-    box-shadow:0 8px 25px rgba(0,0,0,.05);
+    justify-content:center;
 
-}
-
-.resultado-etiqueta{
-
-    color:var(--gris);
-
-    margin-bottom:20px;
+    overflow:hidden;
 
 }
 
-.muestra-color-grande{
 
-    width:170px;
+/* ========================================
+   BOTÓN VOLVER
+======================================== */
 
-    height:170px;
+.volver-color{
 
-    border-radius:50%;
+    position:absolute;
 
-    margin:25px auto;
+    top:22px;
 
-    border:8px solid rgba(0,0,0,.05);
+    left:22px;
+
+    border:none;
+
+    background:rgba(255,255,255,.14);
+
+    backdrop-filter:blur(10px);
+
+    -webkit-backdrop-filter:blur(10px);
+
+    color:white;
+
+    padding:10px 15px;
+
+    border-radius:999px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    opacity:.9;
+
+    transition:.25s;
+
+}
+
+.volver-color:hover{
+
+    background:rgba(255,255,255,.24);
+
+    opacity:1;
+
+}
+
+
+/* ========================================
+   DATOS DEL COLOR
+======================================== */
+
+.datos-color{
+
+    position:absolute;
+
+    right:24px;
+
+    bottom:24px;
+
+    min-width:210px;
+
+    padding:18px;
+
+    border-radius:18px;
+
+    background:rgba(0,0,0,.14);
+
+    backdrop-filter:blur(14px);
+
+    -webkit-backdrop-filter:blur(14px);
+
+    border:1px solid rgba(255,255,255,.16);
+
+    color:white;
+
+}
+
+.datos-color p{
+
+    margin:6px 0;
+
+    line-height:1.4;
+
+}
+
+#cancionResultado{
+
+    font-size:14px;
+
+    font-weight:600;
+
+    opacity:.9;
 
 }
 
 #nombreColor{
 
-    font-size:2rem;
+    font-size:18px;
 
-    margin-bottom:10px;
+    font-weight:700;
 
 }
 
-#detalleResultado{
+#zonaResultado{
 
-    color:var(--gris);
+    font-size:13px;
+
+    opacity:.75;
+
+}
+
+
+/* ========================================
+   OCULTAR PANTALLA
+======================================== */
+
+.pantalla-color[hidden]{
+
+    display:none;
 
 }
 
@@ -280,9 +369,51 @@ body{
 
     }
 
-    .resultado-color{
+    .estado-app{
 
-        padding:30px;
+        padding:32px 22px;
+
+    }
+
+    .volver-color{
+
+        top:16px;
+
+        left:16px;
+
+        padding:9px 13px;
+
+        font-size:13px;
+
+    }
+
+    .datos-color{
+
+        right:16px;
+
+        bottom:16px;
+
+        min-width:170px;
+
+        padding:14px 16px;
+
+    }
+
+    #cancionResultado{
+
+        font-size:13px;
+
+    }
+
+    #nombreColor{
+
+        font-size:16px;
+
+    }
+
+    #zonaResultado{
+
+        font-size:12px;
 
     }
 
