@@ -333,3 +333,326 @@
     }
 
 }
+/* ========================================
+   MÓDULO FECHAS
+======================================== */
+
+.header-modulo{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
+
+    margin-bottom:30px;
+
+}
+
+.header-modulo h3{
+
+    margin:0;
+
+    font-size:26px;
+
+}
+
+.header-modulo p{
+
+    margin-top:6px;
+
+    color:#666;
+
+}
+
+.btn-principal{
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#ED1E62;
+
+    color:#fff;
+
+    padding:12px 20px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    transition:.25s;
+
+}
+
+.btn-principal:hover{
+
+    transform:translateY(-2px);
+
+}
+
+
+/* ========================================
+   LISTA
+======================================== */
+
+.lista-fechas{
+
+    display:grid;
+
+    gap:18px;
+
+}
+
+
+/* ========================================
+   CARD
+======================================== */
+
+.card-fecha{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:22px;
+
+    background:#fff;
+
+    border-radius:18px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.05);
+
+}
+
+.card-fecha-info{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+}
+
+.card-fecha-info h4{
+
+    margin:0;
+
+    font-size:20px;
+
+}
+
+.card-fecha-info span{
+
+    color:#666;
+
+}
+
+.card-fecha-acciones{
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+.card-fecha-acciones button{
+
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:18px;
+
+    background:#f4f4f4;
+
+    transition:.25s;
+
+}
+
+.card-fecha-acciones button:hover{
+
+    background:#ED1E62;
+
+    color:white;
+
+}
+
+
+/* ========================================
+   SIN REGISTROS
+======================================== */
+
+.sin-registros{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:40px;
+
+    text-align:center;
+
+    color:#666;
+
+}
+
+
+/* ========================================
+   MODAL
+======================================== */
+
+.modal-fecha{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.45);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:9999;
+
+}
+
+.modal-fecha-contenido{
+
+    width:min(450px,92%);
+
+    background:#fff;
+
+    border-radius:20px;
+
+    padding:30px;
+
+}
+
+.modal-fecha-contenido h3{
+
+    margin-top:0;
+
+    margin-bottom:25px;
+
+}
+
+.modal-fecha-contenido label{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+    margin-bottom:18px;
+
+    font-weight:600;
+
+}
+
+.modal-fecha-contenido input{
+
+    padding:12px;
+
+    border:1px solid #ddd;
+
+    border-radius:10px;
+
+    font-size:15px;
+
+}
+
+
+/* ========================================
+   ACCIONES MODAL
+======================================== */
+
+.acciones-modal{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:12px;
+
+    margin-top:25px;
+
+}
+
+.acciones-modal button{
+
+    border:none;
+
+    border-radius:10px;
+
+    padding:12px 20px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+}
+
+#cancelarFecha{
+
+    background:#ececec;
+
+}
+
+#guardarFecha{
+
+    background:#ED1E62;
+
+    color:white;
+
+}
+
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media(max-width:700px){
+
+    .header-modulo{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+    .card-fecha{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:18px;
+
+    }
+
+    .card-fecha-acciones{
+
+        width:100%;
+
+        justify-content:flex-end;
+
+    }
+
+}
