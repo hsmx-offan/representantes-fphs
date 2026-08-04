@@ -48,6 +48,21 @@ const mensajeError =
 
 
 // ========================================
+// CAMPOS PROGRESIVOS
+// ========================================
+
+const campoZona =
+  document.getElementById(
+    "campoZona"
+  );
+
+const campoFanProject =
+  document.getElementById(
+    "campoFanProject"
+  );
+
+
+// ========================================
 // SELECTORES
 // ========================================
 
@@ -123,7 +138,7 @@ let consultandoColor =
 
 
 // ========================================
-// OBTENER REGISTRO SELECCIONADO
+// OBTENER REGISTROS SELECCIONADOS
 // ========================================
 
 function obtenerZonaSeleccionada() {
@@ -144,6 +159,64 @@ function obtenerFanProjectSeleccionado() {
       fanProject.id ===
       fanProjectSelect.value
   ) || null;
+
+}
+
+
+// ========================================
+// REINICIAR DESDE FECHA
+// ========================================
+
+function reiniciarDespuesDeFecha() {
+
+  zonaSelect.value =
+    "";
+
+  fanProjectSelect.value =
+    "";
+
+
+  campoFanProject.hidden =
+    true;
+
+  fanProjectSelect.disabled =
+    true;
+
+
+  limpiarResultado({
+
+    resultado,
+
+    sinColor
+
+  });
+
+}
+
+
+// ========================================
+// REINICIAR DESDE ZONA
+// ========================================
+
+function reiniciarDespuesDeZona() {
+
+  fanProjectSelect.value =
+    "";
+
+  campoFanProject.hidden =
+    true;
+
+  fanProjectSelect.disabled =
+    true;
+
+
+  limpiarResultado({
+
+    resultado,
+
+    sinColor
+
+  });
 
 }
 
@@ -241,6 +314,20 @@ async function iniciar() {
     );
 
 
+    campoZona.hidden =
+      true;
+
+    campoFanProject.hidden =
+      true;
+
+
+    zonaSelect.disabled =
+      true;
+
+    fanProjectSelect.disabled =
+      true;
+
+
     mostrarContenido({
 
       cargando,
@@ -281,6 +368,66 @@ async function iniciar() {
     });
 
   }
+
+}
+
+
+// ========================================
+// CAMBIO DE FECHA
+// ========================================
+
+function manejarCambioFecha() {
+
+  reiniciarDespuesDeFecha();
+
+
+  if (
+    !fechaSelect.value
+  ) {
+
+    campoZona.hidden =
+      true;
+
+    zonaSelect.disabled =
+      true;
+
+    return;
+
+  }
+
+
+  campoZona.hidden =
+    false;
+
+  zonaSelect.disabled =
+    false;
+
+}
+
+
+// ========================================
+// CAMBIO DE ZONA
+// ========================================
+
+function manejarCambioZona() {
+
+  reiniciarDespuesDeZona();
+
+
+  if (
+    !zonaSelect.value
+  ) {
+
+    return;
+
+  }
+
+
+  campoFanProject.hidden =
+    false;
+
+  fanProjectSelect.disabled =
+    false;
 
 }
 
@@ -440,12 +587,12 @@ function volverAlSelector() {
 
 fechaSelect.addEventListener(
   "change",
-  actualizarResultado
+  manejarCambioFecha
 );
 
 zonaSelect.addEventListener(
   "change",
-  actualizarResultado
+  manejarCambioZona
 );
 
 fanProjectSelect.addEventListener(
