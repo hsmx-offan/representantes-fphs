@@ -30,6 +30,9 @@ import {
   validarDatosFanProject
 } from "./formulario.js";
 
+import {
+  renderColoresFanProject
+} from "./colores/index.js";
 
 // ========================================
 // ESTADO
