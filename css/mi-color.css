@@ -2,19 +2,19 @@
    MI COLOR
 ======================================== */
 
-:root{
+:root {
 
-    --rosa:#ED1E62;
-    --rosa-hover:#d81857;
+    --rosa: #ed1e62;
+    --rosa-hover: #d81857;
 
-    --texto:#222;
-    --gris:#666;
-    --borde:#e8e8e8;
+    --texto: #222;
+    --gris: #666;
+    --borde: #e8e8e8;
 
-    --fondo:#fafafa;
-    --card:#ffffff;
+    --fondo: #fafafa;
+    --card: #ffffff;
 
-    --radio:22px;
+    --radio: 22px;
 
 }
 
@@ -23,23 +23,31 @@
    BASE
 ======================================== */
 
-*{
+* {
 
-    margin:0;
-
-    padding:0;
-
-    box-sizing:border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 
 }
 
-body{
+html {
 
-    font-family:Inter,Arial,sans-serif;
+    min-height: 100%;
 
-    background:var(--fondo);
+}
 
-    color:var(--texto);
+body {
+
+    min-height: 100vh;
+
+    font-family:
+        Inter,
+        Arial,
+        sans-serif;
+
+    background: var(--fondo);
+    color: var(--texto);
 
 }
 
@@ -48,11 +56,11 @@ body{
    CONTENEDOR
 ======================================== */
 
-.mi-color-app{
+.mi-color-app {
 
-    width:min(900px,94%);
+    width: min(900px, 94%);
 
-    margin:60px auto 80px;
+    margin: 60px auto 80px;
 
 }
 
@@ -61,47 +69,45 @@ body{
    HEADER
 ======================================== */
 
-.mi-color-header{
+.mi-color-header {
 
-    text-align:center;
+    text-align: center;
 
-    margin-bottom:40px;
-
-}
-
-.eyebrow{
-
-    color:var(--rosa);
-
-    font-size:.82rem;
-
-    font-weight:700;
-
-    letter-spacing:2px;
-
-    text-transform:uppercase;
-
-    margin-bottom:12px;
+    margin-bottom: 40px;
 
 }
 
-.mi-color-header h1{
+.eyebrow {
 
-    font-size:clamp(2.2rem,5vw,3.5rem);
+    color: var(--rosa);
 
-    margin-bottom:18px;
+    font-size: 0.82rem;
+    font-weight: 700;
+
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
+    margin-bottom: 12px;
 
 }
 
-.descripcion{
+.mi-color-header h1 {
 
-    max-width:650px;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
 
-    margin:auto;
+    margin-bottom: 18px;
 
-    color:var(--gris);
+}
 
-    line-height:1.8;
+.descripcion {
+
+    max-width: 650px;
+
+    margin: auto;
+
+    color: var(--gris);
+
+    line-height: 1.8;
 
 }
 
@@ -110,48 +116,62 @@ body{
    ESTADOS
 ======================================== */
 
-.estado-app{
+.estado-app {
 
-    background:white;
+    background: var(--card);
 
-    border-radius:var(--radio);
+    border-radius: var(--radio);
 
-    padding:45px;
+    padding: 45px;
 
-    text-align:center;
+    text-align: center;
 
-    box-shadow:0 8px 25px rgba(0,0,0,.05);
+    box-shadow:
+        0 8px 25px
+        rgba(0, 0, 0, 0.05);
 
 }
 
-.estado-icono{
+.estado-app p {
 
-    display:block;
+    margin-top: 10px;
 
-    font-size:45px;
+    color: var(--gris);
 
-    margin-bottom:15px;
+    line-height: 1.6;
+
+}
+
+.estado-icono {
+
+    display: block;
+
+    font-size: 45px;
+
+    margin-bottom: 15px;
 
 }
 
 
 /* ========================================
-   TARJETA
+   TARJETA DE SELECTORES
 ======================================== */
 
-.selector-card{
+.selector-card {
 
-    background:white;
+    display: grid;
 
-    border-radius:var(--radio);
+    gap: 24px;
 
-    padding:35px;
+    padding: 35px;
 
-    box-shadow:0 8px 25px rgba(0,0,0,.05);
+    background: var(--card);
 
-    display:grid;
+    border-radius: var(--radio);
 
-    gap:24px;
+    box-shadow:
+        0 8px 25px
+        rgba(0, 0, 0, 0.05);
 
 }
 
@@ -160,45 +180,63 @@ body{
    CAMPOS
 ======================================== */
 
-.campo{
+.campo {
 
-    display:flex;
+    display: flex;
 
-    flex-direction:column;
+    flex-direction: column;
 
-    gap:10px;
-
-}
-
-.campo label{
-
-    font-weight:700;
+    gap: 10px;
 
 }
 
-.campo select{
+.campo label {
 
-    width:100%;
-
-    padding:15px;
-
-    border:1px solid var(--borde);
-
-    border-radius:14px;
-
-    background:white;
-
-    font-size:15px;
-
-    transition:.2s;
+    font-weight: 700;
 
 }
 
-.campo select:focus{
+.campo select {
 
-    outline:none;
+    width: 100%;
 
-    border-color:var(--rosa);
+    padding: 15px;
+
+    border: 1px solid var(--borde);
+
+    border-radius: 14px;
+
+    background: white;
+
+    color: var(--texto);
+
+    font-size: 15px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+.campo select:focus {
+
+    outline: none;
+
+    border-color: var(--rosa);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(237, 30, 98, 0.1);
+
+}
+
+.campo select:disabled {
+
+    cursor: not-allowed;
+
+    background: #f3f3f3;
+
+    color: #999;
 
 }
 
@@ -207,21 +245,26 @@ body{
    PANTALLA COMPLETA DEL COLOR
 ======================================== */
 
-.pantalla-color{
+.pantalla-color {
 
-    position:fixed;
+    position: fixed;
 
-    inset:0;
+    inset: 0;
 
-    z-index:9999;
+    z-index: 9999;
 
-    display:flex;
+    display: flex;
 
-    align-items:center;
+    align-items: center;
 
-    justify-content:center;
+    justify-content: center;
 
-    overflow:hidden;
+    overflow: hidden;
+
+    animation:
+        aparecerPantalla
+        0.28s
+        ease;
 
 }
 
@@ -230,45 +273,70 @@ body{
    BOTÓN VOLVER
 ======================================== */
 
-.volver-color{
+.volver-color {
 
-    position:absolute;
+    position: absolute;
 
-    top:22px;
+    top: 22px;
+    left: 22px;
 
-    left:22px;
+    z-index: 2;
 
-    border:none;
+    padding: 10px 15px;
 
-    background:rgba(255,255,255,.14);
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.22);
 
-    backdrop-filter:blur(10px);
+    border-radius: 999px;
 
-    -webkit-backdrop-filter:blur(10px);
+    background:
+        rgba(255, 255, 255, 0.1);
 
-    color:white;
+    backdrop-filter:
+        blur(18px);
 
-    padding:10px 15px;
+    -webkit-backdrop-filter:
+        blur(18px);
 
-    border-radius:999px;
+    box-shadow:
+        0 5px 25px
+        rgba(0, 0, 0, 0.15);
 
-    font-size:14px;
+    color: white;
 
-    font-weight:600;
+    font-size: 14px;
+    font-weight: 600;
 
-    cursor:pointer;
+    cursor: pointer;
 
-    opacity:.9;
+    opacity: 0.88;
 
-    transition:.25s;
+    transition:
+        background 0.2s ease,
+        opacity 0.2s ease,
+        transform 0.2s ease;
+
+    animation:
+        aparecerVolver
+        0.35s
+        ease;
 
 }
 
-.volver-color:hover{
+.volver-color:hover {
 
-    background:rgba(255,255,255,.24);
+    background:
+        rgba(255, 255, 255, 0.18);
 
-    opacity:1;
+    opacity: 1;
+
+}
+
+.volver-color:active {
+
+    transform:
+        scale(0.97);
 
 }
 
@@ -277,66 +345,84 @@ body{
    DATOS DEL COLOR
 ======================================== */
 
-.datos-color{
+.datos-color {
 
-    position:absolute;
+    position: absolute;
 
-    right:24px;
+    right: 24px;
+    bottom: 24px;
 
-    bottom:24px;
+    z-index: 2;
 
-    min-width:210px;
+    min-width: 210px;
 
-    padding:18px;
+    padding: 18px;
 
-    border-radius:18px;
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.28);
 
-    background:rgba(255,255,255,.10);
+    border-radius: 18px;
 
-backdrop-filter:blur(22px);
+    background:
+        rgba(255, 255, 255, 0.1);
 
--webkit-backdrop-filter:blur(22px);
+    backdrop-filter:
+        blur(22px);
 
-border:1px solid rgba(255,255,255,.28);
+    -webkit-backdrop-filter:
+        blur(22px);
 
-box-shadow:
-    0 10px 40px rgba(0,0,0,.18);
+    box-shadow:
+        0 10px 40px
+        rgba(0, 0, 0, 0.18);
 
-    color:white;
+    color: white;
 
-}
+    text-align: left;
 
-.datos-color p{
-
-    margin:6px 0;
-
-    line-height:1.4;
-
-}
-
-#cancionResultado{
-
-    font-size:14px;
-
-    font-weight:600;
-
-    opacity:.9;
+    animation:
+        aparecerDatos
+        0.38s
+        ease;
 
 }
 
-#nombreColor{
+.datos-color p {
 
-    font-size:18px;
+    margin: 5px 0;
 
-    font-weight:700;
+    line-height: 1.35;
 
 }
 
-#zonaResultado{
+#cancionResultado {
 
-    font-size:13px;
+    font-size: 13px;
+    font-weight: 600;
 
-    opacity:.75;
+    opacity: 0.86;
+
+}
+
+#nombreColor {
+
+    margin: 7px 0;
+
+    font-size: 20px;
+    font-weight: 800;
+
+    letter-spacing: 0.04em;
+
+    text-transform: uppercase;
+
+}
+
+#zonaResultado {
+
+    font-size: 12px;
+
+    opacity: 0.72;
 
 }
 
@@ -345,9 +431,74 @@ box-shadow:
    OCULTAR PANTALLA
 ======================================== */
 
-.pantalla-color[hidden]{
+.pantalla-color[hidden] {
 
-    display:none;
+    display: none;
+
+}
+
+
+/* ========================================
+   ANIMACIONES
+======================================== */
+
+@keyframes aparecerPantalla {
+
+    from {
+
+        opacity: 0;
+
+    }
+
+    to {
+
+        opacity: 1;
+
+    }
+
+}
+
+@keyframes aparecerVolver {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(-8px);
+
+    }
+
+    to {
+
+        opacity: 0.88;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+@keyframes aparecerDatos {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(14px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+    }
 
 }
 
@@ -356,67 +507,84 @@ box-shadow:
    RESPONSIVE
 ======================================== */
 
-@media(max-width:700px){
+@media (max-width: 700px) {
 
-    .mi-color-app{
+    .mi-color-app {
 
-        width:92%;
+        width: 92%;
 
-        margin-top:35px;
-
-    }
-
-    .selector-card{
-
-        padding:25px;
+        margin-top: 35px;
 
     }
 
-    .estado-app{
+    .selector-card {
 
-        padding:32px 22px;
-
-    }
-
-    .volver-color{
-
-        top:16px;
-
-        left:16px;
-
-        padding:9px 13px;
-
-        font-size:13px;
+        padding: 25px;
 
     }
 
-    .datos-color{
+    .estado-app {
 
-        right:16px;
-
-        bottom:16px;
-
-        min-width:170px;
-
-        padding:14px 16px;
+        padding: 32px 22px;
 
     }
 
-    #cancionResultado{
+    .volver-color {
 
-        font-size:13px;
+        top: 16px;
+        left: 16px;
+
+        padding: 9px 13px;
+
+        font-size: 13px;
 
     }
 
-    #nombreColor{
+    .datos-color {
 
-        font-size:16px;
+        right: 16px;
+        bottom: 16px;
+
+        min-width: 165px;
+
+        padding: 14px 16px;
+
+        border-radius: 15px;
 
     }
 
-    #zonaResultado{
+    #cancionResultado {
 
-        font-size:12px;
+        font-size: 12px;
+
+    }
+
+    #nombreColor {
+
+        font-size: 17px;
+
+    }
+
+    #zonaResultado {
+
+        font-size: 11px;
+
+    }
+
+}
+
+
+/* ========================================
+   MOVIMIENTO REDUCIDO
+======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .pantalla-color,
+    .volver-color,
+    .datos-color {
+
+        animation: none;
 
     }
 
