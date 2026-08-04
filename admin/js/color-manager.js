@@ -1960,28 +1960,28 @@ function registrarEventos() {
 
 
   for (
-    const tab
-    of elementosVistaEvento.tabs
-  ) {
+  const tab
+  of elementosVistaEvento.tabs
+) {
 
-    tab.addEventListener(
-      "click",
-      () => {
+  tab.addEventListener(
+    "click",
+    async () => {
 
-        if (
-          estado.eventoSeleccionadoId
-        ) {
+      if (
+        estado.eventoSeleccionadoId
+      ) {
 
-          mostrarModulo(
-            tab.dataset.tab
-          );
-
-        }
+        await mostrarModulo(
+          tab.dataset.tab
+        );
 
       }
-    );
 
-  }
+    }
+  );
+
+}
 
 
   elementosModal.formulario.addEventListener(
