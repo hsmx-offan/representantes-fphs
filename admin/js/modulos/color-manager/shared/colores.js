@@ -8,7 +8,7 @@ export const COLORES = [
   {
     id: "blanco-gris-claro",
     nombre: "Blanco o gris claro",
-    hex: "#A6AAB6"
+    hex: "#FFFFFF"
   },
 
   {
