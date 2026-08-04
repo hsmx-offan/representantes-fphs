@@ -4,7 +4,11 @@
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Color Manager</title>
 
@@ -15,16 +19,25 @@
 
 <body>
 
+    <!-- =========================
+         MENÚ ADMIN
+    ========================== -->
+
     <div id="menuAdmin"></div>
 
     <main class="contenido-admin">
+
+        <!-- =========================
+             ENCABEZADO
+        ========================== -->
 
         <header class="encabezado-admin">
 
             <h1>🌈 Color Manager</h1>
 
             <p>
-                Administra eventos, fan projects, fechas, zonas y colores.
+                Administra eventos, fan projects,
+                fechas, zonas y colores.
             </p>
 
         </header>
@@ -37,7 +50,9 @@
 
             <div class="card-evento-activo">
 
-                <h2>Evento activo</h2>
+                <h2>
+                    Evento activo
+                </h2>
 
                 <div id="eventoActivo">
 
@@ -46,20 +61,34 @@
                 </div>
 
                 <button id="btnCrearEvento">
+
                     ＋ Crear nueva edición
+
                 </button>
 
             </div>
 
+
             <div class="card-eventos">
 
-                <h2>Ediciones</h2>
+                <div class="titulo-card">
 
-                <div id="listaEventos"></div>
+                    <h2>
+
+                        Ediciones
+
+                    </h2>
+
+                </div>
+
+                <div id="listaEventos">
+
+                </div>
 
             </div>
 
         </section>
+
 
         <!-- =========================
              VISTA DEL EVENTO
@@ -75,82 +104,109 @@
                 id="volverEventos"
                 class="btn-volver"
             >
-                ← Volver
+
+                ← Volver a eventos
+
             </button>
 
-            <h2 id="tituloEvento">
-                Evento
-            </h2>
 
-            <div class="grid-modulos">
+            <header class="evento-header">
+
+                <h2 id="tituloEvento">
+
+                    Evento
+
+                </h2>
+
+                <p>
+
+                    Administra toda la configuración
+                    de esta edición.
+
+                </p>
+
+            </header>
+
+
+            <!-- =========================
+                 MENÚ DEL EVENTO
+            ========================== -->
+
+            <nav class="tabs-manager">
 
                 <button
-                    class="modulo-card"
-                    data-modulo="fechas"
+                    class="tab-manager activa"
+                    data-tab="fechas"
                 >
 
-                    <span class="icono-modulo">📅</span>
-
-                    <strong>Fechas</strong>
-
-                    <small>
-                        Administrar las fechas del evento.
-                    </small>
+                    📅 Fechas
 
                 </button>
 
                 <button
-                    class="modulo-card"
-                    data-modulo="zonas"
+                    class="tab-manager"
+                    data-tab="zonas"
                 >
 
-                    <span class="icono-modulo">🪑</span>
-
-                    <strong>Zonas</strong>
-
-                    <small>
-                        Administrar zonas y secciones.
-                    </small>
+                    🪑 Zonas
 
                 </button>
 
                 <button
-                    class="modulo-card"
-                    data-modulo="fanprojects"
+                    class="tab-manager"
+                    data-tab="fanprojects"
                 >
 
-                    <span class="icono-modulo">🌈</span>
-
-                    <strong>Fan Projects</strong>
-
-                    <small>
-                        Crear y editar fan projects.
-                    </small>
+                    🌈 Fan Projects
 
                 </button>
 
                 <button
-                    class="modulo-card"
-                    data-modulo="configuracion"
+                    class="tab-manager"
+                    data-tab="informacion"
                 >
 
-                    <span class="icono-modulo">⚙️</span>
-
-                    <strong>Configuración</strong>
-
-                    <small>
-                        Configuración general del evento.
-                    </small>
+                    ⚙ Información
 
                 </button>
 
-            </div>
+            </nav>
+
+
+            <!-- =========================
+                 CONTENIDO DINÁMICO
+            ========================== -->
+
+            <section
+                id="contenidoManager"
+                class="contenido-manager"
+            >
+
+                <!--
+                    Aquí el JavaScript cargará:
+
+                    Fechas
+
+                    Zonas
+
+                    Fan Projects
+
+                    Información
+                -->
+
+            </section>
 
         </section>
 
     </main>
 
+
+    <!-- =========================
+         JS
+    ========================== -->
+
     <script src="js/menu.js"></script>
+
     <script src="js/color-manager.js"></script>
 
 </body>
