@@ -1,6 +1,11 @@
 /* ========================================
    MI COLOR
-   API CON INDEXEDDB OFFLINE
+   API CON RESPALDO DEFINITIVO
+
+   ORDEN DE PRIORIDAD:
+   1. FIREBASE
+   2. INDEXEDDB
+   3. CONFIGURACIÓN BASE
    ======================================== */
 
 import {
@@ -22,6 +27,10 @@ import {
   guardarDato,
   leerDato
 } from "./offline.js";
+
+import {
+  CONFIGURACION_BASE
+} from "./configuracion-base.js";
 
 
 // ========================================
@@ -78,7 +87,47 @@ function convertirDocumentos(
 
 
 // ========================================
-// LEER RESPALDO
+// VALIDAR LISTA
+// ========================================
+
+function esListaValida(
+  lista
+) {
+
+  return (
+    Array.isArray(
+      lista
+    ) &&
+    lista.length > 0
+  );
+
+}
+
+
+// ========================================
+// VALIDAR OBJETO DE COLORES
+// ========================================
+
+function hayColores(
+  colores
+) {
+
+  return (
+    colores &&
+    typeof colores === "object" &&
+    !Array.isArray(
+      colores
+    ) &&
+    Object.keys(
+      colores
+    ).length > 0
+  );
+
+}
+
+
+// ========================================
+// LEER RESPALDO INDEXEDDB
 // ========================================
 
 async function obtenerRespaldo(
@@ -112,7 +161,7 @@ async function obtenerRespaldo(
 
 
 // ========================================
-// GUARDAR RESPALDO
+// GUARDAR RESPALDO INDEXEDDB
 // ========================================
 
 async function guardarRespaldo(
@@ -127,6 +176,8 @@ async function guardarRespaldo(
       valor
     );
 
+    return true;
+
   }
 
   catch (
@@ -138,58 +189,110 @@ async function guardarRespaldo(
       error
     );
 
+    return false;
+
   }
 
 }
 
 
 // ========================================
-// VALIDAR LISTA
+// COPIAR DATOS BASE
+// Evita modificar accidentalmente el objeto
+// original de configuracion-base.js
 // ========================================
 
-function esListaValida(
-  lista
+function copiarDatoBase(
+  valor
 ) {
 
-  return (
-    Array.isArray(
-      lista
-    ) &&
-    lista.length > 0
+  if (
+    valor === undefined ||
+    valor === null
+  ) {
+
+    return null;
+
+  }
+
+
+  return JSON.parse(
+    JSON.stringify(
+      valor
+    )
   );
 
 }
 
 
 // ========================================
-// VALIDAR COLORES
+// ERROR FINAL
 // ========================================
 
-function hayColores(
-  colores
-) {
-
-  return (
-    colores &&
-    typeof colores === "object" &&
-    Object.keys(
-      colores
-    ).length > 0
-  );
-
-}
-
-
-// ========================================
-// ERROR OFFLINE
-// ========================================
-
-function crearErrorOffline(
+function crearErrorFinal(
   recurso
 ) {
 
   return new Error(
-    `No fue posible cargar ${recurso}. Abre la app una vez con internet antes del concierto.`
+    `No fue posible cargar ${recurso}.`
+  );
+
+}
+
+
+// ========================================
+// OBTENER EVENTO DESDE RESPALDOS
+// ========================================
+
+async function obtenerEventoDeRespaldo() {
+
+  const eventoGuardado =
+    await obtenerRespaldo(
+      CLAVES.evento
+    );
+
+
+  if (
+    eventoGuardado
+  ) {
+
+    console.info(
+      "Evento cargado desde IndexedDB."
+    );
+
+    return eventoGuardado;
+
+  }
+
+
+  const eventoBase =
+    copiarDatoBase(
+      CONFIGURACION_BASE.evento
+    );
+
+
+  if (
+    eventoBase
+  ) {
+
+    console.info(
+      "Evento cargado desde configuración base."
+    );
+
+
+    await guardarRespaldo(
+      CLAVES.evento,
+      eventoBase
+    );
+
+
+    return eventoBase;
+
+  }
+
+
+  throw crearErrorFinal(
+    "el evento"
   );
 
 }
@@ -202,32 +305,15 @@ function crearErrorOffline(
 export async function obtenerEventoActivo() {
 
   /*
-   * Si no hay internet, leemos directamente
-   * el evento guardado sin intentar Firebase.
+   * Sin conexión confirmada:
+   * no intentamos Firebase.
    */
 
   if (
     navigator.onLine === false
   ) {
 
-    const eventoGuardado =
-      await obtenerRespaldo(
-        CLAVES.evento
-      );
-
-
-    if (
-      eventoGuardado
-    ) {
-
-      return eventoGuardado;
-
-    }
-
-
-    throw crearErrorOffline(
-      "el evento"
-    );
+    return obtenerEventoDeRespaldo();
 
   }
 
@@ -302,26 +388,79 @@ export async function obtenerEventoActivo() {
     );
 
 
-    const eventoGuardado =
-      await obtenerRespaldo(
-        CLAVES.evento
-      );
-
-
-    if (
-      eventoGuardado
-    ) {
-
-      return eventoGuardado;
-
-    }
-
-
-    throw crearErrorOffline(
-      "el evento"
-    );
+    return obtenerEventoDeRespaldo();
 
   }
+
+}
+
+
+// ========================================
+// OBTENER FECHAS DESDE RESPALDOS
+// ========================================
+
+async function obtenerFechasDeRespaldo(
+  eventoId
+) {
+
+  const clave =
+    CLAVES.fechas(
+      eventoId
+    );
+
+
+  const fechasGuardadas =
+    await obtenerRespaldo(
+      clave
+    );
+
+
+  if (
+    esListaValida(
+      fechasGuardadas
+    )
+  ) {
+
+    console.info(
+      "Fechas cargadas desde IndexedDB."
+    );
+
+    return fechasGuardadas;
+
+  }
+
+
+  const fechasBase =
+    copiarDatoBase(
+      CONFIGURACION_BASE.fechas
+    );
+
+
+  if (
+    esListaValida(
+      fechasBase
+    )
+  ) {
+
+    console.info(
+      "Fechas cargadas desde configuración base."
+    );
+
+
+    await guardarRespaldo(
+      clave,
+      fechasBase
+    );
+
+
+    return fechasBase;
+
+  }
+
+
+  throw crearErrorFinal(
+    "las fechas"
+  );
 
 }
 
@@ -344,25 +483,8 @@ export async function listarFechas(
     navigator.onLine === false
   ) {
 
-    const fechasGuardadas =
-      await obtenerRespaldo(
-        clave
-      );
-
-
-    if (
-      esListaValida(
-        fechasGuardadas
-      )
-    ) {
-
-      return fechasGuardadas;
-
-    }
-
-
-    throw crearErrorOffline(
-      "las fechas"
+    return obtenerFechasDeRespaldo(
+      eventoId
     );
 
   }
@@ -400,9 +522,8 @@ export async function listarFechas(
 
 
     /*
-     * Nunca guardamos un arreglo vacío,
-     * porque podría reemplazar una copia
-     * offline correcta.
+     * No reemplazamos un respaldo válido
+     * con una lista vacía.
      */
 
     if (
@@ -438,28 +559,81 @@ export async function listarFechas(
     );
 
 
-    const fechasGuardadas =
-      await obtenerRespaldo(
-        clave
-      );
-
-
-    if (
-      esListaValida(
-        fechasGuardadas
-      )
-    ) {
-
-      return fechasGuardadas;
-
-    }
-
-
-    throw crearErrorOffline(
-      "las fechas"
+    return obtenerFechasDeRespaldo(
+      eventoId
     );
 
   }
+
+}
+
+
+// ========================================
+// OBTENER ZONAS DESDE RESPALDOS
+// ========================================
+
+async function obtenerZonasDeRespaldo(
+  eventoId
+) {
+
+  const clave =
+    CLAVES.zonas(
+      eventoId
+    );
+
+
+  const zonasGuardadas =
+    await obtenerRespaldo(
+      clave
+    );
+
+
+  if (
+    esListaValida(
+      zonasGuardadas
+    )
+  ) {
+
+    console.info(
+      "Zonas cargadas desde IndexedDB."
+    );
+
+    return zonasGuardadas;
+
+  }
+
+
+  const zonasBase =
+    copiarDatoBase(
+      CONFIGURACION_BASE.zonas
+    );
+
+
+  if (
+    esListaValida(
+      zonasBase
+    )
+  ) {
+
+    console.info(
+      "Zonas cargadas desde configuración base."
+    );
+
+
+    await guardarRespaldo(
+      clave,
+      zonasBase
+    );
+
+
+    return zonasBase;
+
+  }
+
+
+  throw crearErrorFinal(
+    "las zonas"
+  );
 
 }
 
@@ -482,25 +656,8 @@ export async function listarZonas(
     navigator.onLine === false
   ) {
 
-    const zonasGuardadas =
-      await obtenerRespaldo(
-        clave
-      );
-
-
-    if (
-      esListaValida(
-        zonasGuardadas
-      )
-    ) {
-
-      return zonasGuardadas;
-
-    }
-
-
-    throw crearErrorOffline(
-      "las zonas"
+    return obtenerZonasDeRespaldo(
+      eventoId
     );
 
   }
@@ -570,25 +727,8 @@ export async function listarZonas(
     );
 
 
-    const zonasGuardadas =
-      await obtenerRespaldo(
-        clave
-      );
-
-
-    if (
-      esListaValida(
-        zonasGuardadas
-      )
-    ) {
-
-      return zonasGuardadas;
-
-    }
-
-
-    throw crearErrorOffline(
-      "las zonas"
+    return obtenerZonasDeRespaldo(
+      eventoId
     );
 
   }
@@ -597,7 +737,155 @@ export async function listarZonas(
 
 
 // ========================================
-// DESCARGAR COLORES
+// OBTENER FAN PROJECTS DESDE RESPALDOS
+// ========================================
+
+async function obtenerFanProjectsDeRespaldo(
+  eventoId
+) {
+
+  const clave =
+    CLAVES.fanProjects(
+      eventoId
+    );
+
+
+  const guardados =
+    await obtenerRespaldo(
+      clave
+    );
+
+
+  if (
+    esListaValida(
+      guardados
+    )
+  ) {
+
+    console.info(
+      "Canciones cargadas desde IndexedDB."
+    );
+
+    return guardados;
+
+  }
+
+
+  const base =
+    copiarDatoBase(
+      CONFIGURACION_BASE.fanProjects
+    );
+
+
+  if (
+    esListaValida(
+      base
+    )
+  ) {
+
+    console.info(
+      "Canciones cargadas desde configuración base."
+    );
+
+
+    await guardarRespaldo(
+      clave,
+      base
+    );
+
+
+    return base;
+
+  }
+
+
+  throw crearErrorFinal(
+    "las canciones"
+  );
+
+}
+
+
+// ========================================
+// OBTENER COLORES BASE
+// ========================================
+
+function obtenerColoresBase(
+  fanProjectId
+) {
+
+  const coloresBase =
+    CONFIGURACION_BASE
+      .colores
+      ?.[fanProjectId];
+
+
+  if (
+    !hayColores(
+      coloresBase
+    )
+  ) {
+
+    return null;
+
+  }
+
+
+  return copiarDatoBase(
+    coloresBase
+  );
+
+}
+
+
+// ========================================
+// GUARDAR COLORES BASE
+// ========================================
+
+async function guardarColoresBase({
+
+  eventoId,
+
+  fanProjectId
+
+}) {
+
+  const coloresBase =
+    obtenerColoresBase(
+      fanProjectId
+    );
+
+
+  if (
+    !hayColores(
+      coloresBase
+    )
+  ) {
+
+    return null;
+
+  }
+
+
+  await guardarRespaldo(
+
+    CLAVES.colores(
+      eventoId,
+      fanProjectId
+    ),
+
+    coloresBase
+
+  );
+
+
+  return coloresBase;
+
+}
+
+
+// ========================================
+// DESCARGAR COLORES DE FIREBASE
 // ========================================
 
 async function descargarColores({
@@ -651,11 +939,6 @@ async function descargarColores({
   }
 
 
-  /*
-   * No reemplazamos una copia válida
-   * con un objeto vacío.
-   */
-
   if (
     !hayColores(
       colores
@@ -681,6 +964,37 @@ async function descargarColores({
 
 
 // ========================================
+// PREPARAR COLORES BASE
+// ========================================
+
+async function prepararColoresBase(
+  eventoId
+) {
+
+  const fanProjectsBase =
+    CONFIGURACION_BASE.fanProjects || [];
+
+
+  await Promise.allSettled(
+
+    fanProjectsBase.map(
+      fanProject =>
+        guardarColoresBase({
+
+          eventoId,
+
+          fanProjectId:
+            fanProject.id
+
+        })
+    )
+
+  );
+
+}
+
+
+// ========================================
 // FAN PROJECTS
 // ========================================
 
@@ -698,26 +1012,23 @@ export async function listarFanProjects(
     navigator.onLine === false
   ) {
 
-    const fanProjectsGuardados =
-      await obtenerRespaldo(
-        clave
+    const fanProjects =
+      await obtenerFanProjectsDeRespaldo(
+        eventoId
       );
 
 
-    if (
-      esListaValida(
-        fanProjectsGuardados
-      )
-    ) {
+    /*
+     * También aseguramos que los colores
+     * base queden guardados.
+     */
 
-      return fanProjectsGuardados;
-
-    }
-
-
-    throw crearErrorOffline(
-      "las canciones"
+    await prepararColoresBase(
+      eventoId
     );
+
+
+    return fanProjects;
 
   }
 
@@ -773,8 +1084,8 @@ export async function listarFanProjects(
 
 
     /*
-     * Descargamos anticipadamente todos
-     * los colores para el modo offline.
+     * Descarga anticipada de todos los
+     * colores disponibles en Firebase.
      */
 
     const resultados =
@@ -795,20 +1106,44 @@ export async function listarFanProjects(
       );
 
 
+    /*
+     * Si algún Fan Project no pudo descargar
+     * sus colores, guardamos los de respaldo.
+     */
+
     for (
-      const resultado
-      of resultados
+      let indice = 0;
+      indice < resultados.length;
+      indice += 1
     ) {
+
+      const resultado =
+        resultados[indice];
+
 
       if (
         resultado.status ===
         "rejected"
       ) {
 
+        const fanProject =
+          fanProjects[indice];
+
+
         console.warn(
-          "No se pudieron guardar algunos colores:",
+          `No se descargaron los colores de ${fanProject.id}:`,
           resultado.reason
         );
+
+
+        await guardarColoresBase({
+
+          eventoId,
+
+          fanProjectId:
+            fanProject.id
+
+        });
 
       }
 
@@ -829,26 +1164,18 @@ export async function listarFanProjects(
     );
 
 
-    const fanProjectsGuardados =
-      await obtenerRespaldo(
-        clave
+    const fanProjects =
+      await obtenerFanProjectsDeRespaldo(
+        eventoId
       );
 
 
-    if (
-      esListaValida(
-        fanProjectsGuardados
-      )
-    ) {
-
-      return fanProjectsGuardados;
-
-    }
-
-
-    throw crearErrorOffline(
-      "las canciones"
+    await prepararColoresBase(
+      eventoId
     );
+
+
+    return fanProjects;
 
   }
 
@@ -856,7 +1183,7 @@ export async function listarFanProjects(
 
 
 // ========================================
-// COLOR GUARDADO
+// OBTENER COLOR OFFLINE
 // ========================================
 
 async function obtenerColorOffline({
@@ -869,30 +1196,74 @@ async function obtenerColorOffline({
 
 }) {
 
-  const colores =
+  const clave =
+    CLAVES.colores(
+      eventoId,
+      fanProjectId
+    );
+
+
+  /*
+   * Primer respaldo: IndexedDB.
+   */
+
+  const coloresGuardados =
     await obtenerRespaldo(
-
-      CLAVES.colores(
-        eventoId,
-        fanProjectId
-      )
-
+      clave
     );
 
 
   if (
-    !hayColores(
-      colores
+    hayColores(
+      coloresGuardados
     )
   ) {
 
-    return null;
+    const colorGuardado =
+      coloresGuardados[zonaId];
+
+
+    if (
+      colorGuardado
+    ) {
+
+      return colorGuardado;
+
+    }
 
   }
 
 
-  return colores[zonaId] ||
-    null;
+  /*
+   * Respaldo definitivo:
+   * configuración incluida en la app.
+   */
+
+  const coloresBase =
+    obtenerColoresBase(
+      fanProjectId
+    );
+
+
+  if (
+    hayColores(
+      coloresBase
+    )
+  ) {
+
+    await guardarRespaldo(
+      clave,
+      coloresBase
+    );
+
+
+    return coloresBase[zonaId] ||
+      null;
+
+  }
+
+
+  return null;
 
 }
 
@@ -956,11 +1327,24 @@ export async function obtenerColor({
       );
 
 
+    /*
+     * Si Firebase no tiene el documento,
+     * intentamos los respaldos.
+     */
+
     if (
       !snapshot.exists()
     ) {
 
-      return null;
+      return obtenerColorOffline({
+
+        eventoId,
+
+        fanProjectId,
+
+        zonaId
+
+      });
 
     }
 
@@ -974,6 +1358,11 @@ export async function obtenerColor({
 
     };
 
+
+    /*
+     * Actualizamos el conjunto guardado
+     * en IndexedDB.
+     */
 
     const clave =
       CLAVES.colores(
