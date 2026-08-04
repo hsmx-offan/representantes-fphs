@@ -109,6 +109,28 @@ export async function guardarColores({
 }) {
 
   if (
+    !eventoId
+  ) {
+
+    throw new Error(
+      "No se recibió el ID del evento."
+    );
+
+  }
+
+
+  if (
+    !fanProjectId
+  ) {
+
+    throw new Error(
+      "No se recibió el ID del Fan Project."
+    );
+
+  }
+
+
+  if (
     !Array.isArray(
       colores
     )
@@ -160,28 +182,8 @@ export async function guardarColores({
         zonaId:
           color.zonaId,
 
-       batch.set(
-  referencia,
-  {
-
-    zonaId:
-      color.zonaId,
-
-    colorId:
-      color.colorId || "",
-
-    activo:
-      color.activo !== false,
-
-    fechaActualizacion:
-      serverTimestamp()
-
-  },
-  {
-    merge:
-      true
-  }
-);
+        colorId:
+          color.colorId || "",
 
         activo:
           color.activo !== false,
