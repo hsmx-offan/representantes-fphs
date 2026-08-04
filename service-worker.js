@@ -1,148 +1,399 @@
-const CACHE_NAME = "mi-color-v3";
+/* ========================================
+   MI COLOR
+   SERVICE WORKER
+   ======================================== */
+
+const CACHE_NAME =
+  "mi-color-v4";
 
 
-const ARCHIVOS = [
+const RUTA_BASE =
+  "/representantes-fphs";
 
-  "/representantes-fphs/",
 
-  "/representantes-fphs/mi-color.html",
+const ARCHIVOS_APP = [
 
-  "/representantes-fphs/css/mi-color.css",
+  `${RUTA_BASE}/mi-color.html`,
 
-  "/representantes-fphs/js/mi-color/index.js",
+  `${RUTA_BASE}/css/mi-color.css`,
 
-  "/representantes-fphs/js/mi-color/api.js",
+  `${RUTA_BASE}/js/mi-color/index.js`,
 
-  "/representantes-fphs/js/mi-color/render.js",
+  `${RUTA_BASE}/js/mi-color/api.js`,
 
-  "/representantes-fphs/manifest.webmanifest",
+  `${RUTA_BASE}/js/mi-color/render.js`,
 
-  "/representantes-fphs/img/icon-192.png",
+  `${RUTA_BASE}/manifest.webmanifest`,
 
-  "/representantes-fphs/img/icon-512.png",
+  `${RUTA_BASE}/img/icon-192.png`,
 
-  "/representantes-fphs/admin/js/shared/firebase.js",
+  `${RUTA_BASE}/img/icon-512.png`,
 
-  "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js",
+  `${RUTA_BASE}/admin/js/shared/firebase.js`,
 
-  "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js",
-
-  "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js"
+  `${RUTA_BASE}/admin/js/modulos/color-manager/shared/colores.js`
 
 ];
 
 
+// ========================================
+// INSTALAR
+// ========================================
 
 self.addEventListener(
-
   "install",
-
   event => {
 
     event.waitUntil(
 
-      caches.open(
+      caches
+        .open(
+          CACHE_NAME
+        )
+        .then(
+          async cache => {
 
-        CACHE_NAME
+            /*
+             * Guardamos los archivos uno por uno.
+             * Si alguno falla, no cancela toda
+             * la instalación.
+             */
 
-      ).then(
+            await Promise.allSettled(
 
-        cache =>
+              ARCHIVOS_APP.map(
+                archivo =>
+                  cache.add(
+                    archivo
+                  )
+              )
 
-          cache.addAll(
+            );
 
-            ARCHIVOS
-
-          )
-
-      )
+          }
+        )
+        .then(
+          () =>
+            self.skipWaiting()
+        )
 
     );
 
   }
-
 );
 
 
+// ========================================
+// ACTIVAR
+// ========================================
 
 self.addEventListener(
-
   "activate",
-
   event => {
 
     event.waitUntil(
 
-      caches.keys().then(
+      caches
+        .keys()
+        .then(
+          nombres =>
+            Promise.all(
 
-        keys =>
+              nombres.map(
+                nombre => {
 
-          Promise.all(
+                  if (
+                    nombre !==
+                    CACHE_NAME
+                  ) {
 
-            keys.map(
+                    return caches.delete(
+                      nombre
+                    );
 
-              key => {
+                  }
 
-                if (
-
-                  key !==
-
-                  CACHE_NAME
-
-                ) {
-
-                  return caches.delete(
-
-                    key
-
-                  );
+                  return null;
 
                 }
-
-              }
+              )
 
             )
-
-          )
-
-      )
+        )
+        .then(
+          () =>
+            self.clients.claim()
+        )
 
     );
 
   }
-
 );
 
 
+// ========================================
+// IDENTIFICAR FIREBASE / FIRESTORE
+// ========================================
 
-self.addEventListener(
+function esSolicitudFirebase(
+  url
+) {
 
-  "fetch",
+  return (
 
-  event => {
+    url.hostname.includes(
+      "firestore.googleapis.com"
+    ) ||
 
-    event.respondWith(
+    url.hostname.includes(
+      "firebaseio.com"
+    ) ||
 
-      caches.match(
+    url.hostname.includes(
+      "googleapis.com"
+    ) ||
 
-        event.request
+    url.hostname.includes(
+      "firebaseapp.com"
+    )
 
-      ).then(
+  );
 
-        respuesta =>
+}
 
-          respuesta ||
 
-          fetch(
+// ========================================
+// RED PRIMERO
+// ========================================
 
-            event.request
+async function redPrimero(
+  request
+) {
 
-          )
+  const cache =
+    await caches.open(
+      CACHE_NAME
+    );
 
-      )
 
+  try {
+
+    const respuesta =
+      await fetch(
+        request
+      );
+
+
+    if (
+      respuesta &&
+      respuesta.ok &&
+      request.method === "GET"
+    ) {
+
+      cache.put(
+        request,
+        respuesta.clone()
+      );
+
+    }
+
+
+    return respuesta;
+
+  }
+
+  catch (
+    error
+  ) {
+
+    const respuestaGuardada =
+      await cache.match(
+        request
+      );
+
+
+    if (
+      respuestaGuardada
+    ) {
+
+      return respuestaGuardada;
+
+    }
+
+
+    /*
+     * Si la navegación falla, abrimos
+     * la app guardada.
+     */
+
+    if (
+      request.mode ===
+      "navigate"
+    ) {
+
+      const paginaGuardada =
+        await cache.match(
+          `${RUTA_BASE}/mi-color.html`
+        );
+
+
+      if (
+        paginaGuardada
+      ) {
+
+        return paginaGuardada;
+
+      }
+
+    }
+
+
+    throw error;
+
+  }
+
+}
+
+
+// ========================================
+// CACHÉ PRIMERO PARA FIREBASE SDK
+// ========================================
+
+async function cachePrimero(
+  request
+) {
+
+  const cache =
+    await caches.open(
+      CACHE_NAME
+    );
+
+
+  const guardado =
+    await cache.match(
+      request
+    );
+
+
+  if (
+    guardado
+  ) {
+
+    return guardado;
+
+  }
+
+
+  const respuesta =
+    await fetch(
+      request
+    );
+
+
+  if (
+    respuesta &&
+    (
+      respuesta.ok ||
+      respuesta.type === "opaque"
+    )
+  ) {
+
+    cache.put(
+      request,
+      respuesta.clone()
     );
 
   }
 
+
+  return respuesta;
+
+}
+
+
+// ========================================
+// FETCH
+// ========================================
+
+self.addEventListener(
+  "fetch",
+  event => {
+
+    const request =
+      event.request;
+
+
+    if (
+      request.method !==
+      "GET"
+    ) {
+
+      return;
+
+    }
+
+
+    const url =
+      new URL(
+        request.url
+      );
+
+
+    /*
+     * Las consultas reales de Firebase
+     * deben pasar directamente por la red.
+     * No deben guardarse como archivos.
+     */
+
+    if (
+      esSolicitudFirebase(
+        url
+      )
+    ) {
+
+      event.respondWith(
+        fetch(
+          request
+        )
+      );
+
+      return;
+
+    }
+
+
+    /*
+     * Los módulos del SDK de Firebase
+     * se guardan para poder iniciar offline.
+     */
+
+    if (
+      url.hostname ===
+      "www.gstatic.com"
+    ) {
+
+      event.respondWith(
+        cachePrimero(
+          request
+        )
+      );
+
+      return;
+
+    }
+
+
+    /*
+     * Para HTML, CSS y JS:
+     * primero busca la versión nueva.
+     * Si no hay señal, usa la copia.
+     */
+
+    event.respondWith(
+      redPrimero(
+        request
+      )
+    );
+
+  }
 );
