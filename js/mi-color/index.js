@@ -211,13 +211,15 @@ function reiniciarFlujo() {
     true;
 
 
-  limpiarResultado({
+ limpiarResultado({
 
-    resultado,
+  resultado,
 
-    sinColor
+  sinColor,
 
-  });
+  contenido
+
+});
 
 
   mostrarPaso(
@@ -373,13 +375,15 @@ async function iniciar() {
 
 function manejarCambioFecha() {
 
-  limpiarResultado({
+ limpiarResultado({
 
-    resultado,
+  resultado,
 
-    sinColor
+  sinColor,
 
-  });
+  contenido
+
+});
 
 
   if (
@@ -423,11 +427,13 @@ function manejarCambioZona() {
 
   limpiarResultado({
 
-    resultado,
+  resultado,
 
-    sinColor
+  sinColor,
 
-  });
+  contenido
+
+});
 
 
   if (
@@ -464,11 +470,13 @@ async function actualizarResultado() {
 
   limpiarResultado({
 
-    resultado,
+  resultado,
 
-    sinColor
+  sinColor,
 
-  });
+  contenido
+
+});
 
 
   if (
@@ -527,27 +535,29 @@ async function actualizarResultado() {
 
     mostrarColor({
 
-      resultado,
+  resultado,
 
-      sinColor,
+  sinColor,
 
-      nombre,
+  contenido,
 
-      cancionResultado,
+  nombre,
 
-      zonaResultado,
+  cancionResultado,
 
-      color,
+  zonaResultado,
 
-      cancion:
-        fanProject.nombre ||
-        fanProject.id,
+  color,
 
-      zona:
-        zona.nombre ||
-        zona.id
+  cancion:
+    fanProject.nombre ||
+    fanProject.id,
 
-    });
+  zona:
+    zona.nombre ||
+    zona.id
+
+});
 
   }
 
@@ -598,10 +608,13 @@ async function actualizarResultado() {
 
 function volverAlSelector() {
 
-  cerrarPantallaColor(
-    resultado
-  );
+  cerrarPantallaColor({
 
+    resultado,
+
+    contenido
+
+  });
 
   reiniciarFlujo();
 
