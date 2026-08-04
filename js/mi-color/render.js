@@ -4,10 +4,8 @@
    ======================================== */
 
 import {
-
-    obtenerColorPorId
-
-} from "../modulos/color-manager/shared/colores.js";
+  obtenerColorPorId
+} from "../../admin/js/modulos/color-manager/shared/colores.js";
 
 
 /* ========================================
