@@ -1,24 +1,11 @@
-/* =========================================
-   COLOR MANAGER
-========================================= */
+import { db } from "../../shared/firebase.js";
 
-const eventosDemo = [
-
-    {
-        id: "2026",
-        nombre: "Together Together Tour México 2026",
-        activo: true
-    },
-
-    {
-        id: "2028",
-        nombre: "Harry Styles México 2028",
-        activo: false
-    }
-
-];
-
-
+import {
+    collection,
+    getDocs,
+    query,
+    where
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 /* =========================================
    ELEMENTOS
 ========================================= */
