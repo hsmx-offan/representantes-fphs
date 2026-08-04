@@ -1,26 +1,17 @@
 /* ========================================
    MI COLOR
-   API
+   API CON RESPALDO OFFLINE
    ======================================== */
 
 import {
-
-    collection,
-
-    doc,
-
-    getDoc,
-
-    getDocs,
-
-    query,
-
-    where,
-
-    orderBy,
-
-    limit
-
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+  orderBy,
+  limit
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 import {
@@ -28,218 +19,770 @@ import {
 } from "../../admin/js/shared/firebase.js";
 
 
-/* ========================================
-   EVENTO ACTIVO
-   ======================================== */
+// ========================================
+// CONFIGURACIÓN DEL RESPALDO
+// ========================================
 
-export async function obtenerEventoActivo() {
+const CACHE_KEY =
+  "miColorConfiguracionOffline";
 
-    const consulta = query(
+const CACHE_VERSION =
+  1;
 
-        collection(
-            db,
-            "eventos"
-        ),
 
-        where(
-            "activo",
-            "==",
-            true
-        ),
+// ========================================
+// CREAR CACHÉ VACÍA
+// ========================================
 
-        limit(1)
+function crearCacheVacia() {
 
-    );
+  return {
 
-    const snapshot =
-        await getDocs(
-            consulta
-        );
+    version:
+      CACHE_VERSION,
+
+    fechaActualizacion:
+      null,
+
+    evento:
+      null,
+
+    fechas:
+      {},
+
+    zonas:
+      {},
+
+    fanProjects:
+      {},
+
+    colores:
+      {}
+
+  };
+
+}
+
+
+// ========================================
+// LEER CACHÉ LOCAL
+// ========================================
+
+function leerCache() {
+
+  try {
+
+    const contenido =
+      localStorage.getItem(
+        CACHE_KEY
+      );
+
 
     if (
-        snapshot.empty
+      !contenido
     ) {
 
-        throw new Error(
-            "No existe un evento activo."
-        );
+      return crearCacheVacia();
 
     }
 
+
+    const cache =
+      JSON.parse(
+        contenido
+      );
+
+
+    if (
+      cache.version !==
+      CACHE_VERSION
+    ) {
+
+      return crearCacheVacia();
+
+    }
+
+
     return {
 
-        id:
-            snapshot.docs[0].id,
+      ...crearCacheVacia(),
 
-        ...snapshot.docs[0].data()
+      ...cache,
+
+      fechas:
+        cache.fechas || {},
+
+      zonas:
+        cache.zonas || {},
+
+      fanProjects:
+        cache.fanProjects || {},
+
+      colores:
+        cache.colores || {}
 
     };
 
+  }
+
+  catch (
+    error
+  ) {
+
+    console.warn(
+      "No se pudo leer la configuración offline:",
+      error
+    );
+
+
+    return crearCacheVacia();
+
+  }
+
 }
 
 
-/* ========================================
-   FECHAS
-   ======================================== */
+// ========================================
+// GUARDAR CACHÉ LOCAL
+// ========================================
+
+function guardarCache(
+  cache
+) {
+
+  try {
+
+    cache.version =
+      CACHE_VERSION;
+
+    cache.fechaActualizacion =
+      new Date().toISOString();
+
+
+    localStorage.setItem(
+      CACHE_KEY,
+      JSON.stringify(
+        cache
+      )
+    );
+
+  }
+
+  catch (
+    error
+  ) {
+
+    console.warn(
+      "No se pudo guardar la configuración offline:",
+      error
+    );
+
+  }
+
+}
+
+
+// ========================================
+// ERROR SIN RESPALDO
+// ========================================
+
+function crearErrorSinCache() {
+
+  return new Error(
+    "No hay conexión y todavía no existe una copia offline. Abre la app una vez con internet antes del concierto."
+  );
+
+}
+
+
+// ========================================
+// CONVERTIR SNAPSHOT EN LISTA
+// ========================================
+
+function convertirDocumentos(
+  snapshot
+) {
+
+  return snapshot.docs.map(
+    documento => ({
+
+      id:
+        documento.id,
+
+      ...documento.data()
+
+    })
+  );
+
+}
+
+
+// ========================================
+// EVENTO ACTIVO
+// ========================================
+
+export async function obtenerEventoActivo() {
+
+  const cache =
+    leerCache();
+
+
+  try {
+
+    const consulta =
+      query(
+
+        collection(
+          db,
+          "eventos"
+        ),
+
+        where(
+          "activo",
+          "==",
+          true
+        ),
+
+        limit(
+          1
+        )
+
+      );
+
+
+    const snapshot =
+      await getDocs(
+        consulta
+      );
+
+
+    if (
+      snapshot.empty
+    ) {
+
+      throw new Error(
+        "No existe un evento activo."
+      );
+
+    }
+
+
+    const evento = {
+
+      id:
+        snapshot.docs[0].id,
+
+      ...snapshot.docs[0].data()
+
+    };
+
+
+    cache.evento =
+      evento;
+
+
+    guardarCache(
+      cache
+    );
+
+
+    return evento;
+
+  }
+
+  catch (
+    error
+  ) {
+
+    console.warn(
+      "Usando evento guardado sin conexión:",
+      error
+    );
+
+
+    if (
+      cache.evento
+    ) {
+
+      return cache.evento;
+
+    }
+
+
+    throw crearErrorSinCache();
+
+  }
+
+}
+
+
+// ========================================
+// FECHAS
+// ========================================
 
 export async function listarFechas(
-    eventoId
+  eventoId
 ) {
 
-    const consulta = query(
+  const cache =
+    leerCache();
+
+
+  try {
+
+    const consulta =
+      query(
 
         collection(
-
-            db,
-
-            "eventos",
-
-            eventoId,
-
-            "fechas"
-
+          db,
+          "eventos",
+          eventoId,
+          "fechas"
         ),
 
         orderBy(
-            "fecha"
+          "fecha"
         )
 
-    );
+      );
+
 
     const snapshot =
-        await getDocs(
-            consulta
-        );
+      await getDocs(
+        consulta
+      );
 
-    return snapshot.docs.map(
 
-        doc => ({
+    const fechas =
+      convertirDocumentos(
+        snapshot
+      );
 
-            id:
-                doc.id,
 
-            ...doc.data()
+    cache.fechas[eventoId] =
+      fechas;
 
-        })
 
+    guardarCache(
+      cache
     );
+
+
+    return fechas;
+
+  }
+
+  catch (
+    error
+  ) {
+
+    console.warn(
+      "Usando fechas guardadas sin conexión:",
+      error
+    );
+
+
+    const fechasGuardadas =
+      cache.fechas[eventoId];
+
+
+    if (
+      Array.isArray(
+        fechasGuardadas
+      )
+    ) {
+
+      return fechasGuardadas;
+
+    }
+
+
+    throw crearErrorSinCache();
+
+  }
 
 }
 
 
-/* ========================================
-   ZONAS
-   ======================================== */
+// ========================================
+// ZONAS
+// ========================================
 
 export async function listarZonas(
-    eventoId
+  eventoId
 ) {
 
-    const consulta = query(
+  const cache =
+    leerCache();
+
+
+  try {
+
+    const consulta =
+      query(
 
         collection(
-
-            db,
-
-            "eventos",
-
-            eventoId,
-
-            "zonas"
-
+          db,
+          "eventos",
+          eventoId,
+          "zonas"
         ),
 
         orderBy(
-            "orden"
+          "orden"
         )
 
-    );
+      );
+
 
     const snapshot =
-        await getDocs(
-            consulta
-        );
+      await getDocs(
+        consulta
+      );
 
-    return snapshot.docs.map(
 
-        doc => ({
+    const zonas =
+      convertirDocumentos(
+        snapshot
+      );
 
-            id:
-                doc.id,
 
-            ...doc.data()
+    cache.zonas[eventoId] =
+      zonas;
 
-        })
 
+    guardarCache(
+      cache
     );
+
+
+    return zonas;
+
+  }
+
+  catch (
+    error
+  ) {
+
+    console.warn(
+      "Usando zonas guardadas sin conexión:",
+      error
+    );
+
+
+    const zonasGuardadas =
+      cache.zonas[eventoId];
+
+
+    if (
+      Array.isArray(
+        zonasGuardadas
+      )
+    ) {
+
+      return zonasGuardadas;
+
+    }
+
+
+    throw crearErrorSinCache();
+
+  }
 
 }
 
 
-/* ========================================
-   FAN PROJECTS
-   ======================================== */
+// ========================================
+// DESCARGAR COLORES DE UN FAN PROJECT
+// ========================================
 
-export async function listarFanProjects(
-    eventoId
-) {
+async function descargarColoresFanProject({
 
-    const consulta = query(
+  eventoId,
 
-        collection(
-
-            db,
-
-            "eventos",
-
-            eventoId,
-
-            "fanProjects"
-
-        ),
-
-        orderBy(
-            "orden"
-        )
-
-    );
-
-    const snapshot =
-        await getDocs(
-            consulta
-        );
-
-    return snapshot.docs.map(
-
-        doc => ({
-
-            id:
-                doc.id,
-
-            ...doc.data()
-
-        })
-
-    );
-
-}
-
-
-/* ========================================
-   COLOR
-   ======================================== */
-
-export async function obtenerColor({
-
-    eventoId,
-
-    fanProjectId,
-
-    zonaId
+  fanProjectId
 
 }) {
 
-    const referencia = doc(
+  const snapshot =
+    await getDocs(
+
+      collection(
+        db,
+        "eventos",
+        eventoId,
+        "fanProjects",
+        fanProjectId,
+        "colores"
+      )
+
+    );
+
+
+  const colores =
+    {};
+
+
+  for (
+    const documento
+    of snapshot.docs
+  ) {
+
+    colores[documento.id] = {
+
+      id:
+        documento.id,
+
+      ...documento.data()
+
+    };
+
+  }
+
+
+  return colores;
+
+}
+
+
+// ========================================
+// FAN PROJECTS
+// ========================================
+
+export async function listarFanProjects(
+  eventoId
+) {
+
+  const cache =
+    leerCache();
+
+
+  try {
+
+    const consulta =
+      query(
+
+        collection(
+          db,
+          "eventos",
+          eventoId,
+          "fanProjects"
+        ),
+
+        orderBy(
+          "orden"
+        )
+
+      );
+
+
+    const snapshot =
+      await getDocs(
+        consulta
+      );
+
+
+    const fanProjects =
+      convertirDocumentos(
+        snapshot
+      );
+
+
+    cache.fanProjects[eventoId] =
+      fanProjects;
+
+
+    if (
+      !cache.colores[eventoId]
+    ) {
+
+      cache.colores[eventoId] =
+        {};
+
+    }
+
+
+    /*
+     * Descarga todos los colores ahora,
+     * mientras sí hay conexión.
+     *
+     * De esta manera, después se podrá
+     * consultar cualquier zona y canción
+     * sin entrar nuevamente a Firebase.
+     */
+
+    const resultadosColores =
+      await Promise.allSettled(
+
+        fanProjects.map(
+          async fanProject => {
+
+            const colores =
+              await descargarColoresFanProject({
+
+                eventoId,
+
+                fanProjectId:
+                  fanProject.id
+
+              });
+
+
+            return {
+
+              fanProjectId:
+                fanProject.id,
+
+              colores
+
+            };
+
+          }
+        )
+
+      );
+
+
+    for (
+      const resultado
+      of resultadosColores
+    ) {
+
+      if (
+        resultado.status !==
+        "fulfilled"
+      ) {
+
+        console.warn(
+          "No se pudieron descargar algunos colores:",
+          resultado.reason
+        );
+
+        continue;
+
+      }
+
+
+      cache.colores[eventoId][
+        resultado.value.fanProjectId
+      ] =
+        resultado.value.colores;
+
+    }
+
+
+    guardarCache(
+      cache
+    );
+
+
+    return fanProjects;
+
+  }
+
+  catch (
+    error
+  ) {
+
+    console.warn(
+      "Usando Fan Projects guardados sin conexión:",
+      error
+    );
+
+
+    const fanProjectsGuardados =
+      cache.fanProjects[eventoId];
+
+
+    if (
+      Array.isArray(
+        fanProjectsGuardados
+      )
+    ) {
+
+      return fanProjectsGuardados;
+
+    }
+
+
+    throw crearErrorSinCache();
+
+  }
+
+}
+
+
+// ========================================
+// BUSCAR COLOR GUARDADO
+// ========================================
+
+function obtenerColorGuardado({
+
+  cache,
+
+  eventoId,
+
+  fanProjectId,
+
+  zonaId
+
+}) {
+
+  return (
+    cache.colores?.[eventoId]
+      ?.[fanProjectId]
+      ?.[zonaId]
+  ) || null;
+
+}
+
+
+// ========================================
+// COLOR
+// ========================================
+
+export async function obtenerColor({
+
+  eventoId,
+
+  fanProjectId,
+
+  zonaId
+
+}) {
+
+  const cache =
+    leerCache();
+
+
+  /*
+   * Si el navegador ya sabe que no hay
+   * conexión, usamos directamente la copia.
+   */
+
+  if (
+    navigator.onLine === false
+  ) {
+
+    return obtenerColorGuardado({
+
+      cache,
+
+      eventoId,
+
+      fanProjectId,
+
+      zonaId
+
+    });
+
+  }
+
+
+  try {
+
+    const referencia =
+      doc(
 
         db,
 
@@ -255,28 +798,89 @@ export async function obtenerColor({
 
         zonaId
 
-    );
+      );
+
 
     const snapshot =
-        await getDoc(
-            referencia
-        );
+      await getDoc(
+        referencia
+      );
+
 
     if (
-        !snapshot.exists()
+      !snapshot.exists()
     ) {
 
-        return null;
+      return null;
 
     }
 
-    return {
 
-        id:
-            snapshot.id,
+    const color = {
 
-        ...snapshot.data()
+      id:
+        snapshot.id,
+
+      ...snapshot.data()
 
     };
+
+
+    if (
+      !cache.colores[eventoId]
+    ) {
+
+      cache.colores[eventoId] =
+        {};
+
+    }
+
+
+    if (
+      !cache.colores[eventoId][fanProjectId]
+    ) {
+
+      cache.colores[eventoId][fanProjectId] =
+        {};
+
+    }
+
+
+    cache.colores[eventoId][fanProjectId][zonaId] =
+      color;
+
+
+    guardarCache(
+      cache
+    );
+
+
+    return color;
+
+  }
+
+  catch (
+    error
+  ) {
+
+    console.warn(
+      "Usando color guardado sin conexión:",
+      error
+    );
+
+
+    return obtenerColorGuardado({
+
+      cache,
+
+      eventoId,
+
+      fanProjectId,
+
+      zonaId
+
+    });
+
+  }
 
 }
