@@ -48,17 +48,22 @@ const mensajeError =
 
 
 // ========================================
-// CAMPOS PROGRESIVOS
+// PASOS
 // ========================================
 
-const campoZona =
+const pasoFecha =
   document.getElementById(
-    "campoZona"
+    "pasoFecha"
   );
 
-const campoFanProject =
+const pasoZona =
   document.getElementById(
-    "campoFanProject"
+    "pasoZona"
+  );
+
+const pasoCancion =
+  document.getElementById(
+    "pasoCancion"
   );
 
 
@@ -164,10 +169,33 @@ function obtenerFanProjectSeleccionado() {
 
 
 // ========================================
-// REINICIAR DESDE FECHA
+// MOSTRAR PASO
 // ========================================
 
-function reiniciarDespuesDeFecha() {
+function mostrarPaso(
+  paso
+) {
+
+  pasoFecha.hidden =
+    paso !== "fecha";
+
+  pasoZona.hidden =
+    paso !== "zona";
+
+  pasoCancion.hidden =
+    paso !== "cancion";
+
+}
+
+
+// ========================================
+// REINICIAR FLUJO
+// ========================================
+
+function reiniciarFlujo() {
+
+  fechaSelect.value =
+    "";
 
   zonaSelect.value =
     "";
@@ -176,7 +204,7 @@ function reiniciarDespuesDeFecha() {
     "";
 
 
-  campoFanProject.hidden =
+  zonaSelect.disabled =
     true;
 
   fanProjectSelect.disabled =
@@ -191,32 +219,10 @@ function reiniciarDespuesDeFecha() {
 
   });
 
-}
 
-
-// ========================================
-// REINICIAR DESDE ZONA
-// ========================================
-
-function reiniciarDespuesDeZona() {
-
-  fanProjectSelect.value =
-    "";
-
-  campoFanProject.hidden =
-    true;
-
-  fanProjectSelect.disabled =
-    true;
-
-
-  limpiarResultado({
-
-    resultado,
-
-    sinColor
-
-  });
+  mostrarPaso(
+    "fecha"
+  );
 
 }
 
@@ -314,18 +320,7 @@ async function iniciar() {
     );
 
 
-    campoZona.hidden =
-      true;
-
-    campoFanProject.hidden =
-      true;
-
-
-    zonaSelect.disabled =
-      true;
-
-    fanProjectSelect.disabled =
-      true;
+    reiniciarFlujo();
 
 
     mostrarContenido({
@@ -378,29 +373,44 @@ async function iniciar() {
 
 function manejarCambioFecha() {
 
-  reiniciarDespuesDeFecha();
+  limpiarResultado({
+
+    resultado,
+
+    sinColor
+
+  });
 
 
   if (
     !fechaSelect.value
   ) {
 
-    campoZona.hidden =
-      true;
-
-    zonaSelect.disabled =
-      true;
-
     return;
 
   }
 
 
-  campoZona.hidden =
-    false;
+  zonaSelect.value =
+    "";
+
+  fanProjectSelect.value =
+    "";
+
 
   zonaSelect.disabled =
     false;
+
+  fanProjectSelect.disabled =
+    true;
+
+
+  mostrarPaso(
+    "zona"
+  );
+
+
+  zonaSelect.focus();
 
 }
 
@@ -411,7 +421,13 @@ function manejarCambioFecha() {
 
 function manejarCambioZona() {
 
-  reiniciarDespuesDeZona();
+  limpiarResultado({
+
+    resultado,
+
+    sinColor
+
+  });
 
 
   if (
@@ -423,11 +439,19 @@ function manejarCambioZona() {
   }
 
 
-  campoFanProject.hidden =
-    false;
+  fanProjectSelect.value =
+    "";
 
   fanProjectSelect.disabled =
     false;
+
+
+  mostrarPaso(
+    "cancion"
+  );
+
+
+  fanProjectSelect.focus();
 
 }
 
@@ -569,7 +593,7 @@ async function actualizarResultado() {
 
 
 // ========================================
-// VOLVER AL SELECTOR
+// VOLVER AL INICIO
 // ========================================
 
 function volverAlSelector() {
@@ -577,6 +601,9 @@ function volverAlSelector() {
   cerrarPantallaColor(
     resultado
   );
+
+
+  reiniciarFlujo();
 
 }
 
