@@ -1,6 +1,6 @@
 /* ========================================
    MI COLOR
-   API CON RESPALDO OFFLINE
+   API CON INDEXEDDB OFFLINE
    ======================================== */
 
 import {
@@ -8,195 +8,55 @@ import {
   doc,
   getDoc,
   getDocs,
-  query,
-  where,
+  limit,
   orderBy,
-  limit
+  query,
+  where
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 import {
   db
 } from "../../admin/js/shared/firebase.js";
 
-
-// ========================================
-// CONFIGURACIÓN DEL RESPALDO
-// ========================================
-
-const CACHE_KEY =
-  "miColorConfiguracionOffline";
-
-const CACHE_VERSION =
-  1;
+import {
+  guardarDato,
+  leerDato
+} from "./offline.js";
 
 
 // ========================================
-// CREAR CACHÉ VACÍA
+// CLAVES OFFLINE
 // ========================================
 
-function crearCacheVacia() {
+const CLAVES = {
 
-  return {
+  evento:
+    "evento-activo",
 
-    version:
-      CACHE_VERSION,
+  fechas:
+    eventoId =>
+      `fechas-${eventoId}`,
 
-    fechaActualizacion:
-      null,
+  zonas:
+    eventoId =>
+      `zonas-${eventoId}`,
 
-    evento:
-      null,
+  fanProjects:
+    eventoId =>
+      `fan-projects-${eventoId}`,
 
-    fechas:
-      {},
+  colores:
+    (
+      eventoId,
+      fanProjectId
+    ) =>
+      `colores-${eventoId}-${fanProjectId}`
 
-    zonas:
-      {},
-
-    fanProjects:
-      {},
-
-    colores:
-      {}
-
-  };
-
-}
+};
 
 
 // ========================================
-// LEER CACHÉ LOCAL
-// ========================================
-
-function leerCache() {
-
-  try {
-
-    const contenido =
-      localStorage.getItem(
-        CACHE_KEY
-      );
-
-
-    if (
-      !contenido
-    ) {
-
-      return crearCacheVacia();
-
-    }
-
-
-    const cache =
-      JSON.parse(
-        contenido
-      );
-
-
-    if (
-      cache.version !==
-      CACHE_VERSION
-    ) {
-
-      return crearCacheVacia();
-
-    }
-
-
-    return {
-
-      ...crearCacheVacia(),
-
-      ...cache,
-
-      fechas:
-        cache.fechas || {},
-
-      zonas:
-        cache.zonas || {},
-
-      fanProjects:
-        cache.fanProjects || {},
-
-      colores:
-        cache.colores || {}
-
-    };
-
-  }
-
-  catch (
-    error
-  ) {
-
-    console.warn(
-      "No se pudo leer la configuración offline:",
-      error
-    );
-
-
-    return crearCacheVacia();
-
-  }
-
-}
-
-
-// ========================================
-// GUARDAR CACHÉ LOCAL
-// ========================================
-
-function guardarCache(
-  cache
-) {
-
-  try {
-
-    cache.version =
-      CACHE_VERSION;
-
-    cache.fechaActualizacion =
-      new Date().toISOString();
-
-
-    localStorage.setItem(
-      CACHE_KEY,
-      JSON.stringify(
-        cache
-      )
-    );
-
-  }
-
-  catch (
-    error
-  ) {
-
-    console.warn(
-      "No se pudo guardar la configuración offline:",
-      error
-    );
-
-  }
-
-}
-
-
-// ========================================
-// ERROR SIN RESPALDO
-// ========================================
-
-function crearErrorSinCache() {
-
-  return new Error(
-    "No hay conexión y todavía no existe una copia offline. Abre la app una vez con internet antes del concierto."
-  );
-
-}
-
-
-// ========================================
-// CONVERTIR SNAPSHOT EN LISTA
+// CONVERTIR SNAPSHOT
 // ========================================
 
 function convertirDocumentos(
@@ -218,14 +78,89 @@ function convertirDocumentos(
 
 
 // ========================================
+// LEER RESPALDO
+// ========================================
+
+async function obtenerRespaldo(
+  clave
+) {
+
+  try {
+
+    return (
+      await leerDato(
+        clave
+      )
+    ) ?? null;
+
+  }
+
+  catch (
+    error
+  ) {
+
+    console.warn(
+      "No se pudo leer IndexedDB:",
+      error
+    );
+
+    return null;
+
+  }
+
+}
+
+
+// ========================================
+// GUARDAR RESPALDO
+// ========================================
+
+async function guardarRespaldo(
+  clave,
+  valor
+) {
+
+  try {
+
+    await guardarDato(
+      clave,
+      valor
+    );
+
+  }
+
+  catch (
+    error
+  ) {
+
+    console.warn(
+      "No se pudo guardar en IndexedDB:",
+      error
+    );
+
+  }
+
+}
+
+
+// ========================================
+// ERROR OFFLINE
+// ========================================
+
+function crearErrorOffline() {
+
+  return new Error(
+    "No fue posible cargar la configuración. Abre la app una vez con internet antes del concierto."
+  );
+
+}
+
+
+// ========================================
 // EVENTO ACTIVO
 // ========================================
 
 export async function obtenerEventoActivo() {
-
-  const cache =
-    leerCache();
-
 
   try {
 
@@ -277,12 +212,9 @@ export async function obtenerEventoActivo() {
     };
 
 
-    cache.evento =
-      evento;
-
-
-    guardarCache(
-      cache
+    await guardarRespaldo(
+      CLAVES.evento,
+      evento
     );
 
 
@@ -295,21 +227,27 @@ export async function obtenerEventoActivo() {
   ) {
 
     console.warn(
-      "Usando evento guardado sin conexión:",
+      "No se pudo consultar el evento en Firebase:",
       error
     );
 
 
+    const eventoGuardado =
+      await obtenerRespaldo(
+        CLAVES.evento
+      );
+
+
     if (
-      cache.evento
+      eventoGuardado
     ) {
 
-      return cache.evento;
+      return eventoGuardado;
 
     }
 
 
-    throw crearErrorSinCache();
+    throw crearErrorOffline();
 
   }
 
@@ -324,8 +262,10 @@ export async function listarFechas(
   eventoId
 ) {
 
-  const cache =
-    leerCache();
+  const clave =
+    CLAVES.fechas(
+      eventoId
+    );
 
 
   try {
@@ -359,12 +299,9 @@ export async function listarFechas(
       );
 
 
-    cache.fechas[eventoId] =
-      fechas;
-
-
-    guardarCache(
-      cache
+    await guardarRespaldo(
+      clave,
+      fechas
     );
 
 
@@ -377,13 +314,15 @@ export async function listarFechas(
   ) {
 
     console.warn(
-      "Usando fechas guardadas sin conexión:",
+      "No se pudieron consultar las fechas:",
       error
     );
 
 
     const fechasGuardadas =
-      cache.fechas[eventoId];
+      await obtenerRespaldo(
+        clave
+      );
 
 
     if (
@@ -397,7 +336,7 @@ export async function listarFechas(
     }
 
 
-    throw crearErrorSinCache();
+    throw crearErrorOffline();
 
   }
 
@@ -412,8 +351,10 @@ export async function listarZonas(
   eventoId
 ) {
 
-  const cache =
-    leerCache();
+  const clave =
+    CLAVES.zonas(
+      eventoId
+    );
 
 
   try {
@@ -447,12 +388,9 @@ export async function listarZonas(
       );
 
 
-    cache.zonas[eventoId] =
-      zonas;
-
-
-    guardarCache(
-      cache
+    await guardarRespaldo(
+      clave,
+      zonas
     );
 
 
@@ -465,13 +403,15 @@ export async function listarZonas(
   ) {
 
     console.warn(
-      "Usando zonas guardadas sin conexión:",
+      "No se pudieron consultar las zonas:",
       error
     );
 
 
     const zonasGuardadas =
-      cache.zonas[eventoId];
+      await obtenerRespaldo(
+        clave
+      );
 
 
     if (
@@ -485,7 +425,7 @@ export async function listarZonas(
     }
 
 
-    throw crearErrorSinCache();
+    throw crearErrorOffline();
 
   }
 
@@ -493,10 +433,10 @@ export async function listarZonas(
 
 
 // ========================================
-// DESCARGAR COLORES DE UN FAN PROJECT
+// DESCARGAR COLORES
 // ========================================
 
-async function descargarColoresFanProject({
+async function descargarColores({
 
   eventoId,
 
@@ -540,6 +480,18 @@ async function descargarColoresFanProject({
   }
 
 
+  await guardarRespaldo(
+
+    CLAVES.colores(
+      eventoId,
+      fanProjectId
+    ),
+
+    colores
+
+  );
+
+
   return colores;
 
 }
@@ -553,8 +505,10 @@ export async function listarFanProjects(
   eventoId
 ) {
 
-  const cache =
-    leerCache();
+  const clave =
+    CLAVES.fanProjects(
+      eventoId
+    );
 
 
   try {
@@ -588,91 +542,31 @@ export async function listarFanProjects(
       );
 
 
-    cache.fanProjects[eventoId] =
-      fanProjects;
-
-
-    if (
-      !cache.colores[eventoId]
-    ) {
-
-      cache.colores[eventoId] =
-        {};
-
-    }
+    await guardarRespaldo(
+      clave,
+      fanProjects
+    );
 
 
     /*
-     * Descarga todos los colores ahora,
-     * mientras sí hay conexión.
-     *
-     * De esta manera, después se podrá
-     * consultar cualquier zona y canción
-     * sin entrar nuevamente a Firebase.
+     * Descarga anticipadamente todos
+     * los colores para usarlos offline.
      */
 
-    const resultadosColores =
-      await Promise.allSettled(
+    await Promise.allSettled(
 
-        fanProjects.map(
-          async fanProject => {
+      fanProjects.map(
+        fanProject =>
+          descargarColores({
 
-            const colores =
-              await descargarColoresFanProject({
+            eventoId,
 
-                eventoId,
+            fanProjectId:
+              fanProject.id
 
-                fanProjectId:
-                  fanProject.id
+          })
+      )
 
-              });
-
-
-            return {
-
-              fanProjectId:
-                fanProject.id,
-
-              colores
-
-            };
-
-          }
-        )
-
-      );
-
-
-    for (
-      const resultado
-      of resultadosColores
-    ) {
-
-      if (
-        resultado.status !==
-        "fulfilled"
-      ) {
-
-        console.warn(
-          "No se pudieron descargar algunos colores:",
-          resultado.reason
-        );
-
-        continue;
-
-      }
-
-
-      cache.colores[eventoId][
-        resultado.value.fanProjectId
-      ] =
-        resultado.value.colores;
-
-    }
-
-
-    guardarCache(
-      cache
     );
 
 
@@ -685,13 +579,15 @@ export async function listarFanProjects(
   ) {
 
     console.warn(
-      "Usando Fan Projects guardados sin conexión:",
+      "No se pudieron consultar los Fan Projects:",
       error
     );
 
 
     const fanProjectsGuardados =
-      cache.fanProjects[eventoId];
+      await obtenerRespaldo(
+        clave
+      );
 
 
     if (
@@ -705,7 +601,7 @@ export async function listarFanProjects(
     }
 
 
-    throw crearErrorSinCache();
+    throw crearErrorOffline();
 
   }
 
@@ -713,12 +609,10 @@ export async function listarFanProjects(
 
 
 // ========================================
-// BUSCAR COLOR GUARDADO
+// COLOR GUARDADO
 // ========================================
 
-function obtenerColorGuardado({
-
-  cache,
+async function obtenerColorOffline({
 
   eventoId,
 
@@ -728,11 +622,30 @@ function obtenerColorGuardado({
 
 }) {
 
-  return (
-    cache.colores?.[eventoId]
-      ?.[fanProjectId]
-      ?.[zonaId]
-  ) || null;
+  const colores =
+    await obtenerRespaldo(
+
+      CLAVES.colores(
+        eventoId,
+        fanProjectId
+      )
+
+    );
+
+
+  if (
+    !colores ||
+    typeof colores !==
+      "object"
+  ) {
+
+    return null;
+
+  }
+
+
+  return colores[zonaId] ||
+    null;
 
 }
 
@@ -751,22 +664,16 @@ export async function obtenerColor({
 
 }) {
 
-  const cache =
-    leerCache();
-
-
   /*
-   * Si el navegador ya sabe que no hay
-   * conexión, usamos directamente la copia.
+   * Cuando el navegador confirma que está
+   * offline, no intentamos consultar Firebase.
    */
 
   if (
     navigator.onLine === false
   ) {
 
-    return obtenerColorGuardado({
-
-      cache,
+    return obtenerColorOffline({
 
       eventoId,
 
@@ -826,32 +733,33 @@ export async function obtenerColor({
     };
 
 
-    if (
-      !cache.colores[eventoId]
-    ) {
+    /*
+     * Actualizamos también el conjunto
+     * completo guardado del Fan Project.
+     */
 
-      cache.colores[eventoId] =
-        {};
-
-    }
-
-
-    if (
-      !cache.colores[eventoId][fanProjectId]
-    ) {
-
-      cache.colores[eventoId][fanProjectId] =
-        {};
-
-    }
+    const clave =
+      CLAVES.colores(
+        eventoId,
+        fanProjectId
+      );
 
 
-    cache.colores[eventoId][fanProjectId][zonaId] =
+    const coloresGuardados =
+      (
+        await obtenerRespaldo(
+          clave
+        )
+      ) || {};
+
+
+    coloresGuardados[zonaId] =
       color;
 
 
-    guardarCache(
-      cache
+    await guardarRespaldo(
+      clave,
+      coloresGuardados
     );
 
 
@@ -864,14 +772,12 @@ export async function obtenerColor({
   ) {
 
     console.warn(
-      "Usando color guardado sin conexión:",
+      "No se pudo consultar el color en Firebase:",
       error
     );
 
 
-    return obtenerColorGuardado({
-
-      cache,
+    return obtenerColorOffline({
 
       eventoId,
 
