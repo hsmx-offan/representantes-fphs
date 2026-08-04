@@ -116,10 +116,6 @@ const zonaResultado =
     "zonaResultado"
   );
 
-const volverSelector =
-  document.getElementById(
-    "volverSelector"
-  );
 
 const volverSelector =
   document.getElementById(
