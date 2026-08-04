@@ -13,11 +13,16 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
 import {
-  getFirestore
+  initializeFirestore
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 
+// ========================================
+// CONFIGURACIÓN
+// ========================================
+
 const firebaseConfig = {
+
   apiKey:
     "AIzaSyAesU9F4Oc7Lr8TPOFUk-Oi-lT086XjRKw",
 
@@ -35,19 +40,47 @@ const firebaseConfig = {
 
   appId:
     "1:821385801252:web:c95ba9ffdeb90fe03732b1"
+
 };
 
 
-// Evita inicializar Firebase más de una vez.
+// ========================================
+// INICIALIZAR FIREBASE
+// ========================================
+
 export const app =
   getApps().length > 0
     ? getApp()
-    : initializeApp(firebaseConfig);
+    : initializeApp(
+        firebaseConfig
+      );
 
+
+// ========================================
+// AUTENTICACIÓN
+// ========================================
 
 export const auth =
-  getAuth(app);
+  getAuth(
+    app
+  );
 
+
+// ========================================
+// FIRESTORE
+// Compatibilidad con redes móviles
+// ========================================
 
 export const db =
-  getFirestore(app);
+  initializeFirestore(
+
+    app,
+
+    {
+
+      experimentalAutoDetectLongPolling:
+        true
+
+    }
+
+  );
