@@ -4,10 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Color Manager</title>
 
@@ -24,49 +21,37 @@ content="width=device-width, initial-scale=1.0">
 
 <header class="encabezado-admin">
 
-<h1>
-🌈 Color Manager
-</h1>
+<h1>🌈 Color Manager</h1>
 
 <p>
-
 Administra eventos, fan projects, fechas, zonas y colores.
-
 </p>
 
 </header>
 
+<section class="color-home">
 
+<div class="card-evento-activo">
 
-<section class="color-dashboard">
+<h2>Evento activo</h2>
 
-<div class="color-card">
-
-<h3>Evento activo</h3>
-
-<p id="eventoActivo">
+<div id="eventoActivo">
 
 No hay evento activo.
 
-</p>
+</div>
 
-<button id="nuevoEvento">
-
-＋ Crear evento
-
+<button id="btnCrearEvento">
+＋ Crear nueva edición
 </button>
 
 </div>
 
+<div class="card-eventos">
 
+<h2>Ediciones</h2>
 
-<div class="color-card">
-
-<h3>Eventos</h3>
-
-<div id="listaEventos">
-
-</div>
+<div id="listaEventos"></div>
 
 </div>
 
