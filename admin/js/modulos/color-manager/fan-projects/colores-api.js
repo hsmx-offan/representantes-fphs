@@ -160,11 +160,28 @@ export async function guardarColores({
         zonaId:
           color.zonaId,
 
-        colorNombre:
-          color.colorNombre || "",
+       batch.set(
+  referencia,
+  {
 
-        colorHex:
-          color.colorHex || "",
+    zonaId:
+      color.zonaId,
+
+    colorId:
+      color.colorId || "",
+
+    activo:
+      color.activo !== false,
+
+    fechaActualizacion:
+      serverTimestamp()
+
+  },
+  {
+    merge:
+      true
+  }
+);
 
         activo:
           color.activo !== false,
