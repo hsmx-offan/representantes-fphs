@@ -616,7 +616,20 @@ function volverAlSelector() {
 
   });
 
-  reiniciarFlujo();
+
+  fanProjectSelect.value =
+    "";
+
+  fanProjectSelect.disabled =
+    false;
+
+
+  mostrarPaso(
+    "cancion"
+  );
+
+
+  fanProjectSelect.focus();
 
 }
 
