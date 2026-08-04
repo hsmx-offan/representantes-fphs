@@ -775,3 +775,53 @@ body {
     }
 
 }
+/* ========================================
+   BOTÓN SECUNDARIO DEL FLUJO
+======================================== */
+
+.boton-secundario-paso {
+
+    width: auto;
+
+    align-self: center;
+
+    margin-top: 4px;
+
+    padding: 10px 16px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius: 999px;
+
+    background: transparent;
+
+    color: var(--rose-soft);
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow: none;
+
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+
+}
+
+.boton-secundario-paso:hover {
+
+    color: var(--white);
+
+    border-color: var(--pink);
+
+    background:
+        rgba(237, 30, 98, 0.08);
+
+    transform: none;
+
+}
