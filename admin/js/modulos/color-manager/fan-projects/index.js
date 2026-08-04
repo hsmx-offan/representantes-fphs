@@ -619,30 +619,47 @@ async function procesarEliminacion(
 // ABRIR COLORES
 // ========================================
 
-function abrirColoresFanProject(
+async function abrirColoresFanProject(
   fanProject
 ) {
 
-  if (
-    typeof estadoFanProjects.alAbrirColores ===
-      "function"
-  ) {
+  await renderColoresFanProject({
 
-    estadoFanProjects.alAbrirColores(
-      fanProject
-    );
+    eventoId:
+      estadoFanProjects.eventoId,
 
-    return;
+    fanProject,
 
-  }
+    contenedor:
+      estadoFanProjects.contenedor,
 
+    mostrarToast:
+      estadoFanProjects.mostrarToast,
 
-  estadoFanProjects.mostrarToast(
-    `Colores de ${fanProject.nombre}`
-  );
+    alVolver:
+      async () => {
+
+        await renderFanProjects({
+
+          eventoId:
+            estadoFanProjects.eventoId,
+
+          contenedor:
+            estadoFanProjects.contenedor,
+
+          mostrarToast:
+            estadoFanProjects.mostrarToast,
+
+          alAbrirColores:
+            estadoFanProjects.alAbrirColores
+
+        });
+
+      }
+
+  });
 
 }
-
 
 // ========================================
 // INICIAR MÓDULO
