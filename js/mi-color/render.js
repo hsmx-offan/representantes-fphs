@@ -8,241 +8,282 @@ import {
 } from "../../admin/js/modulos/color-manager/shared/colores.js";
 
 
-/* ========================================
-   LLENAR SELECT
-   ======================================== */
+// ========================================
+// LLENAR SELECT
+// ========================================
 
 export function llenarSelect(
-
-    select,
-
-    datos,
-
-    texto,
-
-    valor = "id",
-
-    etiqueta = "nombre"
-
+  select,
+  datos,
+  texto,
+  valor = "id",
+  etiqueta = "nombre"
 ) {
 
-    select.innerHTML = "";
+  select.innerHTML =
+    "";
 
-    const opcionInicial =
-        document.createElement(
-            "option"
-        );
 
-    opcionInicial.value = "";
+  const opcionInicial =
+    document.createElement(
+      "option"
+    );
 
-    opcionInicial.textContent =
-        texto;
+
+  opcionInicial.value =
+    "";
+
+  opcionInicial.textContent =
+    texto;
+
+
+  select.appendChild(
+    opcionInicial
+  );
+
+
+  for (
+    const item
+    of datos
+  ) {
+
+    const opcion =
+      document.createElement(
+        "option"
+      );
+
+
+    opcion.value =
+      item[valor];
+
+    opcion.textContent =
+      item[etiqueta];
+
 
     select.appendChild(
-        opcionInicial
+      opcion
     );
 
-    datos.forEach(
+  }
 
-        item => {
 
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-            option.value =
-                item[valor];
-
-            option.textContent =
-                item[etiqueta];
-
-            select.appendChild(
-                option
-            );
-
-        }
-
-    );
-
-    select.disabled =
-        false;
+  select.disabled =
+    false;
 
 }
 
 
-/* ========================================
-   MOSTRAR COLOR
-   ======================================== */
+// ========================================
+// MOSTRAR COLOR
+// ========================================
 
 export function mostrarColor({
 
-    resultado,
+  resultado,
 
-    sinColor,
+  sinColor,
 
-    muestra,
+  nombre,
 
-    nombre,
+  cancionResultado,
 
-    detalle,
+  zonaResultado,
 
-    color
+  color,
+
+  cancion,
+
+  zona
 
 }) {
 
-    if (
-        !color
-    ) {
-
-        resultado.hidden =
-            true;
-
-        sinColor.hidden =
-            false;
-
-        return;
-
-    }
-
-    const datos =
-        obtenerColorPorId(
-            color.colorId
-        );
-
-    if (
-        !datos
-    ) {
-
-        resultado.hidden =
-            true;
-
-        sinColor.hidden =
-            false;
-
-        return;
-
-    }
-
-    sinColor.hidden =
-        true;
+  if (
+    !color ||
+    color.activo === false
+  ) {
 
     resultado.hidden =
-        false;
+      true;
 
-    muestra.style.background =
-        datos.hex;
+    sinColor.hidden =
+      false;
 
-    nombre.textContent =
-        datos.nombre;
+    return;
 
-    detalle.textContent =
-        "Color asignado para tu zona.";
+  }
+
+
+  const datosColor =
+    obtenerColorPorId(
+      color.colorId
+    );
+
+
+  if (
+    !datosColor
+  ) {
+
+    resultado.hidden =
+      true;
+
+    sinColor.hidden =
+      false;
+
+    return;
+
+  }
+
+
+  sinColor.hidden =
+    true;
+
+  resultado.hidden =
+    false;
+
+
+  resultado.style.background =
+    datosColor.hex;
+
+
+  cancionResultado.textContent =
+    `🎵 ${cancion}`;
+
+
+  nombre.textContent =
+    datosColor.nombre;
+
+
+  zonaResultado.textContent =
+    `📍 ${zona}`;
+
+
+  document.body.style.overflow =
+    "hidden";
 
 }
 
 
-/* ========================================
-   LIMPIAR RESULTADO
-   ======================================== */
+// ========================================
+// LIMPIAR RESULTADO
+// ========================================
 
 export function limpiarResultado({
 
-    resultado,
+  resultado,
 
-    sinColor
+  sinColor
 
 }) {
 
-    resultado.hidden =
-        true;
+  resultado.hidden =
+    true;
 
-    sinColor.hidden =
-        true;
+  sinColor.hidden =
+    true;
+
+  document.body.style.overflow =
+    "";
 
 }
 
 
-/* ========================================
-   CARGANDO
-   ======================================== */
+// ========================================
+// CERRAR PANTALLA DE COLOR
+// ========================================
+
+export function cerrarPantallaColor(
+  resultado
+) {
+
+  resultado.hidden =
+    true;
+
+  document.body.style.overflow =
+    "";
+
+}
+
+
+// ========================================
+// CARGANDO
+// ========================================
 
 export function mostrarCarga({
 
-    cargando,
+  cargando,
 
-    contenido,
+  contenido,
 
-    error
+  error
 
 }) {
 
-    cargando.hidden =
-        false;
+  cargando.hidden =
+    false;
 
-    contenido.hidden =
-        true;
+  contenido.hidden =
+    true;
 
-    error.hidden =
-        true;
+  error.hidden =
+    true;
 
 }
 
 
-/* ========================================
-   ERROR
-   ======================================== */
+// ========================================
+// ERROR
+// ========================================
 
 export function mostrarError({
 
-    cargando,
+  cargando,
 
-    contenido,
+  contenido,
 
-    error,
+  error,
 
-    mensaje,
+  mensaje,
 
-    textoError
+  textoError
 
 }) {
 
-    cargando.hidden =
-        true;
+  cargando.hidden =
+    true;
 
-    contenido.hidden =
-        true;
+  contenido.hidden =
+    true;
 
-    error.hidden =
-        false;
+  error.hidden =
+    false;
 
-    textoError.textContent =
-        mensaje;
+  textoError.textContent =
+    mensaje;
 
 }
 
 
-/* ========================================
-   CONTENIDO
-   ======================================== */
+// ========================================
+// CONTENIDO
+// ========================================
 
 export function mostrarContenido({
 
-    cargando,
+  cargando,
 
-    contenido,
+  contenido,
 
-    error
+  error
 
 }) {
 
-    cargando.hidden =
-        true;
+  cargando.hidden =
+    true;
 
-    contenido.hidden =
-        false;
+  contenido.hidden =
+    false;
 
-    error.hidden =
-        true;
+  error.hidden =
+    true;
 
 }
