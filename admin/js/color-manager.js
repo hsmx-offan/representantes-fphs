@@ -9,19 +9,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
 import {
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  serverTimestamp,
-  setDoc,
-  updateDoc,
-  writeBatch
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
-
-import {
-  auth,
-  db
+  auth
 } from "./shared/firebase.js";
 
 import {
@@ -31,6 +19,16 @@ import {
 import {
   cargarPerfilAdmin
 } from "./dashboard/perfil.js";
+
+import {
+  iniciarEventos,
+  obtenerEventos,
+  editarEventoSeleccionado
+} from "./modulos/color-manager/eventos/index.js";
+
+import {
+  renderFechas
+} from "./modulos/color-manager/fechas/index.js";
 
 
 // ========================================
@@ -112,7 +110,7 @@ const elementosEventos = {
 
 
 // ========================================
-// ELEMENTOS DE LA VISTA DEL EVENTO
+// ELEMENTOS DE LA VISTA INTERNA
 // ========================================
 
 const elementosVistaEvento = {
@@ -156,107 +154,16 @@ const elementosVistaEvento = {
 
 
 // ========================================
-// ELEMENTOS DEL MODAL
-// ========================================
-
-const elementosModal = {
-
-  modal:
-    document.getElementById(
-      "modalEvento"
-    ),
-
-  fondo:
-    document.getElementById(
-      "fondoModalEvento"
-    ),
-
-  titulo:
-    document.getElementById(
-      "tituloFormularioEvento"
-    ),
-
-  cerrar:
-    document.getElementById(
-      "cerrarModalEvento"
-    ),
-
-  cancelar:
-    document.getElementById(
-      "cancelarModalEvento"
-    ),
-
-  formulario:
-    document.getElementById(
-      "formularioEvento"
-    ),
-
-  guardar:
-    document.getElementById(
-      "guardarEvento"
-    )
-
-};
-
-
-// ========================================
-// CAMPOS DEL FORMULARIO
-// ========================================
-
-const camposEvento = {
-
-  id:
-    document.getElementById(
-      "eventoId"
-    ),
-
-  nombre:
-    document.getElementById(
-      "nombreEvento"
-    ),
-
-  anio:
-    document.getElementById(
-      "anioEvento"
-    ),
-
-  ciudad:
-    document.getElementById(
-      "ciudadEvento"
-    ),
-
-  pais:
-    document.getElementById(
-      "paisEvento"
-    ),
-
-  activo:
-    document.getElementById(
-      "eventoActivoFormulario"
-    )
-
-};
-
-
-// ========================================
-// ESTADO
+// ESTADO DEL CONTROLADOR
 // ========================================
 
 const estado = {
 
-  eventos: [],
-
-  eventoSeleccionadoId:
+  eventoSeleccionado:
     null,
 
-  cargando:
-    false,
-
-  guardando:
-    false,
-
-  eliminando:
-    false
+  moduloActual:
+    "fechas"
 
 };
 
@@ -275,7 +182,7 @@ temaController.iniciarTema();
 
 
 // ========================================
-// INTERFAZ
+// INTERFAZ GENERAL
 // ========================================
 
 function mostrarInterfaz() {
@@ -357,7 +264,7 @@ function mostrarToast(
 
 
 // ========================================
-// UTILIDADES
+// ESCAPAR HTML
 // ========================================
 
 function escaparHTML(
@@ -391,1155 +298,19 @@ function escaparHTML(
 }
 
 
-function crearIdEvento({
-  nombre,
-  anio
-}) {
-
-  const base =
-    String(
-      nombre || "evento"
-    )
-      .normalize(
-        "NFD"
-      )
-      .replace(
-        /[\u0300-\u036f]/g,
-        ""
-      )
-      .toLowerCase()
-      .replace(
-        /[^a-z0-9]+/g,
-        "-"
-      )
-      .replace(
-        /^-+|-+$/g,
-        "" )
-      .slice(
-        0,
-        35
-      );
-
-
-  const sufijo =
-    String(
-      anio || new Date().getFullYear()
-    );
-
-
-  return (
-    `${base || "evento"}-${sufijo}`
-  );
-
-}
-
+// ========================================
+// OBTENER EVENTO SELECCIONADO
+// ========================================
 
 function obtenerEventoSeleccionado() {
 
-  return estado.eventos.find(
-    evento =>
-      evento.id ===
-      estado.eventoSeleccionadoId
-  ) || null;
-
-}
-
-
-// Se usará después desde los módulos.
-window.obtenerEventoSeleccionadoId =
-  () =>
-    estado.eventoSeleccionadoId;
-
-
-// ========================================
-// ESTADOS DE CARGA
-// ========================================
-
-function mostrarCargaEventos() {
-
-  elementosEventos.cargandoEventos.style.display =
-    "block";
-
-  elementosEventos.sinEventos.style.display =
-    "none";
-
-  elementosEventos.listaEventos.style.display =
-    "none";
-
-}
-
-
-function ocultarCargaEventos() {
-
-  elementosEventos.cargandoEventos.style.display =
-    "none";
+  return estado.eventoSeleccionado;
 
 }
 
 
 // ========================================
-// CARGAR EVENTOS
-// ========================================
-
-async function cargarEventos() {
-
-  if (
-    estado.cargando
-  ) {
-
-    return;
-
-  }
-
-
-  estado.cargando =
-    true;
-
-  mostrarCargaEventos();
-
-
-  try {
-
-    const snapshot =
-      await getDocs(
-        collection(
-          db,
-          "eventos"
-        )
-      );
-
-
-    estado.eventos =
-      snapshot.docs
-        .map(
-          documento => ({
-            id:
-              documento.id,
-
-            ...documento.data()
-          })
-        )
-        .filter(
-          evento =>
-            evento.archivado !== true
-        )
-        .sort(
-          (a, b) =>
-            Number(
-              b.anio || 0
-            ) -
-            Number(
-              a.anio || 0
-            )
-        );
-
-
-    renderizarEventos();
-
-  }
-
-  catch (error) {
-
-    console.error(
-      "Error al cargar eventos:",
-      error
-    );
-
-
-    elementosEventos.eventoActivo.textContent =
-      "No fue posible cargar el evento activo.";
-
-    elementosEventos.listaEventos.innerHTML =
-      `
-        <div class="sin-registros">
-
-          <strong>
-            No se pudieron cargar las ediciones
-          </strong>
-
-          <p>
-            Revisa la conexión y las reglas de Firestore.
-          </p>
-
-        </div>
-      `;
-
-    elementosEventos.listaEventos.style.display =
-      "block";
-
-  }
-
-  finally {
-
-    estado.cargando =
-      false;
-
-    ocultarCargaEventos();
-
-  }
-
-}
-
-
-// ========================================
-// RENDERIZAR EVENTO ACTIVO
-// ========================================
-
-function renderizarEventoActivo() {
-
-  const eventoActivo =
-    estado.eventos.find(
-      evento =>
-        evento.activo === true
-    );
-
-
-  if (
-    !eventoActivo
-  ) {
-
-    elementosEventos.eventoActivo.className =
-      "evento-activo-vacio";
-
-    elementosEventos.eventoActivo.textContent =
-      "No hay evento activo.";
-
-    return;
-
-  }
-
-
-  elementosEventos.eventoActivo.className =
-    "evento-activo-card";
-
-
-  elementosEventos.eventoActivo.innerHTML =
-    `
-      <div>
-
-        <strong>
-          ${escaparHTML(
-            eventoActivo.nombre
-          )}
-        </strong>
-
-        <p>
-          ${escaparHTML(
-            eventoActivo.ciudad
-          )},
-          ${escaparHTML(
-            eventoActivo.pais
-          )}
-          ·
-          ${escaparHTML(
-            eventoActivo.anio
-          )}
-        </p>
-
-      </div>
-
-      <button
-        type="button"
-        class="boton-secundario abrir-evento"
-        data-id="${escaparHTML(
-          eventoActivo.id
-        )}"
-      >
-        Abrir
-      </button>
-    `;
-
-}
-
-
-// ========================================
-// CREAR TARJETA DE EVENTO
-// ========================================
-
-function crearTarjetaEvento(
-  evento
-) {
-
-  const tarjeta =
-    document.createElement(
-      "article"
-    );
-
-  tarjeta.className =
-    "evento";
-
-
-  tarjeta.innerHTML =
-    `
-      <div class="evento-informacion">
-
-        <div class="evento-titulo">
-
-          <strong>
-            ${escaparHTML(
-              evento.nombre || evento.id
-            )}
-          </strong>
-
-          ${
-            evento.activo === true
-              ? `
-                <span class="estado-activo">
-                  Activo
-                </span>
-              `
-              : `
-                <span class="estado-inactivo">
-                  Inactivo
-                </span>
-              `
-          }
-
-        </div>
-
-        <p>
-          ${escaparHTML(
-            evento.ciudad || "Sin ciudad"
-          )},
-          ${escaparHTML(
-            evento.pais || "Sin país"
-          )}
-          ·
-          ${escaparHTML(
-            evento.anio || "Sin año"
-          )}
-        </p>
-
-      </div>
-
-      <div class="evento-acciones">
-
-        <button
-          type="button"
-          class="boton-secundario abrir-evento"
-          data-id="${escaparHTML(
-            evento.id
-          )}"
-        >
-          Abrir
-        </button>
-
-        <button
-          type="button"
-          class="boton-secundario editar-evento"
-          data-id="${escaparHTML(
-            evento.id
-          )}"
-        >
-          Editar
-        </button>
-
-        ${
-          evento.activo === true
-            ? ""
-            : `
-              <button
-                type="button"
-                class="boton-principal activar-evento"
-                data-id="${escaparHTML(
-                  evento.id
-                )}"
-              >
-                Activar
-              </button>
-            `
-        }
-
-        <button
-          type="button"
-          class="boton-eliminar eliminar-evento"
-          data-id="${escaparHTML(
-            evento.id
-          )}"
-        >
-          Eliminar
-        </button>
-
-      </div>
-    `;
-
-
-  return tarjeta;
-
-}
-
-
-// ========================================
-// RENDERIZAR LISTA DE EVENTOS
-// ========================================
-
-function renderizarEventos() {
-
-  renderizarEventoActivo();
-
-
-  elementosEventos.listaEventos.innerHTML =
-    "";
-
-
-  if (
-    estado.eventos.length === 0
-  ) {
-
-    elementosEventos.listaEventos.style.display =
-      "none";
-
-    elementosEventos.sinEventos.style.display =
-      "block";
-
-    return;
-
-  }
-
-
-  elementosEventos.sinEventos.style.display =
-    "none";
-
-  elementosEventos.listaEventos.style.display =
-    "grid";
-
-
-  const fragmento =
-    document.createDocumentFragment();
-
-
-  for (
-    const evento
-    of estado.eventos
-  ) {
-
-    fragmento.appendChild(
-      crearTarjetaEvento(
-        evento
-      )
-    );
-
-  }
-
-
-  elementosEventos.listaEventos.appendChild(
-    fragmento
-  );
-
-}
-
-
-// ========================================
-// FORMULARIO
-// ========================================
-
-function limpiarFormularioEvento() {
-
-  elementosModal.formulario.reset();
-
-  camposEvento.id.value =
-    "";
-
-  camposEvento.anio.value =
-    new Date().getFullYear();
-
-}
-
-
-function obtenerDatosFormularioEvento() {
-
-  return {
-
-    id:
-      camposEvento.id.value.trim(),
-
-    nombre:
-      camposEvento.nombre.value.trim(),
-
-    anio:
-      Number(
-        camposEvento.anio.value
-      ),
-
-    ciudad:
-      camposEvento.ciudad.value.trim(),
-
-    pais:
-      camposEvento.pais.value.trim(),
-
-    activo:
-      camposEvento.activo.checked
-
-  };
-
-}
-
-
-function llenarFormularioEvento(
-  evento
-) {
-
-  camposEvento.id.value =
-    evento.id || "";
-
-  camposEvento.nombre.value =
-    evento.nombre || "";
-
-  camposEvento.anio.value =
-    evento.anio || "";
-
-  camposEvento.ciudad.value =
-    evento.ciudad || "";
-
-  camposEvento.pais.value =
-    evento.pais || "";
-
-  camposEvento.activo.checked =
-    evento.activo === true;
-
-}
-
-
-// ========================================
-// MODAL
-// ========================================
-
-function mostrarModalEvento() {
-
-  elementosModal.modal.hidden =
-    false;
-
-  document.body.classList.add(
-    "modal-abierto"
-  );
-
-
-  setTimeout(
-    () => {
-
-      camposEvento.nombre.focus();
-
-    },
-    50
-  );
-
-}
-
-
-function abrirModalNuevoEvento() {
-
-  limpiarFormularioEvento();
-
-
-  elementosModal.titulo.textContent =
-    "Crear nueva edición";
-
-  elementosModal.guardar.textContent =
-    "Guardar edición";
-
-
-  mostrarModalEvento();
-
-}
-
-
-function abrirModalEditarEvento(
-  eventoId
-) {
-
-  const evento =
-    estado.eventos.find(
-      item =>
-        item.id === eventoId
-    );
-
-
-  if (
-    !evento
-  ) {
-
-    mostrarToast(
-      "No se encontró la edición"
-    );
-
-    return;
-
-  }
-
-
-  limpiarFormularioEvento();
-
-  llenarFormularioEvento(
-    evento
-  );
-
-
-  elementosModal.titulo.textContent =
-    "Editar edición";
-
-  elementosModal.guardar.textContent =
-    "Guardar cambios";
-
-
-  mostrarModalEvento();
-
-}
-
-
-function cerrarModalEvento() {
-
-  if (
-    estado.guardando
-  ) {
-
-    return;
-
-  }
-
-
-  elementosModal.modal.hidden =
-    true;
-
-  document.body.classList.remove(
-    "modal-abierto"
-  );
-
-  limpiarFormularioEvento();
-
-}
-
-
-// ========================================
-// ACTIVAR EVENTO
-// ========================================
-
-async function activarEvento(
-  eventoId
-) {
-
-  const batch =
-    writeBatch(
-      db
-    );
-
-
-  for (
-    const evento
-    of estado.eventos
-  ) {
-
-    batch.update(
-      doc(
-        db,
-        "eventos",
-        evento.id
-      ),
-      {
-        activo:
-          evento.id === eventoId,
-
-        fechaActualizacion:
-          serverTimestamp()
-      }
-    );
-
-  }
-
-
-  await batch.commit();
-
-}
-
-
-// ========================================
-// GUARDAR EVENTO
-// ========================================
-
-async function guardarEvento(
-  event
-) {
-
-  event.preventDefault();
-
-
-  if (
-    estado.guardando
-  ) {
-
-    return;
-
-  }
-
-
-  const datos =
-    obtenerDatosFormularioEvento();
-
-
-  if (
-    !datos.nombre ||
-    !datos.anio ||
-    !datos.ciudad ||
-    !datos.pais
-  ) {
-
-    mostrarToast(
-      "Completa todos los campos"
-    );
-
-    return;
-
-  }
-
-
-  const esEdicion =
-    Boolean(
-      datos.id
-    );
-
-
-  estado.guardando =
-    true;
-
-  elementosModal.guardar.disabled =
-    true;
-
-  elementosModal.guardar.textContent =
-    esEdicion
-      ? "Guardando cambios..."
-      : "Creando edición...";
-
-
-  try {
-
-    let eventoId =
-      datos.id;
-
-
-    if (
-      !esEdicion
-    ) {
-
-      eventoId =
-        crearIdEvento(
-          datos
-        );
-
-
-      const idYaExiste =
-        estado.eventos.some(
-          evento =>
-            evento.id === eventoId
-        );
-
-
-      if (
-        idYaExiste
-      ) {
-
-        eventoId =
-          `${eventoId}-${Date.now()}`;
-
-      }
-
-    }
-
-
-    if (
-      datos.activo
-    ) {
-
-      await activarEvento(
-        eventoId
-      );
-
-    }
-
-
-    const referencia =
-      doc(
-        db,
-        "eventos",
-        eventoId
-      );
-
-
-    if (
-      esEdicion
-    ) {
-
-      await updateDoc(
-        referencia,
-        {
-          nombre:
-            datos.nombre,
-
-          anio:
-            datos.anio,
-
-          ciudad:
-            datos.ciudad,
-
-          pais:
-            datos.pais,
-
-          activo:
-            datos.activo,
-
-          fechaActualizacion:
-            serverTimestamp()
-        }
-      );
-
-    }
-
-    else {
-
-      await setDoc(
-        referencia,
-        {
-          nombre:
-            datos.nombre,
-
-          anio:
-            datos.anio,
-
-          ciudad:
-            datos.ciudad,
-
-          pais:
-            datos.pais,
-
-          activo:
-            datos.activo,
-
-          archivado:
-            false,
-
-          fechaCreacion:
-            serverTimestamp(),
-
-          fechaActualizacion:
-            serverTimestamp()
-        }
-      );
-
-    }
-
-
-    mostrarToast(
-      esEdicion
-        ? "Edición actualizada"
-        : "Edición creada"
-    );
-
-
-    estado.guardando =
-      false;
-
-    cerrarModalEvento();
-
-    await cargarEventos();
-
-  }
-
-  catch (error) {
-
-    console.error(
-      "Error al guardar evento:",
-      error
-    );
-
-
-    mostrarToast(
-      error.message ||
-      "No se pudo guardar la edición"
-    );
-
-  }
-
-  finally {
-
-    estado.guardando =
-      false;
-
-    elementosModal.guardar.disabled =
-      false;
-
-    elementosModal.guardar.textContent =
-      esEdicion
-        ? "Guardar cambios"
-        : "Guardar edición";
-
-  }
-
-}
-
-
-// ========================================
-// PROCESAR ACTIVACIÓN
-// ========================================
-
-async function procesarActivacion(
-  eventoId
-) {
-
-  const evento =
-    estado.eventos.find(
-      item =>
-        item.id === eventoId
-    );
-
-
-  if (
-    !evento
-  ) {
-
-    return;
-
-  }
-
-
-  const confirmar =
-    window.confirm(
-      `¿Marcar "${evento.nombre}" como evento activo?`
-    );
-
-
-  if (
-    !confirmar
-  ) {
-
-    return;
-
-  }
-
-
-  try {
-
-    await activarEvento(
-      eventoId
-    );
-
-
-    mostrarToast(
-      "Evento activo actualizado"
-    );
-
-    await cargarEventos();
-
-  }
-
-  catch (error) {
-
-    console.error(
-      "Error al activar evento:",
-      error
-    );
-
-
-    mostrarToast(
-      "No se pudo activar la edición"
-    );
-
-  }
-
-}
-
-
-// ========================================
-// ELIMINAR EVENTO
-// ========================================
-
-async function procesarEliminacion(
-  eventoId
-) {
-
-  if (
-    estado.eliminando
-  ) {
-
-    return;
-
-  }
-
-
-  const evento =
-    estado.eventos.find(
-      item =>
-        item.id === eventoId
-    );
-
-
-  if (
-    !evento
-  ) {
-
-    return;
-
-  }
-
-
-  if (
-    evento.activo === true
-  ) {
-
-    mostrarToast(
-      "No puedes eliminar el evento activo"
-    );
-
-    return;
-
-  }
-
-
-  const confirmar =
-    window.confirm(
-      `¿Eliminar definitivamente "${evento.nombre}"?`
-    );
-
-
-  if (
-    !confirmar
-  ) {
-
-    return;
-
-  }
-
-
-  estado.eliminando =
-    true;
-
-
-  try {
-
-    await deleteDoc(
-      doc(
-        db,
-        "eventos",
-        eventoId
-      )
-    );
-
-
-    if (
-      estado.eventoSeleccionadoId ===
-      eventoId
-    ) {
-
-      volverAVistaPrincipal();
-
-    }
-
-
-    mostrarToast(
-      "Edición eliminada"
-    );
-
-    await cargarEventos();
-
-  }
-
-  catch (error) {
-
-    console.error(
-      "Error al eliminar evento:",
-      error
-    );
-
-
-    mostrarToast(
-      "No se pudo eliminar la edición"
-    );
-
-  }
-
-  finally {
-
-    estado.eliminando =
-      false;
-
-  }
-
-}
-
-
-// ========================================
-// ABRIR EVENTO
-// ========================================
-
-function abrirEvento(
-  eventoId
-) {
-
-  const evento =
-    estado.eventos.find(
-      item =>
-        item.id === eventoId
-    );
-
-
-  if (
-    !evento
-  ) {
-
-    mostrarToast(
-      "No se encontró la edición"
-    );
-
-    return;
-
-  }
-
-
-  estado.eventoSeleccionadoId =
-    evento.id;
-
-
-  elementosVistaEvento.titulo.textContent =
-    evento.nombre || evento.id;
-
-  elementosVistaEvento.descripcion.textContent =
-    `${evento.ciudad || ""}, ${evento.pais || ""} · ${evento.anio || ""}`;
-
-
-  elementosEventos.vistaPrincipal.hidden =
-    true;
-
-  elementosVistaEvento.vista.hidden =
-    false;
-
-
-  mostrarModulo(
-    "fechas"
-  );
-
-}
-
-
-// ========================================
-// VOLVER A EDICIONES
-// ========================================
-
-function volverAVistaPrincipal() {
-
-  estado.eventoSeleccionadoId =
-    null;
-
-  elementosVistaEvento.vista.hidden =
-    true;
-
-  elementosEventos.vistaPrincipal.hidden =
-    false;
-
-  elementosVistaEvento.contenidoManager.innerHTML =
-    "";
-
-}
-
-
-// ========================================
-// PESTAÑAS
+// MARCAR PESTAÑA ACTIVA
 // ========================================
 
 function marcarPestanaActiva(
@@ -1560,6 +331,7 @@ function marcarPestanaActiva(
       seleccionada
     );
 
+
     tab.setAttribute(
       "aria-selected",
       seleccionada
@@ -1572,92 +344,8 @@ function marcarPestanaActiva(
 }
 
 
-function mostrarModulo(
-  modulo
-) {
-
-  marcarPestanaActiva(
-    modulo
-  );
-
-
-  switch (
-    modulo
-  ) {
-
-    case "fechas":
-
-      elementosVistaEvento.contenidoManager.innerHTML =
-        `
-          <div class="sin-registros">
-
-            <strong>
-              Módulo de Fechas
-            </strong>
-
-            <p>
-              Ahora conectaremos este módulo con Firestore.
-            </p>
-
-          </div>
-        `;
-
-      break;
-
-
-    case "zonas":
-
-      elementosVistaEvento.contenidoManager.innerHTML =
-        `
-          <div class="sin-registros">
-
-            <strong>
-              Módulo de Zonas
-            </strong>
-
-            <p>
-              Se conectará después de terminar Fechas.
-            </p>
-
-          </div>
-        `;
-
-      break;
-
-
-    case "fanprojects":
-
-      elementosVistaEvento.contenidoManager.innerHTML =
-        `
-          <div class="sin-registros">
-
-            <strong>
-              Módulo de Fan Projects
-            </strong>
-
-            <p>
-              Se conectará después de Zonas.
-            </p>
-
-          </div>
-        `;
-
-      break;
-
-
-    case "informacion":
-
-      mostrarInformacionEvento();
-
-      break;
-
-  }
-
-}
-
-
 // ========================================
-// INFORMACIÓN DEL EVENTO
+// MOSTRAR INFORMACIÓN
 // ========================================
 
 function mostrarInformacionEvento() {
@@ -1669,6 +357,17 @@ function mostrarInformacionEvento() {
   if (
     !evento
   ) {
+
+    elementosVistaEvento.contenidoManager.innerHTML =
+      `
+        <div class="sin-registros">
+
+          <strong>
+            No hay una edición seleccionada
+          </strong>
+
+        </div>
+      `;
 
     return;
 
@@ -1727,139 +426,267 @@ function mostrarInformacionEvento() {
 
 
 // ========================================
-// EVENTOS DE LA LISTA
+// MÓDULOS TEMPORALES
 // ========================================
 
-function manejarClickEventos(
-  event
-) {
+function mostrarModuloPendiente({
+  titulo,
+  descripcion
+}) {
 
-  const boton =
-    event.target.closest(
-      "button[data-id]"
-    );
+  elementosVistaEvento.contenidoManager.innerHTML =
+    `
+      <div class="sin-registros">
 
+        <strong>
+          ${escaparHTML(
+            titulo
+          )}
+        </strong>
 
-  if (
-    !boton
-  ) {
+        <p>
+          ${escaparHTML(
+            descripcion
+          )}
+        </p>
 
-    return;
-
-  }
-
-
-  const eventoId =
-    boton.dataset.id;
-
-
-  if (
-    boton.classList.contains(
-      "abrir-evento"
-    )
-  ) {
-
-    abrirEvento(
-      eventoId
-    );
-
-    return;
-
-  }
-
-
-  if (
-    boton.classList.contains(
-      "editar-evento"
-    )
-  ) {
-
-    abrirModalEditarEvento(
-      eventoId
-    );
-
-    return;
-
-  }
-
-
-  if (
-    boton.classList.contains(
-      "activar-evento"
-    )
-  ) {
-
-    procesarActivacion(
-      eventoId
-    );
-
-    return;
-
-  }
-
-
-  if (
-    boton.classList.contains(
-      "eliminar-evento"
-    )
-  ) {
-
-    procesarEliminacion(
-      eventoId
-    );
-
-  }
+      </div>
+    `;
 
 }
 
 
 // ========================================
-// AUTENTICACIÓN
+// MOSTRAR MÓDULO
 // ========================================
 
-async function iniciarAdmin(
-  user
+async function mostrarModulo(
+  modulo
 ) {
 
-  mostrarInterfaz();
+  if (
+    !estado.eventoSeleccionado
+  ) {
+
+    return;
+
+  }
+
+
+  estado.moduloActual =
+    modulo;
+
+
+  marcarPestanaActiva(
+    modulo
+  );
 
 
   try {
 
-    const nombre =
-      await cargarPerfilAdmin(
-        user
-      );
+    switch (
+      modulo
+    ) {
+
+      case "fechas":
+
+        await renderFechas({
+
+          eventoId:
+            estado.eventoSeleccionado.id,
+
+          contenedor:
+            elementosVistaEvento.contenidoManager,
+
+          mostrarToast
+
+        });
+
+        break;
 
 
-    elementosGenerales.nombreAdmin.textContent =
-      nombre;
+      case "zonas":
+
+        mostrarModuloPendiente({
+
+          titulo:
+            "Módulo de Zonas",
+
+          descripcion:
+            "Se conectará después de terminar Fechas."
+
+        });
+
+        break;
+
+
+      case "fanprojects":
+
+        mostrarModuloPendiente({
+
+          titulo:
+            "Módulo de Fan Projects",
+
+          descripcion:
+            "Se conectará después de terminar Zonas."
+
+        });
+
+        break;
+
+
+      case "informacion":
+
+        mostrarInformacionEvento();
+
+        break;
+
+
+      default:
+
+        mostrarModuloPendiente({
+
+          titulo:
+            "Módulo no disponible",
+
+          descripcion:
+            "No se encontró la sección solicitada."
+
+        });
+
+    }
 
   }
 
   catch (error) {
 
     console.error(
-      "Error cargando perfil:",
+      `Error cargando el módulo ${modulo}:`,
       error
     );
 
+
+    mostrarToast(
+      "No se pudo cargar el módulo"
+    );
+
+
+    elementosVistaEvento.contenidoManager.innerHTML =
+      `
+        <div class="sin-registros">
+
+          <span class="estado-icono">
+            ⚠️
+          </span>
+
+          <strong>
+            No se pudo cargar esta sección
+          </strong>
+
+          <p>
+            Revisa la consola del navegador.
+          </p>
+
+        </div>
+      `;
+
   }
-
-
-  await cargarEventos();
 
 }
 
 
-function redirigirAlLogin() {
+// ========================================
+// ABRIR EDICIÓN
+// ========================================
 
-  sessionStorage.removeItem(
-    "accesoAdmin"
+async function abrirEvento(
+  evento
+) {
+
+  if (
+    !evento
+  ) {
+
+    mostrarToast(
+      "No se encontró la edición"
+    );
+
+    return;
+
+  }
+
+
+  estado.eventoSeleccionado =
+    evento;
+
+
+  elementosVistaEvento.titulo.textContent =
+    evento.nombre ||
+    evento.id;
+
+
+  elementosVistaEvento.descripcion.textContent =
+    `${evento.ciudad || ""}, ${evento.pais || ""} · ${evento.anio || ""}`;
+
+
+  elementosEventos.vistaPrincipal.hidden =
+    true;
+
+  elementosVistaEvento.vista.hidden =
+    false;
+
+
+  await mostrarModulo(
+    "fechas"
   );
 
-  window.location.href =
-    "./";
+}
+
+
+// ========================================
+// VOLVER A EDICIONES
+// ========================================
+
+function volverAEdiciones() {
+
+  estado.eventoSeleccionado =
+    null;
+
+  estado.moduloActual =
+    "fechas";
+
+
+  elementosVistaEvento.vista.hidden =
+    true;
+
+  elementosEventos.vistaPrincipal.hidden =
+    false;
+
+
+  elementosVistaEvento.contenidoManager.innerHTML =
+    "";
+
+}
+
+
+// ========================================
+// EDITAR EDICIÓN ABIERTA
+// ========================================
+
+function editarEdicionActual() {
+
+  if (
+    !estado.eventoSeleccionado
+  ) {
+
+    return;
+
+  }
+
+
+  editarEventoSeleccionado(
+    estado.eventoSeleccionado.id
+  );
 
 }
 
@@ -1902,6 +729,7 @@ async function cerrarSesion() {
     elementosGenerales.logoutButton.disabled =
       false;
 
+
     mostrarToast(
       "No se pudo cerrar la sesión"
     );
@@ -1912,117 +740,40 @@ async function cerrarSesion() {
 
 
 // ========================================
-// REGISTRAR EVENTOS
+// REGISTRAR EVENTOS GENERALES
 // ========================================
 
 function registrarEventos() {
 
-  elementosEventos.btnCrearEvento.addEventListener(
-    "click",
-    abrirModalNuevoEvento
-  );
-
-
-  elementosEventos.listaEventos.addEventListener(
-    "click",
-    manejarClickEventos
-  );
-
-
-  elementosEventos.eventoActivo.addEventListener(
-    "click",
-    manejarClickEventos
-  );
-
-
   elementosVistaEvento.volver.addEventListener(
     "click",
-    volverAVistaPrincipal
+    volverAEdiciones
   );
 
 
   elementosVistaEvento.editar.addEventListener(
     "click",
-    () => {
-
-      if (
-        estado.eventoSeleccionadoId
-      ) {
-
-        abrirModalEditarEvento(
-          estado.eventoSeleccionadoId
-        );
-
-      }
-
-    }
+    editarEdicionActual
   );
 
 
   for (
-  const tab
-  of elementosVistaEvento.tabs
-) {
+    const tab
+    of elementosVistaEvento.tabs
+  ) {
 
-  tab.addEventListener(
-    "click",
-    async () => {
-
-      if (
-        estado.eventoSeleccionadoId
-      ) {
+    tab.addEventListener(
+      "click",
+      async () => {
 
         await mostrarModulo(
           tab.dataset.tab
         );
 
       }
+    );
 
-    }
-  );
-
-}
-
-
-  elementosModal.formulario.addEventListener(
-    "submit",
-    guardarEvento
-  );
-
-
-  elementosModal.cerrar.addEventListener(
-    "click",
-    cerrarModalEvento
-  );
-
-
-  elementosModal.cancelar.addEventListener(
-    "click",
-    cerrarModalEvento
-  );
-
-
-  elementosModal.fondo.addEventListener(
-    "click",
-    cerrarModalEvento
-  );
-
-
-  document.addEventListener(
-    "keydown",
-    event => {
-
-      if (
-        event.key === "Escape" &&
-        !elementosModal.modal.hidden
-      ) {
-
-        cerrarModalEvento();
-
-      }
-
-    }
-  );
+  }
 
 
   elementosGenerales.logoutButton.addEventListener(
@@ -2034,7 +785,79 @@ function registrarEventos() {
 
 
 // ========================================
-// INICIAR
+// INICIAR ADMIN
+// ========================================
+
+async function iniciarAdmin(
+  user
+) {
+
+  mostrarInterfaz();
+
+
+  try {
+
+    const nombre =
+      await cargarPerfilAdmin(
+        user
+      );
+
+
+    if (
+      elementosGenerales.nombreAdmin
+    ) {
+
+      elementosGenerales.nombreAdmin.textContent =
+        nombre;
+
+    }
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "Error cargando perfil:",
+      error
+    );
+
+  }
+
+
+  await iniciarEventos({
+
+    elementos:
+      elementosEventos,
+
+    mostrarToast,
+
+    alAbrirEvento:
+      abrirEvento
+
+  });
+
+}
+
+
+// ========================================
+// REDIRIGIR AL LOGIN
+// ========================================
+
+function redirigirAlLogin() {
+
+  sessionStorage.removeItem(
+    "accesoAdmin"
+  );
+
+
+  window.location.href =
+    "./";
+
+}
+
+
+// ========================================
+// INICIAR PÁGINA
 // ========================================
 
 function iniciarPagina() {
