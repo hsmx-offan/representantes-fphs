@@ -1,0 +1,121 @@
+/* =========================================================
+   TARJETA — ENCUENTRA TU COLOR
+   Página principal
+   ========================================================= */
+
+.proyectos {
+    max-width: 1100px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.proyecto-color {
+    position: relative;
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(246, 168, 192, 0.22),
+            transparent 42%
+        ),
+        linear-gradient(
+            145deg,
+            rgba(237, 30, 98, 0.14),
+            rgba(255, 249, 250, 0.035)
+        );
+
+    border-color: rgba(237, 30, 98, 0.45);
+
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.proyecto-color::before {
+    content: "";
+
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    top: -75px;
+    right: -65px;
+
+    border-radius: 50%;
+
+    background: rgba(237, 30, 98, 0.14);
+    filter: blur(4px);
+
+    pointer-events: none;
+}
+
+.proyecto-color:hover {
+    transform: translateY(-5px);
+
+    border-color: var(--pink);
+
+    box-shadow:
+        0 20px 45px rgba(237, 30, 98, 0.14);
+}
+
+.proyecto-color-icono {
+    width: 52px;
+    height: 52px;
+
+    margin-top: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(237, 30, 98, 0.42);
+    border-radius: 17px;
+
+    background: rgba(237, 30, 98, 0.12);
+    color: var(--pink);
+
+    font-size: 22px;
+}
+
+.proyecto-color h3 {
+    font-size: 32px;
+}
+
+.boton-color {
+    background: var(--pink);
+    color: var(--white);
+}
+
+.boton-color:hover {
+    background: var(--white);
+    border-color: var(--white);
+    color: var(--pink);
+}
+
+/* TABLET */
+
+@media screen and (max-width: 980px) {
+
+    .proyectos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .proyecto-color {
+        grid-column: 1 / -1;
+    }
+
+}
+
+/* CELULAR */
+
+@media screen and (max-width: 768px) {
+
+    .proyectos {
+        grid-template-columns: 1fr;
+    }
+
+    .proyecto-color {
+        grid-column: auto;
+    }
+
+}
