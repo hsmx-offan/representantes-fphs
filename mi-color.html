@@ -47,6 +47,10 @@
     </header>
 
 
+    <!-- ========================================
+         CARGANDO
+         ======================================== -->
+
     <section
       id="cargandoApp"
       class="estado-app"
@@ -58,6 +62,10 @@
 
     </section>
 
+
+    <!-- ========================================
+         ERROR
+         ======================================== -->
 
     <section
       id="errorApp"
@@ -79,6 +87,10 @@
 
     </section>
 
+
+    <!-- ========================================
+         SELECTORES
+         ======================================== -->
 
     <section
       id="contenidoApp"
@@ -147,55 +159,9 @@
       </article>
 
 
-     <section
-  id="resultadoColor"
-  class="pantalla-color"
-  hidden
->
-
-  <button
-    type="button"
-    id="volverSelector"
-    class="volver-color"
-  >
-    ← Volver
-  </button>
-
-  <div class="datos-color">
-
-    <p id="cancionResultado">
-      Canción
-    </p>
-
-    <p id="nombreColor">
-      Color
-    </p>
-
-    <p id="zonaResultado">
-      Zona
-    </p>
-
-  </div>
-
-</section>
-
-        <p class="resultado-etiqueta">
-          Tu color es
-        </p>
-
-        <div
-          id="muestraColor"
-          class="muestra-color-grande"
-        ></div>
-
-        <h2 id="nombreColor">
-          Color
-        </h2>
-
-        <p id="detalleResultado"></p>
-
-      </section>
-
+      <!-- ========================================
+           SIN COLOR
+           ======================================== -->
 
       <section
         id="sinColor"
@@ -222,10 +188,47 @@
   </main>
 
 
+  <!-- ========================================
+       PANTALLA COMPLETA DEL COLOR
+       ======================================== -->
+
+  <section
+    id="resultadoColor"
+    class="pantalla-color"
+    hidden
+  >
+
+    <button
+      type="button"
+      id="volverSelector"
+      class="volver-color"
+    >
+      ← Volver
+    </button>
+
+    <div class="datos-color">
+
+      <p id="cancionResultado">
+        Canción
+      </p>
+
+      <p id="nombreColor">
+        Color
+      </p>
+
+      <p id="zonaResultado">
+        Zona
+      </p>
+
+    </div>
+
+  </section>
+
+
   <script
-  type="module"
-  src="js/mi-color/index.js"
-></script>
+    type="module"
+    src="js/mi-color/index.js"
+  ></script>
 
 </body>
 
