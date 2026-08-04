@@ -4,310 +4,463 @@
    ======================================== */
 
 import {
-
-    obtenerEventoActivo,
-
-    listarFechas,
-
-    listarZonas,
-
-    listarFanProjects,
-
-    obtenerColor
-
+  obtenerEventoActivo,
+  listarFechas,
+  listarZonas,
+  listarFanProjects,
+  obtenerColor
 } from "./api.js";
 
 import {
-
-    llenarSelect,
-
-    mostrarColor,
-
-    limpiarResultado,
-
-    mostrarCarga,
-
-    mostrarContenido,
-
-    mostrarError
-
+  llenarSelect,
+  mostrarColor,
+  limpiarResultado,
+  cerrarPantallaColor,
+  mostrarCarga,
+  mostrarContenido,
+  mostrarError
 } from "./render.js";
 
 
+// ========================================
+// ELEMENTOS GENERALES
+// ========================================
+
 const cargando =
-    document.getElementById(
-        "cargandoApp"
-    );
+  document.getElementById(
+    "cargandoApp"
+  );
 
 const error =
-    document.getElementById(
-        "errorApp"
-    );
+  document.getElementById(
+    "errorApp"
+  );
 
 const contenido =
-    document.getElementById(
-        "contenidoApp"
-    );
+  document.getElementById(
+    "contenidoApp"
+  );
 
 const mensajeError =
-    document.getElementById(
-        "mensajeError"
-    );
+  document.getElementById(
+    "mensajeError"
+  );
 
+
+// ========================================
+// SELECTORES
+// ========================================
 
 const fechaSelect =
-    document.getElementById(
-        "fechaSelect"
-    );
+  document.getElementById(
+    "fechaSelect"
+  );
 
 const zonaSelect =
-    document.getElementById(
-        "zonaSelect"
-    );
+  document.getElementById(
+    "zonaSelect"
+  );
 
 const fanProjectSelect =
-    document.getElementById(
-        "fanProjectSelect"
-    );
+  document.getElementById(
+    "fanProjectSelect"
+  );
 
+
+// ========================================
+// RESULTADO
+// ========================================
 
 const resultado =
-    document.getElementById(
-        "resultadoColor"
-    );
+  document.getElementById(
+    "resultadoColor"
+  );
 
 const sinColor =
-    document.getElementById(
-        "sinColor"
-    );
-
-const muestra =
-    document.getElementById(
-        "muestraColor"
-    );
+  document.getElementById(
+    "sinColor"
+  );
 
 const nombre =
-    document.getElementById(
-        "nombreColor"
-    );
+  document.getElementById(
+    "nombreColor"
+  );
 
-const detalle =
-    document.getElementById(
-        "detalleResultado"
-    );
+const cancionResultado =
+  document.getElementById(
+    "cancionResultado"
+  );
+
+const zonaResultado =
+  document.getElementById(
+    "zonaResultado"
+  );
+
+const volverSelector =
+  document.getElementById(
+    "volverSelector"
+  );
 
 
-let evento = null;
+// ========================================
+// ESTADO
+// ========================================
 
-let fechas = [];
+let evento =
+  null;
 
-let zonas = [];
+let fechas =
+  [];
 
-let fanProjects = [];
+let zonas =
+  [];
+
+let fanProjects =
+  [];
+
+let consultandoColor =
+  false;
 
 
-/* ========================================
-   INICIAR
-======================================== */
+// ========================================
+// OBTENER REGISTRO SELECCIONADO
+// ========================================
+
+function obtenerZonaSeleccionada() {
+
+  return zonas.find(
+    zona =>
+      zona.id ===
+      zonaSelect.value
+  ) || null;
+
+}
+
+
+function obtenerFanProjectSeleccionado() {
+
+  return fanProjects.find(
+    fanProject =>
+      fanProject.id ===
+      fanProjectSelect.value
+  ) || null;
+
+}
+
+
+// ========================================
+// INICIAR
+// ========================================
 
 async function iniciar() {
 
-    try {
+  try {
 
-        mostrarCarga({
+    mostrarCarga({
 
-            cargando,
+      cargando,
 
-            contenido,
+      contenido,
 
-            error
-
-        });
-
-        evento =
-            await obtenerEventoActivo();
-
-        fechas =
-            await listarFechas(
-                evento.id
-            );
-
-        zonas =
-            await listarZonas(
-                evento.id
-            );
-
-        fanProjects =
-            await listarFanProjects(
-                evento.id
-            );
-
-        llenarSelect(
-
-            fechaSelect,
-
-            fechas,
-
-            "Selecciona una fecha"
-
-        );
-
-        llenarSelect(
-
-            zonaSelect,
-
-            zonas.filter(
-
-                zona =>
-                    zona.activa !== false
-
-            ),
-
-            "Selecciona una zona"
-
-        );
-
-        llenarSelect(
-
-            fanProjectSelect,
-
-            fanProjects.filter(
-
-                item =>
-                    item.activo !== false
-
-            ),
-
-            "Selecciona una canción"
-
-        );
-
-        mostrarContenido({
-
-            cargando,
-
-            contenido,
-
-            error
-
-        });
-
-    }
-
-    catch(err){
-
-        console.error(
-            err
-        );
-
-        mostrarError({
-
-            cargando,
-
-            contenido,
-
-            error,
-
-            mensaje:
-                err.message,
-
-            textoError:
-                mensajeError
-
-        });
-
-    }
-
-}
-
-iniciar();
-
-
-/* ========================================
-   CAMBIOS
-======================================== */
-
-fechaSelect.addEventListener(
-
-    "change",
-
-    actualizarResultado
-
-);
-
-zonaSelect.addEventListener(
-
-    "change",
-
-    actualizarResultado
-
-);
-
-fanProjectSelect.addEventListener(
-
-    "change",
-
-    actualizarResultado
-
-);
-
-
-/* ========================================
-   RESULTADO
-======================================== */
-
-async function actualizarResultado(){
-
-    limpiarResultado({
-
-        resultado,
-
-        sinColor
+      error
 
     });
 
-    if(
 
-        !fechaSelect.value ||
+    evento =
+      await obtenerEventoActivo();
 
-        !zonaSelect.value ||
 
-        !fanProjectSelect.value
+    const resultados =
+      await Promise.all([
 
-    ){
+        listarFechas(
+          evento.id
+        ),
 
-        return;
+        listarZonas(
+          evento.id
+        ),
 
-    }
+        listarFanProjects(
+          evento.id
+        )
+
+      ]);
+
+
+    fechas =
+      resultados[0];
+
+    zonas =
+      resultados[1];
+
+    fanProjects =
+      resultados[2];
+
+
+    llenarSelect(
+
+      fechaSelect,
+
+      fechas.filter(
+        fecha =>
+          fecha.activa !== false
+      ),
+
+      "Selecciona una fecha"
+
+    );
+
+
+    llenarSelect(
+
+      zonaSelect,
+
+      zonas.filter(
+        zona =>
+          zona.activa !== false
+      ),
+
+      "Selecciona una zona"
+
+    );
+
+
+    llenarSelect(
+
+      fanProjectSelect,
+
+      fanProjects.filter(
+        fanProject =>
+          fanProject.activo !== false
+      ),
+
+      "Selecciona una canción"
+
+    );
+
+
+    mostrarContenido({
+
+      cargando,
+
+      contenido,
+
+      error
+
+    });
+
+  }
+
+  catch (
+    err
+  ) {
+
+    console.error(
+      "Error iniciando Mi Color:",
+      err
+    );
+
+
+    mostrarError({
+
+      cargando,
+
+      contenido,
+
+      error,
+
+      mensaje:
+        err.message ||
+        "No se pudo cargar la configuración.",
+
+      textoError:
+        mensajeError
+
+    });
+
+  }
+
+}
+
+
+// ========================================
+// ACTUALIZAR RESULTADO
+// ========================================
+
+async function actualizarResultado() {
+
+  limpiarResultado({
+
+    resultado,
+
+    sinColor
+
+  });
+
+
+  if (
+    !fechaSelect.value ||
+    !zonaSelect.value ||
+    !fanProjectSelect.value ||
+    !evento ||
+    consultandoColor
+  ) {
+
+    return;
+
+  }
+
+
+  const zona =
+    obtenerZonaSeleccionada();
+
+  const fanProject =
+    obtenerFanProjectSeleccionado();
+
+
+  if (
+    !zona ||
+    !fanProject
+  ) {
+
+    return;
+
+  }
+
+
+  consultandoColor =
+    true;
+
+  fanProjectSelect.disabled =
+    true;
+
+
+  try {
 
     const color =
-        await obtenerColor({
+      await obtenerColor({
 
-            eventoId:
-                evento.id,
+        eventoId:
+          evento.id,
 
-            fanProjectId:
-                fanProjectSelect.value,
+        fanProjectId:
+          fanProject.id,
 
-            zonaId:
-                zonaSelect.value
+        zonaId:
+          zona.id
 
-        });
+      });
+
 
     mostrarColor({
 
-        resultado,
+      resultado,
 
-        sinColor,
+      sinColor,
 
-        muestra,
+      nombre,
 
-        nombre,
+      cancionResultado,
 
-        detalle,
+      zonaResultado,
 
-        color
+      color,
+
+      cancion:
+        fanProject.nombre ||
+        fanProject.id,
+
+      zona:
+        zona.nombre ||
+        zona.id
 
     });
 
+  }
+
+  catch (
+    err
+  ) {
+
+    console.error(
+      "Error obteniendo el color:",
+      err
+    );
+
+
+    mostrarError({
+
+      cargando,
+
+      contenido,
+
+      error,
+
+      mensaje:
+        "No se pudo consultar el color.",
+
+      textoError:
+        mensajeError
+
+    });
+
+  }
+
+  finally {
+
+    consultandoColor =
+      false;
+
+    fanProjectSelect.disabled =
+      false;
+
+  }
+
 }
+
+
+// ========================================
+// VOLVER AL SELECTOR
+// ========================================
+
+function volverAlSelector() {
+
+  cerrarPantallaColor(
+    resultado
+  );
+
+}
+
+
+// ========================================
+// EVENTOS
+// ========================================
+
+fechaSelect.addEventListener(
+  "change",
+  actualizarResultado
+);
+
+zonaSelect.addEventListener(
+  "change",
+  actualizarResultado
+);
+
+fanProjectSelect.addEventListener(
+  "change",
+  actualizarResultado
+);
+
+volverSelector.addEventListener(
+  "click",
+  volverAlSelector
+);
+
+
+// ========================================
+// INICIAR APP
+// ========================================
+
+iniciar();
