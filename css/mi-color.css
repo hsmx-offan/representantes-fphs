@@ -1,18 +1,23 @@
 /* ========================================
    MI COLOR
+   TEMA OSCURO PERMANENTE
 ======================================== */
 
 :root {
 
-    --rosa: #ed1e62;
-    --rosa-hover: #d81857;
+    --bg: #100B1D;
+    --bg-soft: #171219;
 
-    --texto: #222;
-    --gris: #666;
-    --borde: #e8e8e8;
+    --pink: #ED1E62;
+    --pink-hover: #ff3f83;
 
-    --fondo: #fafafa;
-    --card: #ffffff;
+    --wine: #54152F;
+    --rose-soft: #F6A8C0;
+
+    --white: #FFF9FA;
+
+    --line: rgba(246, 168, 192, 0.22);
+    --line-light: rgba(255, 255, 255, 0.14);
 
     --radio: 22px;
 
@@ -35,6 +40,8 @@ html {
 
     min-height: 100%;
 
+    background: var(--bg);
+
 }
 
 body {
@@ -42,12 +49,19 @@ body {
     min-height: 100vh;
 
     font-family:
-        Inter,
         Arial,
+        Helvetica,
         sans-serif;
 
-    background: var(--fondo);
-    color: var(--texto);
+    background:
+        radial-gradient(
+            circle at top,
+            rgba(237, 30, 98, 0.12),
+            transparent 35%
+        ),
+        var(--bg);
+
+    color: var(--white);
 
 }
 
@@ -69,9 +83,14 @@ body {
 
 .mi-color-app {
 
-    width: min(900px, 94%);
+    width: min(760px, 92%);
 
-    margin: 60px auto 80px;
+    margin: 0 auto;
+
+    padding:
+        70px
+        0
+        80px;
 
 }
 
@@ -82,43 +101,69 @@ body {
 
 .mi-color-header {
 
-    text-align: center;
+    max-width: 680px;
 
-    margin-bottom: 40px;
+    margin:
+        0
+        auto
+        42px;
+
+    text-align: center;
 
 }
 
 .eyebrow {
 
-    color: var(--rosa);
+    margin-bottom: 13px;
 
-    font-size: 0.82rem;
-    font-weight: 700;
+    color: var(--pink);
 
-    letter-spacing: 2px;
+    font-size: 0.76rem;
+    font-weight: 800;
+
+    letter-spacing: 2.2px;
     text-transform: uppercase;
-
-    margin-bottom: 12px;
 
 }
 
 .mi-color-header h1 {
 
-    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    margin-bottom: 16px;
 
-    margin-bottom: 18px;
+    color: var(--white);
+
+    font-size:
+        clamp(
+            2.5rem,
+            7vw,
+            4.2rem
+        );
+
+    line-height: 1;
 
 }
 
 .descripcion {
 
-    max-width: 650px;
+    max-width: 600px;
 
     margin: auto;
 
-    color: var(--gris);
+    color: var(--rose-soft);
 
-    line-height: 1.8;
+    font-size: 16px;
+    line-height: 1.7;
+
+}
+
+
+/* ========================================
+   CONTENIDO
+======================================== */
+
+.contenido-app {
+
+    width: 100%;
 
 }
 
@@ -129,17 +174,31 @@ body {
 
 .estado-app {
 
-    background: var(--card);
+    width: 100%;
+
+    padding: 40px 28px;
+
+    border:
+        1px solid
+        var(--line);
 
     border-radius: var(--radio);
 
-    padding: 45px;
+    background:
+        rgba(
+            255,
+            249,
+            250,
+            0.035
+        );
+
+    color: var(--white);
 
     text-align: center;
 
     box-shadow:
-        0 8px 25px
-        rgba(0, 0, 0, 0.05);
+        0 18px 45px
+        rgba(0, 0, 0, 0.24);
 
 }
 
@@ -147,7 +206,7 @@ body {
 
     margin-top: 10px;
 
-    color: var(--gris);
+    color: var(--rose-soft);
 
     line-height: 1.6;
 
@@ -157,53 +216,78 @@ body {
 
     display: block;
 
-    font-size: 45px;
-
     margin-bottom: 15px;
+
+    font-size: 42px;
 
 }
 
 
 /* ========================================
-   TARJETA DE SELECTORES
+   TARJETA DE PASOS
 ======================================== */
 
 .selector-card {
 
+    width: 100%;
+
+    min-height: 230px;
+
     display: grid;
 
-    gap: 24px;
+    align-items: center;
 
-    padding: 35px;
+    padding: 38px;
 
-    background: var(--card);
+    border:
+        1px solid
+        var(--line);
 
     border-radius: var(--radio);
 
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 249, 250, 0.045),
+            rgba(237, 30, 98, 0.065)
+        );
+
     box-shadow:
-        0 8px 25px
-        rgba(0, 0, 0, 0.05);
+        0 22px 60px
+        rgba(0, 0, 0, 0.30);
 
 }
 
 
 /* ========================================
-   CAMPOS
+   PASOS
 ======================================== */
 
 .campo {
+
+    width: 100%;
 
     display: flex;
 
     flex-direction: column;
 
-    gap: 10px;
+    gap: 14px;
+
+    animation:
+        aparecerPaso
+        0.28s
+        ease;
 
 }
 
 .campo label {
 
+    color: var(--white);
+
+    font-size: 18px;
     font-weight: 700;
+
+    text-align: center;
 
 }
 
@@ -211,33 +295,45 @@ body {
 
     width: 100%;
 
-    padding: 15px;
+    padding: 17px 18px;
 
-    border: 1px solid var(--borde);
+    border:
+        1px solid
+        var(--line-light);
 
-    border-radius: 14px;
+    border-radius: 16px;
 
-    background: white;
+    background: var(--bg-soft);
 
-    color: var(--texto);
+    color: var(--white);
 
-    font-size: 15px;
+    font-size: 16px;
+
+    outline: none;
+
+    appearance: auto;
 
     transition:
         border-color 0.2s ease,
-        box-shadow 0.2s ease;
+        box-shadow 0.2s ease,
+        background 0.2s ease;
 
 }
 
 .campo select:focus {
 
-    outline: none;
-
-    border-color: var(--rosa);
+    border-color: var(--pink);
 
     box-shadow:
-        0 0 0 3px
-        rgba(237, 30, 98, 0.1);
+        0 0 0 4px
+        rgba(237, 30, 98, 0.14);
+
+}
+
+.campo select:hover {
+
+    border-color:
+        rgba(237, 30, 98, 0.55);
 
 }
 
@@ -245,9 +341,34 @@ body {
 
     cursor: not-allowed;
 
-    background: #f3f3f3;
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.04
+        );
 
-    color: #999;
+    color:
+        rgba(
+            255,
+            249,
+            250,
+            0.42
+        );
+
+}
+
+
+/* ========================================
+   OPCIONES DEL SELECT
+======================================== */
+
+.campo option {
+
+    background: var(--bg-soft);
+
+    color: var(--white);
 
 }
 
@@ -293,6 +414,9 @@ body {
 
     z-index: 2;
 
+    width: auto;
+
+    margin: 0;
     padding: 10px 15px;
 
     border:
@@ -302,7 +426,7 @@ body {
     border-radius: 999px;
 
     background:
-        rgba(255, 255, 255, 0.1);
+        rgba(255, 255, 255, 0.10);
 
     backdrop-filter:
         blur(18px);
@@ -376,7 +500,7 @@ body {
     border-radius: 18px;
 
     background:
-        rgba(255, 255, 255, 0.1);
+        rgba(255, 255, 255, 0.10);
 
     backdrop-filter:
         blur(22px);
@@ -441,6 +565,28 @@ body {
 /* ========================================
    ANIMACIONES
 ======================================== */
+
+@keyframes aparecerPaso {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(10px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
 
 @keyframes aparecerPantalla {
 
@@ -513,13 +659,52 @@ body {
 
         width: 92%;
 
-        margin-top: 35px;
+        padding:
+            42px
+            0
+            50px;
+
+    }
+
+    .mi-color-header {
+
+        margin-bottom: 30px;
+
+    }
+
+    .mi-color-header h1 {
+
+        font-size: 3rem;
+
+    }
+
+    .descripcion {
+
+        font-size: 14px;
 
     }
 
     .selector-card {
 
-        padding: 25px;
+        min-height: 210px;
+
+        padding: 26px 22px;
+
+        border-radius: 20px;
+
+    }
+
+    .campo label {
+
+        font-size: 16px;
+
+    }
+
+    .campo select {
+
+        padding: 16px;
+
+        font-size: 15px;
 
     }
 
@@ -580,6 +765,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
 
+    .campo,
     .pantalla-color,
     .volver-color,
     .datos-color {
