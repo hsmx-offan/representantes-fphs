@@ -25,6 +25,17 @@ activo:false
 const lista=document.getElementById("listaEventos");
 
 const activo=document.getElementById("eventoActivo");
+const vistaEvento =
+document.getElementById("vistaEvento");
+
+const colorHome =
+document.querySelector(".color-home");
+
+const tituloEvento =
+document.getElementById("tituloEvento");
+
+const volverEventos =
+document.getElementById("volverEventos");
 
 function cargarEventos(){
 
