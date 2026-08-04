@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <meta name="theme-color" content="#100B1D">
+
+    <title>Encuentra tu Color | Harry Styles México OFFAN</title>
+
+    <link rel="stylesheet" href="css/style.css?v=31">
+    <link rel="stylesheet" href="css/mi-color.css?v=1">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body class="mi-color-page">
+
+<header class="mi-color-nav">
+
+    <a href="index.html" class="marca">
+        HSMX_OFFAN
+    </a>
+
+    <a href="index.html#fanprojects" class="volver-guia">
+        ← Volver
+    </a>
+
+</header>
+
+<main class="mi-color-app">
+
+    <!-- ENCABEZADO GENERAL -->
+    <section class="mi-color-intro">
+
+        <p class="etiqueta">
+            FAN PROJECT
+        </p>
+
+        <h1>Encuentra tu Color</h1>
+
+        <p>
+            Configura tu fecha y zona una sola vez. Durante el concierto
+            solo tendrás que elegir el fan project.
+        </p>
+
+    </section>
+
+    <!-- MENSAJES -->
+    <div
+        id="mensajeMiColor"
+        class="mensaje-mi-color"
+        role="alert"
+        hidden
+    ></div>
+
+    <!-- PASO 1: FECHA -->
+    <section
+        class="paso-mi-color activo"
+        id="pasoFecha"
+        data-paso="fecha"
+    >
+
+        <div class="paso-encabezado">
+            <span>PASO 1 DE 3</span>
+            <h2>¿Cuándo asistirás?</h2>
+            <p>Selecciona la fecha de tu concierto.</p>
+        </div>
+
+        <div
+            class="opciones-grid fechas-color"
+            id="listaFechas"
+        >
+            <!-- Se generará con JavaScript -->
+        </div>
+
+        <button
+            type="button"
+            class="boton-continuar"
+            id="continuarFecha"
+            disabled
+        >
+            Continuar
+        </button>
+
+    </section>
+
+    <!-- PASO 2: ZONA -->
+    <section
+        class="paso-mi-color"
+        id="pasoZona"
+        data-paso="zona"
+        hidden
+    >
+
+        <button
+            type="button"
+            class="boton-regresar-paso"
+            data-regresar="fecha"
+        >
+            ← Cambiar fecha
+        </button>
+
+        <div class="paso-encabezado">
+            <span>PASO 2 DE 3</span>
+            <h2>¿Cuál es tu zona?</h2>
+            <p>Selecciona el nombre general que aparece en tu boleto.</p>
+        </div>
+
+        <div
+            class="opciones-grid zonas-color"
+            id="listaZonas"
+        >
+            <!-- Se generará con JavaScript -->
+        </div>
+
+        <button
+            type="button"
+            class="boton-continuar"
+            id="continuarZona"
+            disabled
+        >
+            Guardar mi selección
+        </button>
+
+    </section>
+
+    <!-- PASO 3: FAN PROJECT -->
+    <section
+        class="paso-mi-color"
+        id="pasoProyecto"
+        data-paso="proyecto"
+        hidden
+    >
+
+        <div class="seleccion-actual">
+
+            <div>
+                <span>FECHA</span>
+                <strong id="resumenFecha">—</strong>
+            </div>
+
+            <div>
+                <span>ZONA</span>
+                <strong id="resumenZona">—</strong>
+            </div>
+
+        </div>
+
+        <button
+            type="button"
+            class="editar-seleccion"
+            id="editarSeleccion"
+        >
+            Cambiar fecha o zona
+        </button>
+
+        <div class="paso-encabezado">
+            <span>TODO LISTO</span>
+            <h2>¿Qué fan project comienza?</h2>
+            <p>Toca una opción para mostrar tu color en pantalla completa.</p>
+        </div>
+
+        <div
+            class="proyectos-color-grid"
+            id="listaProyectos"
+        >
+            <!-- Se generará con JavaScript -->
+        </div>
+
+        <p class="aviso-sin-conexion">
+            <i class="fa-solid fa-wifi"></i>
+
+            Abre esta herramienta antes del concierto para tenerla
+            disponible sin conexión.
+        </p>
+
+    </section>
+
+</main>
+
+<!-- PANTALLA COMPLETA DEL COLOR -->
+<section
+    class="pantalla-color"
+    id="pantallaColor"
+    hidden
+>
+
+    <div class="pantalla-color-info">
+
+        <span id="colorProyecto">Fan Project</span>
+
+        <strong id="colorZona">Zona</strong>
+
+        <small id="colorFecha">Fecha</small>
+
+    </div>
+
+    <div class="pantalla-color-controles">
+
+        <button
+            type="button"
+            id="volverProyectos"
+            class="boton-sobre-color"
+        >
+            ← Elegir otro fan project
+        </button>
+
+    </div>
+
+</section>
+
+<script src="js/mi-color.js?v=1"></script>
+
+</body>
+</html>
