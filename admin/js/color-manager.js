@@ -29,7 +29,9 @@ import {
 import {
   renderFechas
 } from "./modulos/color-manager/fechas/index.js";
-
+import {
+  renderZonas
+} from "./modulos/color-manager/zonas/index.js";
 
 // ========================================
 // ELEMENTOS GENERALES
