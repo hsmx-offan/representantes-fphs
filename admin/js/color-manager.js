@@ -529,17 +529,28 @@ async function mostrarModulo(
 
       case "fanprojects":
 
-        mostrarModuloPendiente({
+  await renderFanProjects({
 
-          titulo:
-            "Módulo de Fan Projects",
+    eventoId:
+      estado.eventoSeleccionado.id,
 
-          descripcion:
-            "Se conectará después de terminar Zonas."
+    contenedor:
+      elementosVistaEvento.contenidoManager,
 
-        });
+    mostrarToast,
 
-        break;
+    alAbrirColores:
+      fanProject => {
+
+        mostrarToast(
+          `Administrar colores de ${fanProject.nombre}`
+        );
+
+      }
+
+  });
+
+  break;
 
 
       case "informacion":
