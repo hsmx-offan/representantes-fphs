@@ -123,6 +123,10 @@ function mostrarModulo(modulo){
 
         case "fechas":
 
+    renderFechas();
+
+break;
+
             contenidoManager.innerHTML=`
 
                 <h3>
